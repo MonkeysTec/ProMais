@@ -9,6 +9,8 @@ import ProfileScreen from './src/screens/Profile';
 import SplashScreenComponent from './src/screens/Splash';
 import StartScreen from './src/screens/StartScreen';
 import Login from './src/screens/Login';
+import SignUp from './src/screens/SignUp';
+import Forgot from './src/screens/Forgot';
 import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
@@ -32,7 +34,7 @@ const TabNavigator: React.FC = () => (
 
         return <Ionicons name={iconName} size={size} color={color} />;
       },
-      tabBarActiveTintColor: 'tomato',
+      tabBarActiveTintColor: '#85d151',
       tabBarInactiveTintColor: 'gray',
     })}
   >
@@ -49,6 +51,8 @@ const App: React.FC = () => {
         <Stack.Screen name="Splash" component={SplashScreenComponent} />
         <Stack.Screen name="Start" component={StartScreen} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Forgot" component={Forgot} />
         <Stack.Screen name="Main" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>

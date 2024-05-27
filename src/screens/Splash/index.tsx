@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 const SplashScreenComponent: React.FC<{ navigation: any }> = ({ navigation }) => {
   useEffect(() => {
     setTimeout(async () => {
       await SplashScreen.hideAsync();
       navigation.replace('Start');
-    }, 5000);
+    }, 3000);
   }, []);
 
   return (

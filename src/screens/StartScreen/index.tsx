@@ -10,6 +10,10 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     navigation.replace('Login');
   };
 
+  const handleSignUp = () => {
+    navigation.replace('SignUp');
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -20,7 +24,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         <Image source={require('../../assets/home-img.png')} style={[styles.outline1, styles.imageBig]} />
         <Text style={styles.text}>Clube Pro+. O clube de fidelidade da Total Energies.</Text>
         <Dots />
-        <TouchableOpacity style={styles.joinButton}>
+        <TouchableOpacity onPress={handleSignUp} style={styles.joinButton}>
           <Text style={styles.joinText}>Quero me cadastrar</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>

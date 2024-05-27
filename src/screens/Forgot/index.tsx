@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput } from 'react-native';
 import { RainbowLine } from '../../components/RainbowLine';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
-const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const handleLogin = () => {
-    navigation.replace('Main');
-  };
+const Forgot: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const [step, setStep] = useState(1)
 
-  const handleForgot = () => {
-    navigation.replace('Forgot');
+  const handleNext = () => {
+    setStep(step+1)
+    if (step === 3) 
+      navigation.replace('Login');
   };
 
   const handleBack = () => {
-    navigation.replace('Start');
+    setStep(step-1)
+    if (step === 1) 
+      navigation.replace('Start');
   };
 
   return (
@@ -23,20 +26,51 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
       <RainbowLine />
       <View style={styles.insideContainer}>
         <TouchableOpacity onPress={handleBack} style={styles.backContainer}>
-          <Ionicons name={'arrow-back'} size={31} color={'#d9d9d9'} />
+          {step === 3 ?
+            <AntDesign name={'checkcircle'} size={50} color={'#85d151'} /> :
+            <Ionicons name={'arrow-back'} size={31} color={'#d9d9d9'} /> 
+          }
         </TouchableOpacity>
-        <Text style={styles.title}>Acesso</Text>
-        <View style={styles.inputContainer}>
-          <TextInput style={styles.input} placeholder='Insira o e-mail cadastrado'/>
-          <TextInput style={styles.input} placeholder='Insira sua senha'/>
-        </View>
-        <TouchableOpacity onPress={handleLogin} style={styles.joinButton}>
-          <Text style={styles.joinText}>Entrar</Text>
-          <Ionicons name={'arrow-forward'} size={18} color={'#fff'} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleForgot} style={styles.loginButton}>
-          <Text style={styles.loginText}>Esqueci minha senha</Text>
-        </TouchableOpacity>
+        {step === 1 && 
+          <>
+            <Text style={styles.title}>Esqueci minha senha</Text>
+            <View style={styles.inputContainer}>
+              <TextInput style={styles.input} placeholder='Insira seu e-mail'/>
+            </View>
+            <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
+              <Text style={styles.joinText}>Próximo</Text>
+              <Ionicons name={'arrow-forward'} size={18} color={'#fff'} />
+            </TouchableOpacity>
+          </>
+        }
+        {step === 2 && 
+          <>
+            <Text style={styles.title}>Cadastre sua nova senha</Text>
+            <View style={styles.inputContainer}>
+              <TextInput style={styles.input} placeholder='Nova senha'/>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput style={styles.input} placeholder='Repita a nova senha'/>
+            </View>
+            <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
+              <Text style={styles.joinText}>Enviar</Text>
+              <Ionicons name={'arrow-forward'} size={18} color={'#fff'} />
+            </TouchableOpacity>
+          </>
+        }
+        {step === 3 &&
+          <>
+          <View>
+              <Text style={styles.finishTitle}>Pronto!</Text>
+              <Text style={styles.contactTextBlack}>Sua senha foi trocada com sucesso!</Text>
+              <Text style={styles.contactTextBlack}>Acesse agora mesmo...</Text>
+              <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
+              <Text style={styles.joinText}>Entrar</Text>
+              <Ionicons name={'arrow-forward'} size={18} color={'#fff'} />
+            </TouchableOpacity>
+          </View>
+          </>
+        }
         <TouchableOpacity style={styles.contactContainer}>
           <MaterialIcons name={'headset-mic'} size={45} color={'tomato'} />
           <View>
@@ -65,7 +99,7 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   inputContainer: {
-    marginTop: 10
+    marginTop: 5
   },
   backContainer: {
     marginTop: 70
@@ -82,11 +116,23 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: 60
   },
-  title: {
+  counter: {
     marginTop: 50,
     fontSize: 28,
     fontWeight: 'bold',
+    color: '#000',
+  },
+  title: {
+    marginTop: 30,
+    fontSize: 28,
+    fontWeight: 'bold',
     color: 'red',
+  },
+  finishTitle: {
+    marginTop: 30,
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#85d151',
   },
   imageBig: {
     width: '100%',
@@ -106,7 +152,7 @@ const styles = StyleSheet.create({
   },
   joinButton: {
     backgroundColor: '#85d151',
-    marginTop: 40,
+    marginTop: 30,
     width: 150,
     height: 50,
     display: 'flex',
@@ -134,6 +180,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#000',
+    backgroundColor: '#fff',
   },
   loginText: {
     fontSize: 18,
@@ -142,7 +189,7 @@ const styles = StyleSheet.create({
   },
   contactContainer: {
     flexDirection: 'row',
-    marginTop: 50,
+    marginTop: 100,
     alignItems: 'center',
     gap: 10
   },
@@ -164,4 +211,4 @@ const styles = StyleSheet.create({
   outline1: { color: '#000000', left: -1, top: -1 },
 });
 
-export default Login;
+export default Forgot;
