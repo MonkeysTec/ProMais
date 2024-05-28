@@ -38,7 +38,7 @@ const TabNavigator: React.FC = () => (
       tabBarInactiveTintColor: 'gray',
     })}
   >
-    <Tab.Screen name="Home" component={HomeScreen} />
+    <Tab.Screen name="Home" options={{ headerShown: false }}   component={HomeScreen} />
     <Tab.Screen name="QRCode" component={QRCodeScreen} />
     <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
