@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/Home';
+import News from './src/screens/News';
+
 import QRCodeScreen from './src/screens/QRCodeScreen';
 import ProfileScreen from './src/screens/Profile';
 import SplashScreenComponent from './src/screens/Splash';
@@ -41,6 +43,7 @@ const TabNavigator: React.FC = () => (
     <Tab.Screen name="Home" options={{ headerShown: false }}   component={HomeScreen} />
     <Tab.Screen name="QRCode" component={QRCodeScreen} />
     <Tab.Screen name="Profile" component={ProfileScreen} />
+
   </Tab.Navigator>
 );
 
@@ -54,6 +57,8 @@ const App: React.FC = () => {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Forgot" component={Forgot} />
         <Stack.Screen name="Main" component={TabNavigator} />
+        <Stack.Screen name="News" component={News} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

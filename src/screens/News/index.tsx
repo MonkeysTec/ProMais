@@ -1,53 +1,49 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import CardNews from '../../components/CardNews';
+import api from '../../services/api';
 
-const menuItems = [
-  { title: 'Extrato', icon: 'filetext1' },
-  { title: 'Codigo escaneado', icon: 'scan1' },
-  { title: 'Indique um "bipador"', icon: 'user' },
-  { title: 'Conheça Total Energies', icon: 'bolt',path:'News' },
-  { title: 'LubConsult', icon: 'tool' },
-  { title: 'Como funciona', icon: 'questioncircleo' },
-  { title: 'FAQ', icon: 'infocirlceo' },
-];
+const data = [
+    {
+      date: '28/05/2024',
+      title: 'Lorem ipsum dolor',
+      description: `Lorem ipsum dolor site`,
+      image: 'https://via.placeholder.com/150',
+    },
+    // Add more data objects as needed
+  ];
+const News: React.FC<{ navigation: any }> = ({navigation}) => {
 
-const HomeScreen: React.FC<{ navigation: any }> = ({navigation}) => {
+    useEffect(() => {
+        const getNewsApi = async ()=>{
+            const {data} = await api.get('/api/news/v1/?onlyNotExpired=true&status=ACTIVE')
+            console.log(data)
+
+        }
+        getNewsApi()
+       
+    }, []);
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
         <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
-      <View style={styles.cardBalance}>
-        <Text style={{ color: 'black', fontWeight: '600' }}>Saldo</Text>
-        <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>R$420,00</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <AntDesign name="filetext1" size={24} color="#A6A6A6" />
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Ver extrato</Text>
-            <View style={styles.underline} />
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.greenButton}>
-          <FontAwesome name="dollar" size={20} color="white" style={styles.icon} />
-          <Text style={styles.greenButtonText}>Resgatar agora</Text>
-       </TouchableOpacity>
-      </View>
-      <Image source={require('../../assets/home-img.png')} style={[styles.outline1, styles.imageBig]} />
-      <Text style={styles.text}>Clube Pro+. O clube de fidelidade da Total Energies.</Text>
+      {data.map((item, index) => (
+        <CardNews
+          key={index}
+          date={item.date}
+          title={item.title}
+          description={item.description}
+          image={item.image}
+        />
+      ))}
+      
 
-      <ScrollView style={styles.menu}>
-        {menuItems.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.menuItem}onPress={()=>navigation.replace(item.path)}>
-            <AntDesign name={item.icon} size={24} color="#000" />
-            <Text style={styles.menuItemText}>{item.title}</Text>
-            <Ionicons name="chevron-forward" size={24} color="#000" />
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      
     </View>
   );
 };
@@ -69,7 +65,7 @@ const styles = StyleSheet.create({
   },
   containerRed: {
     backgroundColor: 'red',
-    height: 200,
+    height: 150,
     width: '100%',
     paddingHorizontal: 30,
     justifyContent: 'space-between',
@@ -166,4 +162,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default News;
