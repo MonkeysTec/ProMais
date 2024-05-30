@@ -306,7 +306,6 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               : null}
           </View>
           : null}
-          <ModalSMSConfirm />
       </ScrollView>
     </View>
   );
