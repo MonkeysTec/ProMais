@@ -3,17 +3,19 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './src/screens/Home';
 import News from './src/screens/News';
-
+import Bipador from './src/screens/Bipador';
 import QRCodeScreen from './src/screens/QRCodeScreen';
 import ProfileScreen from './src/screens/Profile';
 import SplashScreenComponent from './src/screens/Splash';
-import StartScreen from './src/screens/StartScreen';
 import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
 import Forgot from './src/screens/Forgot';
 import { Ionicons } from '@expo/vector-icons';
+
+import HomeScreen from './src/screens/Home';
+import StartScreen from './src/screens/StartScreen';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -52,12 +54,19 @@ const App: React.FC = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreenComponent} />
-        <Stack.Screen name="Start" component={StartScreen} />
+        
+        {/* Errado */}
+         <Stack.Screen name="Start" component={HomeScreen} /> 
+        {/* Correto */}
+        {/* <Stack.Screen name="Start" component={StartScreen} /> */}
+
+        <Stack.Screen name="HomeScren" component={HomeScreen} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Forgot" component={Forgot} />
         <Stack.Screen name="Main" component={TabNavigator} />
         <Stack.Screen name="News" component={News} />
+        <Stack.Screen name="Bipador" component={Bipador} />
 
       </Stack.Navigator>
     </NavigationContainer>

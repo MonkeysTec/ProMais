@@ -187,12 +187,12 @@ const styles = StyleSheet.create({
   contactTextBlack: {
     fontSize: 16,
     color: '#000',
-    fontWeight: 800
+    fontWeight: '800'
   },
   contactTextRed: {
     fontSize: 16,
     color: 'red',
-    fontWeight: 800
+    fontWeight: '800'
   },
   totalEnergies: {
     width: 210,
