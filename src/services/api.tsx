@@ -6,7 +6,7 @@ const header = {
     // Authorization: token,
 };
 const api = axios.create({
-  baseURL: 'https://api-dev.clubepromais.com.br',
+  baseURL: 'https://api-dev.clubepromais.com.br/api',
   headers:header
 });
 

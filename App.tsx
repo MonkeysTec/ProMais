@@ -14,7 +14,8 @@ import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
 import Forgot from './src/screens/Forgot';
 import { Ionicons } from '@expo/vector-icons';
-
+import Routes from './src/routes/index'
+import { AuthProvider } from './src/context/LoginContext';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -50,16 +51,11 @@ const TabNavigator: React.FC = () => (
 const App: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreenComponent} />
-        <Stack.Screen name="Start" component={StartScreen} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Forgot" component={Forgot} />
-        <Stack.Screen name="Main" component={TabNavigator} />
-        <Stack.Screen name="News" component={News} />
+      {/* //@ts-ignore */}
+      <AuthProvider>
+        <Routes />
 
-      </Stack.Navigator>
+      </AuthProvider>
     </NavigationContainer>
   );
 };
