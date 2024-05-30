@@ -12,7 +12,7 @@ const { user, login, logout } = useAuth();
   return (
    <>
     {
-      !user?(
+      user?(
         <AuthRoutes/>
       ):(
         <NotAuthRoutes/>

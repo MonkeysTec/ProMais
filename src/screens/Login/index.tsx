@@ -7,10 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import { useAuth } from '../../context/LoginContext';
 import axios from 'axios';
+import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
 
 const Login: React.FC = () => {
-const { user, login, logout } = useAuth();
 const [email, setEmail] = useState('');
+const [modalCOnfirm, setModalConfim] = useState(false);
+
 const [password, setPassword] = useState('');
 const navigation = useNavigation();
 
@@ -25,7 +27,7 @@ const navigation = useNavigation();
       console.log(data)
   
       if (data.status === 200) {
-        console.log(data)
+        setModalConfim(true)
       } else {
         // Exibir mensagem de erro
         Alert.alert('Erro de Login', 'Credenciais inválidas. Por favor, tente novamente.');
@@ -79,6 +81,13 @@ const navigation = useNavigation();
         </TouchableOpacity>
         <Image source={require('../../assets/© TotalEnergies - 2023.png')} style={styles.image} />
       </View>
+      {
+      modalCOnfirm &&(
+        <ModalSMSConfirm email={email} />
+
+      )
+      }
+
     </View>
   );
 };
