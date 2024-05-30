@@ -1,40 +1,75 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { RainbowLine } from '../../components/RainbowLine';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
+import { useAuth } from '../../context/LoginContext';
+import axios from 'axios';
+import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
 
-const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const handleLogin = () => {
-    navigation.replace('Main');
+const Login: React.FC = () => {
+const [email, setEmail] = useState('');
+const [modalCOnfirm, setModalConfim] = useState(false);
+
+const [password, setPassword] = useState('');
+const navigation = useNavigation();
+
+  const handleLogin = async () => {
+  
+    try {
+      console.log('entrou')
+      const {data} = await api.post('/users/system/login/v1', {
+        email: email,
+        password: password,
+      });
+      console.log(data)
+  
+      if (data.status === 200) {
+        setModalConfim(true)
+      } else {
+        // Exibir mensagem de erro
+        Alert.alert('Erro de Login', 'Credenciais inválidas. Por favor, tente novamente.');
+      }
+    } catch (error) {
+      // Exibir mensagem de erro
+      Alert.alert('Erro de Login', 'Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.');
+      console.error(error);
+    }
   };
 
-  const handleForgot = () => {
-    navigation.replace('Forgot');
-  };
-
-  const handleBack = () => {
-    navigation.replace('Start');
-  };
+  
 
   return (
     <View style={styles.container}>
       <SafeAreaView />
       <RainbowLine />
       <View style={styles.insideContainer}>
-        <TouchableOpacity onPress={handleBack} style={styles.backContainer}>
-          <Ionicons name={'arrow-back'} size={31} color={'#d9d9d9'} />
-        </TouchableOpacity>
+        
         <Text style={styles.title}>Acesso</Text>
         <View style={styles.inputContainer}>
-          <TextInput style={styles.input} placeholder='Insira o e-mail cadastrado'/>
-          <TextInput style={styles.input} placeholder='Insira sua senha'/>
+          <TextInput
+        style={styles.input}
+        placeholder='Insira o e-mail cadastrado'
+        value={email}
+        onChangeText={setEmail}
+        keyboardType='email-address'
+        autoCapitalize='none'
+      />
+      <TextInput
+        style={styles.input}
+        placeholder='Insira sua senha'
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
         </View>
         <TouchableOpacity onPress={handleLogin} style={styles.joinButton}>
           <Text style={styles.joinText}>Entrar</Text>
           <Ionicons name={'arrow-forward'} size={18} color={'#fff'} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleForgot} style={styles.loginButton}>
+        <TouchableOpacity  style={styles.loginButton}>
           <Text style={styles.loginText}>Esqueci minha senha</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.contactContainer}>
@@ -46,6 +81,13 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
         </TouchableOpacity>
         <Image source={require('../../assets/© TotalEnergies - 2023.png')} style={styles.image} />
       </View>
+      {
+      modalCOnfirm &&(
+        <ModalSMSConfirm email={email} />
+
+      )
+      }
+
     </View>
   );
 };

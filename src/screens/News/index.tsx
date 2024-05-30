@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import CardNews from '../../components/CardNews';
 import api from '../../services/api';
+import axios from 'axios';
 
 const data = [
     {
@@ -18,13 +19,28 @@ const data = [
 const News: React.FC<{ navigation: any }> = ({navigation}) => {
 
     useEffect(() => {
-        const getNewsApi = async ()=>{
-            const {data} = await api.get('/api/news/v1/?onlyNotExpired=true&status=ACTIVE')
-            console.log(data)
-
+      const getNewsApi = async () => {
+        try {
+          const response = await fetch('https://api-dev.clubepromais.com.br/api/news/v1/?onlyNotExpired=true&status=ACTIVE', {
+            method: 'GET',
+            headers: {
+              'Accept': '*/*',
+              'User-Agent':'insomnia/9.2.0'
+            }
+          });
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+      
+          const data = await response.json();
+        } catch (error) {
+          console.error('Error fetching data:', error);
         }
-        getNewsApi()
-       
+      }
+      
+      getNewsApi();
+      
     }, []);
   return (
     <View style={styles.container}>

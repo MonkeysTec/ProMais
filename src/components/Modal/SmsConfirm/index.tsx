@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import api from '../../../services/api';
+import { useAuth } from '../../../context/LoginContext';
 
-export const ModalSMSConfirm = () => {
+interface ModalSms{
+  email:string
+}
+export const ModalSMSConfirm = ({email}:ModalSms) => {
+const { user, login, logout } = useAuth();
+
   const [modalVisible, setModalVisible] = useState(true);
   const closeModal = () => {
     setModalVisible(false);
@@ -15,6 +22,21 @@ export const ModalSMSConfirm = () => {
   /* warningType<string> = Block || ManyTries || WrongCode */
 
   const [canSendSmsAgain, setCanSendSmsAgain] = useState(false);
+
+  const handleConfirmSms = async ()=>{
+    try {
+      const {data} = await api.post(`/users/system/login/v1?email=${email}`,{
+        headers:{
+          'temp_auth_code':smscode.join('')
+        }
+      });
+      login(data)
+    } catch (error) {
+      setSmsCode(['', '', '', ''])
+      Alert.alert('Erro de Login', 'Código inválido tente outro');
+      
+    }
+  }
 
 
   return (
@@ -155,7 +177,7 @@ export const ModalSMSConfirm = () => {
               </TouchableOpacity>
 
             </View>
-            <TouchableOpacity onPress={() => { }} style={styles.joinButton}>
+            <TouchableOpacity onPress={handleConfirmSms} style={styles.joinButton}>
               <Text style={styles.joinText}>Próximo</Text>
               <Ionicons name={'arrow-forward'} size={18} color={'#fff'} />
             </TouchableOpacity>
