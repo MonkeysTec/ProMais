@@ -3,13 +3,11 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './src/screens/Home';
 import News from './src/screens/News';
-
+import Bipador from './src/screens/Bipador';
 import QRCodeScreen from './src/screens/QRCodeScreen';
 import ProfileScreen from './src/screens/Profile';
 import SplashScreenComponent from './src/screens/Splash';
-import StartScreen from './src/screens/StartScreen';
 import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
 import Forgot from './src/screens/Forgot';
