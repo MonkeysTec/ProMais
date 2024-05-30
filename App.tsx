@@ -54,6 +54,7 @@ const App: React.FC = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreenComponent} />
+        
         {/* Errado */}
          <Stack.Screen name="Start" component={HomeScreen} /> 
         {/* Correto */}

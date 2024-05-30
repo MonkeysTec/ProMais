@@ -148,7 +148,7 @@ export const ModalSMSConfirm = () => {
               >
                 <Text style={{
                   borderBottomColor: 'grey', borderBottomWidth: 2, width: 140,
-                  marginTop: 20, fontSize: 16, color: 'grey'
+                  marginTop: 20, fontSize: 16, color: 'grey', display:canSendSmsAgain ? 'flex' : 'none'
                 }} >
                   Enviar novamente 
                 </Text>

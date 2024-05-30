@@ -165,7 +165,6 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Ionicons name="chevron-forward" size={24} color="#000" />
           </TouchableOpacity>
         ))}
-        
         {modalVisible ?
           <View>
             {modalType === 'Extract' ?
@@ -307,7 +306,7 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               : null}
           </View>
           : null}
-          
+          <ModalSMSConfirm />
       </ScrollView>
     </View>
   );
