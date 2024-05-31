@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
+import { useNavigation } from '@react-navigation/native';
 
 const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
@@ -16,8 +17,8 @@ const menuItems = [
 ];
 
 
-const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-
+const HomeScreen: React.FC = () => {
+const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
   const [extractType, setExtractType] = useState('General' || 'Reclaim')
@@ -152,7 +153,7 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             onPress={() => {
               if (item.path) {
 
-                navigation.replace(item.path)
+                navigation.navigate(item.path)
               }
               if (item.modal) {
                 setModalType(item.modal)

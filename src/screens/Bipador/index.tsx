@@ -4,8 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
-const Bipador: React.FC<{ navigation: any }> = ({ navigation }) => {
+const Bipador: React.FC = () => {
+  const navigation = useNavigation()
   const [bipadoresSample, setBipadoresSample] = useState([
     {
       name: 'Mariana',
@@ -58,7 +60,7 @@ const Bipador: React.FC<{ navigation: any }> = ({ navigation }) => {
       
         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', 
         gap: 10, width: '100%', 
-        marginLeft: 80 }} onPress={() => navigation.replace('Start')} >
+        marginLeft: 80 }} onPress={() => navigation.navigate('Home')} >
 
           <Feather style={{ top: 10 }} name="arrow-left" size={24} color="black" />
           <Text style={styles.homeText}>Home</Text>
