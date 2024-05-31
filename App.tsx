@@ -17,34 +17,6 @@ import { AuthProvider } from './src/context/LoginContext';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const TabNavigator: React.FC = () => (
-  <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
-
-        if (route.name === 'Home') {
-          iconName = 'home';
-        } else if (route.name === 'QRCode') {
-          iconName = 'camera';
-        } else if (route.name === 'Profile') {
-          iconName = 'person';
-        }
-
-        size = focused ? size + 4 : size;
-
-        return <Ionicons name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: '#85d151',
-      tabBarInactiveTintColor: 'gray',
-    })}
-  >
-    <Tab.Screen name="Home" options={{ headerShown: false }}   component={HomeScreen} />
-    <Tab.Screen name="QRCode" component={QRCodeScreen} />
-    <Tab.Screen name="Profile" component={ProfileScreen} />
-
-  </Tab.Navigator>
-);
 
 const App: React.FC = () => {
   return (

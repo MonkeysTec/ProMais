@@ -7,9 +7,10 @@ import api from '../../../services/api';
 import { useAuth } from '../../../context/LoginContext';
 
 interface ModalSms{
-  email:string
+  email:string;
+  code?:(code:string)=>void
 }
-export const ModalSMSConfirm = ({email}:ModalSms) => {
+export const ModalSMSConfirm = ({email,code}:ModalSms) => {
 const { user, login, logout } = useAuth();
 
   const [modalVisible, setModalVisible] = useState(true);
@@ -24,6 +25,7 @@ const { user, login, logout } = useAuth();
   const [canSendSmsAgain, setCanSendSmsAgain] = useState(false);
 
   const handleConfirmSms = async ()=>{
+    code?.(smscode.join(''))
     try {
       const {data} = await api.post(`/users/system/login/v1?email=${email}`,{
         headers:{
