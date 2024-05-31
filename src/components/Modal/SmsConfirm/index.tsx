@@ -26,7 +26,7 @@ const { user, login, logout } = useAuth();
 
   const handleConfirmSms = async ()=>{
     code?.(smscode.join(''))
-    try {
+   /*  try {
       const {data} = await api.post(`/users/system/login/v1?email=${email}`,{
         headers:{
           'temp_auth_code':smscode.join('')
@@ -37,7 +37,7 @@ const { user, login, logout } = useAuth();
       setSmsCode(['', '', '', ''])
       Alert.alert('Erro de Login', 'Código inválido tente outro');
       
-    }
+    } */
   }
 
 

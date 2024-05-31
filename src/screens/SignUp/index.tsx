@@ -22,9 +22,40 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [code, setCode] = useState('')
 
 
-  const handleCodeSms = (code:string)=>{
-    setCode(code);
-    setModalSms(false)
+  const handleCodeSms = async (code:string)=>{
+    if(step===1){
+      try {
+        console.log(code)
+        const {data} = await api.post(`/tempcode/check/v1/${code}`,{
+          type:'CHECK_EMAIL',
+          email:email1
+        })
+        setCode(code);
+        setModalSms(false)
+        setStep(step+1)
+    
+      } catch (error) {
+        console.log(error)
+      }
+    }else{
+      console.log('aqui 2')
+      
+      try {
+        const {data} = await api.post(`/tempcode/check/v1/${code}`,{
+          type:'CHECK_NUMBER',
+          primaryPhone:phone
+        })
+        setCode(code);
+        setModalSms(false)
+        setStep(step+1)
+    
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    
+ 
   }
 
 const handleFinalRegister = async ()=>{
@@ -50,11 +81,12 @@ const handleFinalRegister = async ()=>{
     }
     })
   try {
+    console.log(code)
     const {data} = await api.post('/users/v1',{
       email:email1, 
       firstName,
       lastName, 
-      password, 
+      password:password, 
       primaryPhone:phone, 
       isReceivePush: true,
       isReceiveSMS: true,
@@ -78,16 +110,29 @@ const handleFinalRegister = async ()=>{
 
   const handleNext = async () => {
 
+    if(step===1){
+      try {
+        const {data} = await api.post(`/tempcode/check/email/v1/`,{
+          toEmail:email1
+        })
+      setModalSms(true)
+
+        return data
+      } catch (error) {
+        return console.log(error)
+      }
+    }
     if(step===2){
       try {
-        const {data} = await api.post('/tempcode/check/number/v1/',{
+        const {data} = await api.post(`/tempcode/check/number/v1/`,{
           toPhone:phone
         })
-        console.log(data)
-      } catch (error) {
-        console.log(error)
-      }
       setModalSms(true)
+
+        return data
+      } catch (error) {
+        return console.log(error)
+      }
     }
     setStep(step+1)
     
@@ -149,10 +194,10 @@ const handleFinalRegister = async ()=>{
             <Text style={styles.counter}>{step}/3</Text>
             <Text style={styles.title}>Finalize seu cadastro</Text>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Insira uma senha'/>
+              <TextInput style={styles.input} onChangeText={(e)=>setPassword(e)}  placeholder='Insira uma senha'/>
             </View>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Confirme sua senha'/>
+              <TextInput style={styles.input} onChangeText={(e)=>setPassword2(e)}  placeholder='Confirme sua senha'/>
             </View>
             <TouchableOpacity onPress={handleFinalRegister} style={styles.joinButton}>
               <Text style={styles.joinText}>Finalizar</Text>
