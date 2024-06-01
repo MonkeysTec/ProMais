@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../context/LoginContext';
 
 const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
@@ -19,6 +20,8 @@ const menuItems = [
 
 const HomeScreen: React.FC = () => {
 const navigation = useNavigation()
+const { user, login, logout } = useAuth();
+//logout()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
   const [extractType, setExtractType] = useState('General' || 'Reclaim')

@@ -121,6 +121,7 @@ const { user, login, logout } = useAuth();
 
           }
         })    
+        console.log(data)
         login(data.refreshTokenCode)
         setModalVisible(false)
 
