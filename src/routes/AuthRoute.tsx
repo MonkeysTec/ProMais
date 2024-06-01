@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import QRCodeScreen from '../screens/QRCodeScreen';
-import { Redeem } from '../screens/Redeem';
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -34,7 +33,7 @@ const TabNavigator: React.FC = () => (
       tabBarInactiveTintColor: 'gray',
     })}
   >
-    <Tab.Screen name="Home" options={{ headerShown: false }}   component={Redeem} />
+    <Tab.Screen name="Home" options={{ headerShown: false }}   component={HomeScreen} />
     <Tab.Screen name="QRCode" options={{ headerShown: false }}   component={QRCodeScreen} />
     <Tab.Screen name="Profile" options={{ headerShown: false }}   component={HomeScreen} />
 
