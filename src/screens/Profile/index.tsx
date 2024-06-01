@@ -59,7 +59,7 @@ const ProfileScreen: React.FC = () => {
           </Text>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => { }}
+            onPress={() => {navigation.navigate('ProfileConfig') }}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
