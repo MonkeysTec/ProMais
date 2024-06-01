@@ -121,7 +121,7 @@ const ProfileScreen: React.FC = () => {
           </Text>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => { }}
+            onPress={() =>  navigation.navigate('Rules')}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
@@ -135,7 +135,7 @@ const ProfileScreen: React.FC = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => { }}
+            onPress={() =>  navigation.navigate('Terms')}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,

@@ -10,6 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileScreen from '../screens/Profile';
 import FAQScreen from '../screens/FAQ';
 import TermsScreen from '../screens/Terms';
+import RulesScreen from '../screens/Regras';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,6 +41,7 @@ const TabNavigator: React.FC = () => (
     <Tab.Screen name="Profile" options={{ headerShown: false }}   component={ProfileScreen} />
     <Tab.Screen name="FAQ" options={{ headerShown: false }}   component={FAQScreen} />
     <Tab.Screen name="Terms" options={{ headerShown: false }}   component={TermsScreen} />
+    <Tab.Screen name="Rules" options={{ headerShown: false }}   component={RulesScreen} />
 
   </Tab.Navigator>
 );
@@ -62,7 +64,7 @@ const AuthRoutes = () => {
       <Stack.Screen name="News" component={News} />
       <Stack.Screen name="FAQ"  component={TabNavigator} />
       <Stack.Screen name="Terms"  component={TabNavigator} />
-     
+      <Stack.Screen name="Rules"  component={TabNavigator} />
 
 
 
