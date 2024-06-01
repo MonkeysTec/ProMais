@@ -81,7 +81,7 @@ const navigation = useNavigation();
       </View>
       {
       modalCOnfirm &&(
-        <ModalSMSConfirm email={email} phone='' type='LOGIN'  />
+        <ModalSMSConfirm email={email} phone='' type='LOGIN' password={password}  />
       )
       }
 

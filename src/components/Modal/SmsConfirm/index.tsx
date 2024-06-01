@@ -10,9 +10,10 @@ interface ModalSms{
   email:string;
   code?:(code:string,company:string)=>void;
   type:'EMAIL'|'SMS'|'LOGIN',
-  phone:string
+  phone:string;
+  password?:string
 }
-export const ModalSMSConfirm = ({email,code,type,phone}:ModalSms) => {
+export const ModalSMSConfirm = ({email,password,code,type,phone}:ModalSms) => {
 const { user, login, logout } = useAuth();
 
   const [modalVisible, setModalVisible] = useState(true);
@@ -59,6 +60,18 @@ const { user, login, logout } = useAuth();
         setLoading(false)
 
         return console.log(error)
+      }
+    }
+    if(type==='LOGIN'){
+      try {
+        const {data} = await api.post('/users/system/login/v1', {
+          email: email,
+          password: password,
+        });
+        setLoading(false)
+
+      } catch (error) {
+        console.log(error)
       }
     }
     
