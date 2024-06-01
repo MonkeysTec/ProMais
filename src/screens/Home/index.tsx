@@ -12,7 +12,7 @@ const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
   { title: 'Codigo escaneado', icon: 'scan1', modal: 'ScannedCodes' },
   { title: 'Indique um "bipador"', icon: 'user', path: 'Bipador' },
-  { title: 'Conheça Total Energies', icon: 'smileo', path: 'News' },
+  { title: 'Conheça Total Energies', icon: '', path: 'News' },
   { title: 'LubConsult', icon: 'tool' },
   { title: 'Como funciona', icon: 'questioncircleo' },
   { title: 'FAQ', icon: 'infocirlceo' },
@@ -209,8 +209,14 @@ const HomeScreen: React.FC = () => {
               }
 
             }}>
-            <AntDesign name={item.icon} size={24} color="#000" />
+            {!item.icon ?
+              <View style={{ alignItems: 'center', width: 24, height: 12 }} >
+                <Image source={require('../../assets/IconTotalEnergies.png')}
+                  style={{ width: '100%', height: '100%' }} />
+              </View> : <AntDesign name={item.icon} size={24} color="#000" />}
+           
             <Text style={styles.menuItemText}>{item.title}</Text>
+
             <Ionicons name="chevron-forward" size={24} color="#000" />
           </TouchableOpacity>
         ))}

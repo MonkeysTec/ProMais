@@ -85,9 +85,13 @@ const ProductsScreen: React.FC = () => {
               paddingVertical:15, 
               borderBottomWidth: 1, borderBottomColor: '#F3F3F3' }} >
                 <View style={{ flexDirection: 'row' }} >
+                  
                   <View style={{width:80, height:80, borderWidth:1, borderColor:'grey'}} >
-                    <Image source={{ uri: prod.ImageUrl }} 
-                    style={{ width: '100%', height: '100%' }} />
+                  {prod.ImageUrl ? 
+                  <Image source={{ uri: prod.ImageUrl }} 
+                  style={{ width: '100%', height: '100%' }} />
+                  : 
+                  null}
                   </View>
                   <View style={{marginLeft:20}} >
                     <Text style={{ color: 'black', fontSize: 12, fontWeight: '400' }} >

@@ -9,10 +9,11 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 const ProfileScreen: React.FC = () => {
   const navigation = useNavigation();
-  const loadInBrowser = (url:any) => {
+  const loadInBrowser = (url: any) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
 
@@ -59,7 +60,7 @@ const ProfileScreen: React.FC = () => {
           </Text>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => {navigation.navigate('ProfileConfig') }}
+            onPress={() => { navigation.navigate('ProfileConfig') }}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
@@ -73,7 +74,7 @@ const ProfileScreen: React.FC = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() =>  navigation.navigate('FAQ')}
+            onPress={() => navigation.navigate('FAQ')}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
@@ -88,7 +89,7 @@ const ProfileScreen: React.FC = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() =>  navigation.navigate('ContactUs')}
+            onPress={() => navigation.navigate('ContactUs')}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
@@ -99,6 +100,20 @@ const ProfileScreen: React.FC = () => {
               <FontAwesome5 name="headset" size={20} color="black" />
             </View>
             <Text>Fale conosco</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            onPress={() => navigation.navigate('Products')}
+          >
+            <View style={{
+              backgroundColor: '#D8D8D8', width: 32, height: 32,
+              alignItems: 'center',
+              justifyContent: 'center', borderRadius: 50
+            }}>
+
+<Feather name="box" size={20} color="black" />
+            </View>
+            <Text>Produtos participantes</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
@@ -114,6 +129,38 @@ const ProfileScreen: React.FC = () => {
             </View>
             <Text>LubConsult</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}
+          >
+            <View style={{
+              backgroundColor: '#D8D8D8', width: 32, height: 32,
+              alignItems: 'center',
+              justifyContent: 'center', borderRadius: 50
+            }}>
+              <View style={{alignItems:'center', width:24, height:12}} >
+
+                <Image source={require('../../assets/IconTotalEnergies.png')} 
+                style={{ width: '100%', height: '100%' }} />
+              </View>
+
+            </View>
+            <Text>Conheça Total Energies</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            onPress={() => navigation.navigate('Distributors')}
+          >
+            <View style={{
+              backgroundColor: '#D8D8D8', width: 32, height: 32,
+              alignItems: 'center',
+              justifyContent: 'center', borderRadius: 50
+            }}>
+
+<FontAwesome6 name="users" size={20} color="black" />
+            </View>
+            <Text>Distribuidores participantes</Text>
+          </TouchableOpacity>
         </View>
         <View style={{ paddingHorizontal: 40, gap: 15 }} >
           <Text style={{ color: 'grey' }}  >
@@ -121,7 +168,7 @@ const ProfileScreen: React.FC = () => {
           </Text>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() =>  navigation.navigate('Rules')}
+            onPress={() => navigation.navigate('Rules')}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
@@ -135,7 +182,7 @@ const ProfileScreen: React.FC = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() =>  navigation.navigate('Terms')}
+            onPress={() => navigation.navigate('Terms')}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,

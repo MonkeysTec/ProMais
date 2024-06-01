@@ -16,9 +16,12 @@ import ProfileConfigScreen from '../screens/ProfileConfig';
 import QRCodeScreen from '../screens/QRCodeScreen';
 
 const Stack = createStackNavigator();
+
 import DistributorsScreen from '../screens/Distributors';
 import ProductsScreen from '../screens/Products';
+
 const Tab = createBottomTabNavigator();
+
 
 // Stack Navigator for other screens
 const StackNavigator: React.FC = () => (
@@ -31,7 +34,14 @@ const StackNavigator: React.FC = () => (
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="TotalEnergies" component={News} />
     <Stack.Screen name="Bipador" component={Bipador} />
-    <Stack.Screen name="News" component={News} />
+    <Stack.Screen name="Profile" component={ProfileScreen} />
+    <Stack.Screen name="ProfileConfig" component={ProfileConfigScreen} />
+    <Stack.Screen name="FAQ" component={FAQScreen} />
+    <Stack.Screen name="ContactUs" component={ContactUsScreen} />
+    <Stack.Screen name="Rules" component={RulesScreen} />
+    <Stack.Screen name="Terms" component={TermsScreen} />
+    <Stack.Screen name="Products" component={ProductsScreen} />
+    <Stack.Screen name="Distributors" component={DistributorsScreen} />
   </Stack.Navigator>
 );
 
@@ -59,7 +69,7 @@ const TabNavigator: React.FC = () => (
   >
     <Tab.Screen name="Home" component={StackNavigator} options={{ headerShown: false }} />
     <Tab.Screen name="QRCode" component={QRCodeScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Profile" component={HomeScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
 );
 
