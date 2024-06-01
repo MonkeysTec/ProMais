@@ -1,16 +1,31 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Image } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+
 import HomeScreen from '../screens/Home';
 import News from '../screens/News';
 import Bipador from '../screens/Bipador';
-import { Ionicons } from '@expo/vector-icons';
-
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import QRCodeScreen from '../screens/QRCodeScreen';
-const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+// Stack Navigator for other screens
+const StackNavigator: React.FC = () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+      cardStyle: { backgroundColor: 'white' },
+    }}
+  >
+    <Stack.Screen name="Home" component={HomeScreen} />
+    <Stack.Screen name="TotalEnergies" component={News} />
+    <Stack.Screen name="Bipador" component={Bipador} />
+    <Stack.Screen name="News" component={News} />
+  </Stack.Navigator>
+);
+
 const TabNavigator: React.FC = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
@@ -33,38 +48,14 @@ const TabNavigator: React.FC = () => (
       tabBarInactiveTintColor: 'gray',
     })}
   >
-    <Tab.Screen name="Home" options={{ headerShown: false }}   component={HomeScreen} />
-    <Tab.Screen name="QRCode" options={{ headerShown: false }}   component={QRCodeScreen} />
-    <Tab.Screen name="Profile" options={{ headerShown: false }}   component={HomeScreen} />
-
-
+    <Tab.Screen name="Home" component={StackNavigator} options={{ headerShown: false }} />
+    <Tab.Screen name="QRCode" component={QRCodeScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Profile" component={HomeScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
 );
-const AuthRoutes = () => {
-  return (
-    <Stack.Navigator
-      initialRouteName="Home"
-      
-      screenOptions={{
-        headerShown:false,
-        headerBackTitleVisible: false,
-      
-        cardStyle: { backgroundColor: 'white' },
-        
-      }}
-    >
-      <Stack.Screen name="Home" component={TabNavigator} />
-      <Stack.Screen name="TotalEnergies" component={News} />
-      <Stack.Screen name="Bipador" component={Bipador} />
-      <Stack.Screen name="News" component={News} />
 
-
-
-
-
-
-    </Stack.Navigator>
-  );
+const AuthRoutes: React.FC = () => {
+  return <TabNavigator />;
 };
 
 export default AuthRoutes;
