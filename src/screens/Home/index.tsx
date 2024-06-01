@@ -5,6 +5,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
 import { useNavigation } from '@react-navigation/native';
+import Entypo from '@expo/vector-icons/Entypo';
+import { HomeNewInfo } from '../../components/Modal/HomeNewInfo';
 
 const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
@@ -18,14 +20,17 @@ const menuItems = [
 
 
 const HomeScreen: React.FC = () => {
-const navigation = useNavigation()
+  const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
   const [extractType, setExtractType] = useState('General' || 'Reclaim')
   const closeModal = () => {
     setModalVisible(false);
   };
-
+  const [showPasswordSaldo, setShowPasswordSaldo] = useState(false);
+  const [showPasswordExtratoQrCode, setShowPasswordExtratoQrCode] = useState(false);
+  const [showPasswordExtratoPix, setShowPasswordExtratoPix] = useState(false);
+  const [showPasswordCodesQrCode, setShowPasswordCodesQrCode] = useState(false);
   const ExtractGeneralSample = [
     {
       date: '23/03/2023',
@@ -122,15 +127,58 @@ const navigation = useNavigation()
 
     },
   ]
+
+  const newInfoSample = [
+    {
+      Title: 'Bom dia Bom dia  ',
+      Date: '01/06/2024',
+      Description: 'Teste descrição Teste descrição Teste descrição',
+      Others: 'Saiba mais!'
+    },
+    {
+      Title: 'Boa tarde Boa tarde',
+      Date: '21/05/2024',
+      Description: 'Uma descrição Uma descrição Uma descrição',
+      Others: 'Saiba mais aqui!'
+    },
+    {
+      Title: 'Boa Noite Boa Noite',
+      Date: '12/05/2024',
+      Description: 'Descrição Descrição Descrição Descrição ',
+      Others: 'Saiba mais sobre isso!'
+    },
+    {
+      Title: 'Boa Noite Boa Noite',
+      Date: '12/05/2024',
+      Description: 'Descrição Descrição Descrição Descrição ',
+      Others: 'Saiba mais sobre isso!'
+    },
+    {
+      Title: 'Boa Noite Boa Noite',
+      Date: '12/05/2024',
+      Description: 'Descrição Descrição Descrição Descrição ',
+      Others: 'Saiba mais sobre isso!'
+    },
+  ]
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
         <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
+      <View>
+        <HomeNewInfo NewInfos={newInfoSample}  />
+      </View>
       <View style={styles.cardBalance}>
+        <View style={{ position: 'absolute', top: 10, right: 10 }} >
+          <TouchableOpacity onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}>
+            <Entypo name={showPasswordSaldo ? 'eye' : 'eye-with-line'} size={24} color="black" />
+          </TouchableOpacity>
+        </View>
         <Text style={{ color: 'black', fontWeight: '600' }}>Saldo</Text>
-        <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>R$420,00</Text>
+        <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>
+          {showPasswordSaldo ? 'R$ 420,00' : '********'}</Text>
+
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <AntDesign name="filetext1" size={24} color="#A6A6A6" />
           <TouchableOpacity style={styles.button}>
@@ -188,6 +236,20 @@ const navigation = useNavigation()
                       >
                         <Ionicons name="close" size={24} color="grey" />
                       </TouchableOpacity>
+                      {extractType === 'General' ?
+                        <View style={{ position: 'absolute', top: 0, right: 40 }} >
+                          <TouchableOpacity onPress={() => setShowPasswordExtratoQrCode(!showPasswordExtratoQrCode)}>
+                            <Entypo name={showPasswordExtratoQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                          </TouchableOpacity>
+                        </View> : null
+                      }
+                      {extractType === 'Reclaim' ?
+                        <View style={{ position: 'absolute', top: 0, right: 40 }} >
+                          <TouchableOpacity onPress={() => setShowPasswordExtratoPix(!showPasswordExtratoPix)}>
+                            <Entypo name={showPasswordExtratoQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                          </TouchableOpacity>
+                        </View> : null
+                      }
                     </View>
                     <View style={{
                       flexDirection: 'row', borderBottomColor: 'grey',
@@ -220,33 +282,33 @@ const navigation = useNavigation()
                       {extractType === 'General' ?
                         <ScrollView style={{ maxHeight: 'auto', marginBottom: 50 }} >
                           {ExtractGeneralSample.map((item, index) => (
-                            <View key={index}style={styles.modalViewColumnContainer}>
+                            <View key={index} style={styles.modalViewColumnContainer}>
                               <View style={{ flexDirection: 'column' }} >
                                 <Text style={styles.modalDarkMainText}>
                                   {item.date}</Text>
                                 <Text style={styles.modalSmallGreyText} >
-                                  QR Code #{item.QrCode}</Text>
+                                  QR Code: { showPasswordExtratoQrCode ? item.QrCode : "**************"}</Text>
                               </View>
                               <Text
                                 style={styles.modalGreenText}>
-                                R$ {item.Value}</Text>
+                                R$ { showPasswordExtratoQrCode ? item.Value : "*********"}</Text>
                             </View>
                           ))}
                         </ScrollView> : null}
                       {extractType === 'Reclaim' ?
                         <ScrollView style={{ maxHeight: 'auto', marginBottom: 50 }} >
                           {ExtractReclaimSample.map((item, index) => (
-                              <View key={index} style={styles.modalViewColumnContainer}>
-                                <View style={{ flexDirection: 'column' }} >
-                                  <Text style={styles.modalSmallGreyText}>{item.date}</Text>
-                                  <Text style={styles.modalDarkMainText}>
-                                    {item.Method}</Text>
-                                  <Text style={styles.modalSmallGreyText} >
-                                    {item.Type}: {item.Key}</Text>
-                                </View>
-                                <Text style={styles.modalGreenText}>
-                                  R$ {item.Value}</Text>
+                            <View key={index} style={styles.modalViewColumnContainer}>
+                              <View style={{ flexDirection: 'column' }} >
+                                <Text style={styles.modalSmallGreyText}>{item.date}</Text>
+                                <Text style={styles.modalDarkMainText}>
+                                  {item.Method}</Text>
+                                <Text style={styles.modalSmallGreyText} >
+                                  {item.Type}: { showPasswordExtratoPix ? item.Key : "*********"}</Text>
                               </View>
+                              <Text style={styles.modalGreenText}>
+                                R$ { showPasswordExtratoPix ? item.Value : "*********"}</Text>
+                            </View>
                           ))}
                         </ScrollView> : null}
                     </View>

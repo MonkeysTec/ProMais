@@ -8,6 +8,7 @@ import api from '../../services/api';
 import { useAuth } from '../../context/LoginContext';
 import axios from 'axios';
 import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
+import Entypo from '@expo/vector-icons/Entypo';
 
 const Login: React.FC = () => {
 const [email, setEmail] = useState('');
@@ -39,6 +40,8 @@ const navigation = useNavigation();
     }
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+
   
 
   return (
@@ -62,8 +65,13 @@ const navigation = useNavigation();
         placeholder='Insira sua senha'
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry={showPassword}
       />
+      <View style={{position:'absolute', bottom:10, right:10}} >
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <Entypo name={showPassword ? 'eye' : 'eye-with-line'} size={24} color="black" />
+        </TouchableOpacity>
+      </View>
         </View>
         <TouchableOpacity onPress={handleLogin} style={styles.joinButton}>
           <Text style={styles.joinText}>Entrar</Text>
@@ -103,6 +111,7 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     height: 50,
     paddingHorizontal: 20,
+    paddingRight:40,
     borderRadius: 25,
     marginTop: 10
   },
