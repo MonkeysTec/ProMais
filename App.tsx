@@ -14,6 +14,7 @@ import Forgot from './src/screens/Forgot';
 import { Ionicons } from '@expo/vector-icons';
 import Routes from './src/routes/index'
 import { AuthProvider } from './src/context/LoginContext';
+import HomeScreen from './src/screens/Home';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
