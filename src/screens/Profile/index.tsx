@@ -88,7 +88,7 @@ const ProfileScreen: React.FC = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => { }}
+            onPress={() =>  navigation.navigate('ContactUs')}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,

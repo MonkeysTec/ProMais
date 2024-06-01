@@ -11,6 +11,8 @@ import ProfileScreen from '../screens/Profile';
 import FAQScreen from '../screens/FAQ';
 import TermsScreen from '../screens/Terms';
 import RulesScreen from '../screens/Regras';
+import ContactUsScreen from '../screens/ContactUs';
+import ProfileConfigScreen from '../screens/ProfileConfig';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,6 +44,8 @@ const TabNavigator: React.FC = () => (
     <Tab.Screen name="FAQ" options={{ headerShown: false }}   component={FAQScreen} />
     <Tab.Screen name="Terms" options={{ headerShown: false }}   component={TermsScreen} />
     <Tab.Screen name="Rules" options={{ headerShown: false }}   component={RulesScreen} />
+    <Tab.Screen name="ContactUs" options={{ headerShown: false }}   component={ContactUsScreen} />
+    <Tab.Screen name="ProfileConfig" options={{ headerShown: false }}   component={ProfileConfigScreen} />
 
   </Tab.Navigator>
 );
@@ -65,7 +69,8 @@ const AuthRoutes = () => {
       <Stack.Screen name="FAQ"  component={TabNavigator} />
       <Stack.Screen name="Terms"  component={TabNavigator} />
       <Stack.Screen name="Rules"  component={TabNavigator} />
-
+      <Stack.Screen name="ContactUs"  component={TabNavigator} />
+      <Stack.Screen name="ProfileConfig" component={ProfileConfigScreen} />
 
 
 
