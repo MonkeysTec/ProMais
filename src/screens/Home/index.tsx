@@ -334,6 +334,11 @@ const HomeScreen: React.FC = () => {
                         onPress={closeModal}>
                         <Ionicons name="close" size={24} color="grey" />
                       </TouchableOpacity>
+                      <View style={{ position: 'absolute', top: 0, right: 40 }} >
+                          <TouchableOpacity onPress={() => setShowPasswordCodesQrCode(!showPasswordCodesQrCode)}>
+                            <Entypo name={showPasswordCodesQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                          </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={{
                       flexDirection: 'row',
@@ -355,10 +360,11 @@ const HomeScreen: React.FC = () => {
                             <View style={{ flexDirection: 'column' }} >
                               <Text style={styles.modalSmallGreyText} >Escaneado em: {item.date}</Text>
                               <Text style={styles.modalDarkMainText}>Produto {item.ProductName}</Text>
-                              <Text style={styles.modalSmallGreyText} >QR Code #{item.QrCode}</Text>
+                              <Text style={styles.modalSmallGreyText} >QR Code: {showPasswordCodesQrCode ? item.QrCode : '******'}</Text>
+
                             </View>
                             <Text style={styles.modalGreenText}>
-                              + {item.Points} pontos</Text>
+                               {showPasswordCodesQrCode ? '+' + item.Points : '***'} pontos</Text>
                           </View>
                         ))}
                       </ScrollView>
