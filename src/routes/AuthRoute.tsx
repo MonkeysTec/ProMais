@@ -7,7 +7,6 @@ import Bipador from '../screens/Bipador';
 import { Ionicons } from '@expo/vector-icons';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Redeem } from '../screens/Redeem';
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -35,7 +34,6 @@ const TabNavigator: React.FC = () => (
   >
     <Tab.Screen name="Home" options={{ headerShown: false }}   component={HomeScreen} />
     <Tab.Screen name="Profile" options={{ headerShown: false }}   component={HomeScreen} />
-    <Tab.Screen name="Redeem" options={{ headerShown: false }}   component={Redeem} />
 
 
   </Tab.Navigator>
