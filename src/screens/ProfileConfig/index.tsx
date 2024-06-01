@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ProfileConfigScreen: React.FC = () => {
   const navigation = useNavigation();
-  const loadInBrowser = (url:any) => {
+  const loadInBrowser = (url: any) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
 
@@ -54,9 +54,7 @@ const ProfileConfigScreen: React.FC = () => {
       <View style={{ flexDirection: 'column' }}>
 
         <View style={{ paddingHorizontal: 40, gap: 15, marginBottom: 20 }} >
-          <Text style={{ color: 'grey' }}  >
-            Ajuda
-          </Text>
+
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
             onPress={() => { }}
@@ -67,13 +65,13 @@ const ProfileConfigScreen: React.FC = () => {
               justifyContent: 'center', borderRadius: 50
             }}>
 
-              <Octicons name="gear" size={20} color="black" />
+              <MaterialIcons name="lock" size={20} color="black" />
             </View>
-            <Text>Configurações</Text>
+            <Text>Redefinir senha</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() =>  navigation.navigate('FAQ')}
+            onPress={() => { }}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
@@ -81,72 +79,12 @@ const ProfileConfigScreen: React.FC = () => {
               justifyContent: 'center', borderRadius: 50
             }}>
 
-              <Ionicons name="chatbox-outline" size={20} color="black" />
+              <MaterialIcons name="person-off" size={20} color="black" />
 
             </View>
-            <Text>FAQ</Text>
+            <Text>Desativar minha conta</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() =>  navigation.navigate('ContactUs')}
-          >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
 
-              <FontAwesome5 name="headset" size={20} color="black" />
-            </View>
-            <Text>Fale conosco</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}
-          >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
-
-              <Feather name="droplet" size={24} color="black" />
-            </View>
-            <Text>LubConsult</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ paddingHorizontal: 40, gap: 15 }} >
-          <Text style={{ color: 'grey' }}  >
-            Termos de uso
-          </Text>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() =>  navigation.navigate('Rules')}
-          >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
-
-              <Feather name="book" size={20} color="black" />
-            </View>
-            <Text>Regras</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() =>  navigation.navigate('Terms')}
-          >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
-
-              <AntDesign name="bars" size={20} color="black" />
-            </View>
-            <Text>Políticas</Text>
-          </TouchableOpacity>
 
 
 
