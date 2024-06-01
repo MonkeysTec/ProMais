@@ -15,6 +15,8 @@ import ContactUsScreen from '../screens/ContactUs';
 import ProfileConfigScreen from '../screens/ProfileConfig';
 
 import QRCodeScreen from '../screens/QRCodeScreen';
+import DistributorsScreen from '../screens/Distributors';
+import ProductsScreen from '../screens/Products';
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -48,7 +50,8 @@ const TabNavigator: React.FC = () => (
     <Tab.Screen name="Rules" options={{ headerShown: false }}   component={RulesScreen} />
     <Tab.Screen name="ContactUs" options={{ headerShown: false }}   component={ContactUsScreen} />
     <Tab.Screen name="ProfileConfig" options={{ headerShown: false }}   component={ProfileConfigScreen} />
-
+    <Tab.Screen name="Distributors"  options={{ headerShown: false }} component={DistributorsScreen} />
+    <Tab.Screen name="Products"  options={{ headerShown: false }} component={ProductsScreen} />
   </Tab.Navigator>
 );
 const AuthRoutes = () => {
@@ -73,6 +76,8 @@ const AuthRoutes = () => {
       <Stack.Screen name="Rules"  component={TabNavigator} />
       <Stack.Screen name="ContactUs"  component={TabNavigator} />
       <Stack.Screen name="ProfileConfig" component={ProfileConfigScreen} />
+      <Stack.Screen name="Distributors" component={DistributorsScreen} />
+      <Stack.Screen name="Products" component={ProductsScreen} />
 
 
 
