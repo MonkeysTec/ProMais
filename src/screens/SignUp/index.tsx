@@ -6,12 +6,15 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import api from '../../services/api';
 import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
+import Moment from 'moment';
 
 const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [step, setStep] = useState(1)
   const [email1, setEmail1] = useState('')
   const [name, setName] = useState('')
   const [dataBirth, setData] = useState('')
+  const [typeModal, setTypeModal] = useState<'EMAIL'|'SMS'>('EMAIL')
+
   const [modalSms, setModalSms] = useState(false)
 
 
@@ -20,41 +23,14 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
   const [code, setCode] = useState('')
+  const [company, setCompany] = useState('')
 
 
-  const handleCodeSms = async (code:string)=>{
-    if(step===1){
-      try {
-        console.log(code)
-        const {data} = await api.post(`/tempcode/check/v1/${code}`,{
-          type:'CHECK_EMAIL',
-          email:email1
-        })
-        setCode(code);
-        setModalSms(false)
-        setStep(step+1)
-    
-      } catch (error) {
-        console.log(error)
-      }
-    }else{
-      console.log('aqui 2')
-      
-      try {
-        const {data} = await api.post(`/tempcode/check/v1/${code}`,{
-          type:'CHECK_NUMBER',
-          primaryPhone:phone
-        })
-        setCode(code);
-        setModalSms(false)
-        setStep(step+1)
-    
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    
+///api/tempcode/v1/toregister/email
+  const handleCodeSms = async (code:string,company:string)=>{
+    setCode(code)
+    setCompany(company)
+    setModalSms(false)
  
   }
 
@@ -65,21 +41,8 @@ const handleFinalRegister = async ()=>{
   const parts = name.trim().split(' ');
     const firstName = parts.shift();
     const lastName = parts.join(' ');
-    console.log({
-      email:email1, 
-    firstName,
-    lastName, 
-    password, 
-    primaryPhone:phone, 
-    isReceivePush: true,
-    isReceiveSMS: true,
-    isReceiveEmail: true,
-    companyUser: {
-        company:name,                            
-        dateBirth:dataBirth, 
-        document:cpf
-    }
-    })
+    let dateVar = Moment(dataBirth, 'DD/MM/YYYY');
+    
   try {
     console.log(code)
     const {data} = await api.post('/users/v1',{
@@ -92,8 +55,8 @@ const handleFinalRegister = async ()=>{
       isReceiveSMS: true,
       isReceiveEmail: true,
       companyUser: {
-          company:name,                            
-          dateBirth:dataBirth, 
+          company:company,                            
+          dateBirth:dateVar.utc().format(), 
           document:cpf
       }
     },{
@@ -111,28 +74,14 @@ const handleFinalRegister = async ()=>{
   const handleNext = async () => {
 
     if(step===1){
-      try {
-        const {data} = await api.post(`/tempcode/check/email/v1/`,{
-          toEmail:email1
-        })
+      setTypeModal('EMAIL')
       setModalSms(true)
 
-        return data
-      } catch (error) {
-        return console.log(error)
-      }
     }
     if(step===2){
-      try {
-        const {data} = await api.post(`/tempcode/check/number/v1/`,{
-          toPhone:phone
-        })
+      setTypeModal('SMS')
       setModalSms(true)
 
-        return data
-      } catch (error) {
-        return console.log(error)
-      }
     }
     setStep(step+1)
     
@@ -229,7 +178,7 @@ const handleFinalRegister = async ()=>{
       </View>
       {
         modalSms&&(
-          <ModalSMSConfirm email={email1} code={(e)=>handleCodeSms(e)}/>
+          <ModalSMSConfirm phone={phone} type={typeModal} email={email1} code={(code,company)=>handleCodeSms(code,company)}/>
 
         )
       }
