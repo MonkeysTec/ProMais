@@ -14,6 +14,7 @@ import RulesScreen from '../screens/Regras';
 import ContactUsScreen from '../screens/ContactUs';
 import ProfileConfigScreen from '../screens/ProfileConfig';
 
+import QRCodeScreen from '../screens/QRCodeScreen';
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -40,6 +41,7 @@ const TabNavigator: React.FC = () => (
     })}
   >
     <Tab.Screen name="Home" options={{ headerShown: false }}   component={HomeScreen} />
+    <Tab.Screen name="QRCode" options={{ headerShown: false }}   component={QRCodeScreen} />
     <Tab.Screen name="Profile" options={{ headerShown: false }}   component={ProfileScreen} />
     <Tab.Screen name="FAQ" options={{ headerShown: false }}   component={FAQScreen} />
     <Tab.Screen name="Terms" options={{ headerShown: false }}   component={TermsScreen} />

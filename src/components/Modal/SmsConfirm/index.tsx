@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -7,34 +7,126 @@ import api from '../../../services/api';
 import { useAuth } from '../../../context/LoginContext';
 
 interface ModalSms{
-  email:string
+  email:string;
+  code?:(code:string,company:string)=>void;
+  type:'EMAIL'|'SMS'|'LOGIN',
+  phone:string;
+  password?:string
 }
-export const ModalSMSConfirm = ({email}:ModalSms) => {
+export const ModalSMSConfirm = ({email,password,code,type,phone}:ModalSms) => {
 const { user, login, logout } = useAuth();
 
   const [modalVisible, setModalVisible] = useState(true);
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+
   const [smscode, setSmsCode] = useState(['', '', '', '']);
 
   const [warningType, setWarningType] = useState('');
-  /* warningType<string> = Block || ManyTries || WrongCode */
+  const [company, setCompany] = useState('');
+  const [codeResponse, setCodeResponse] = useState('');
 
-  const [canSendSmsAgain, setCanSendSmsAgain] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+
+  const [canSendSmsAgain, setCanSendSmsAgain] = useState(true);
+  const handleCodeInvite = async()=>{
+    setLoading(true)
+    if(type==='EMAIL'){
+      try {
+        const response = await api.get(`/tempcode/v1/toregister/${email}`);
+        setCompany(response.data.company)
+        setCodeResponse(response.data.b)
+        const {data} = await api.post(`/tempcode/check/email/v1/`,{
+          toEmail:email
+        })
+        setLoading(false)
+
+      } catch (error) {
+        setLoading(false)
+
+        return console.log(error)
+      }
+    }
+    if(type==='SMS'){
+      try {
+        const {data} = await api.post(`/tempcode/check/number/v1/`,{
+          toPhone:phone
+        })
+        setLoading(false)
+        setModalVisible(false)
+
+        return data
+      } catch (error) {
+        setLoading(false)
+
+        return console.log(error)
+      }
+    }
+    if(type==='LOGIN'){
+      try {
+        const {data} = await api.post('/users/system/login/v1', {
+          email: email,
+          password: password,
+        });
+        setLoading(false)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    
+  }
+  useEffect(() => {
+    
+    //handleCodeInvite()
+  }, []);
 
   const handleConfirmSms = async ()=>{
-    try {
-      const {data} = await api.post(`/users/system/login/v1?email=${email}`,{
-        headers:{
-          'temp_auth_code':smscode.join('')
+    if(type==='EMAIL'){
+      try {
+        const {data} = await api.post(`/tempcode/check/v1/${smscode.join('')}`,{
+          type:'CHECK_EMAIL',
+          email:email
+        })
+        code?.(codeResponse,company);
+      } catch (error: any) {
+        if(error.response.data.message==='Código incorreto.'){
+          return setWarningType('WrongCode')
         }
-      });
-      login(data)
-    } catch (error) {
-      setSmsCode(['', '', '', ''])
-      Alert.alert('Erro de Login', 'Código inválido tente outro');
+        if(error.response.data.message){
+          return setWarningType('ManyTries')
+        }else{
+          return setWarningType('Block')
+        }
+      }
+    }else if(type==='SMS'){
       
+      try {
+        const {data} = await api.post(`/tempcode/check/v1/${smscode.join('')}`,{
+          type:'CHECK_NUMBER',
+          phone:phone
+        })    
+        setModalVisible(false)
+      } catch (error) {
+        console.log(error)
+      }
+    }else{
+      console.log(smscode.join(''))
+      try {
+        const {data} = await api.post(`/users/system/login/validateotp/v1`,{
+          email:email
+        },{
+          headers:{
+             'temp_auth_code':smscode.join('')
+
+          }
+        })    
+        login(data.refreshTokenCode)
+        setModalVisible(false)
+
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
@@ -45,7 +137,6 @@ const { user, login, logout } = useAuth();
       animationType="slide"
       transparent={true}
       visible={modalVisible}
-      onRequestClose={closeModal}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
@@ -53,11 +144,7 @@ const { user, login, logout } = useAuth();
             flexDirection: 'row',
             width: '100%', justifyContent: 'flex-end'
           }}>
-            <TouchableOpacity
-              style={{ elevation: 2 }}
-              onPress={closeModal}>
-
-            </TouchableOpacity>
+            
           </View>
           <View style={{
 
@@ -67,7 +154,7 @@ const { user, login, logout } = useAuth();
               Confirmação
             </Text>
             <Text style={{ fontWeight: '400', fontSize: 17, color: 'black', maxWidth: '90%' }} >
-              Digite o código de segurança enviado via SMS para o número de telefone informado
+              Digite o código de segurança {type==='SMS'?'enviado via SMS para o número de telefone informado':'enviado para o email informado'} 
             </Text>
             <View style={{ width: '100%', height: 150, marginTop: 15 }} >
               {warningType === 'ManyTries' ?
@@ -75,7 +162,7 @@ const { user, login, logout } = useAuth();
                   <FontAwesome6 name="x" size={16} color="white" />
                   <Text style={{ color: 'white' }} >
                     Você tentou 5 vezes.
-                    Aguarde ##tempo## minutos para tentar novamente
+                    Aguarde 30 minutos para tentar novamente
                   </Text>
 
                 </View> : null}
@@ -166,13 +253,15 @@ const { user, login, logout } = useAuth();
             <View>
               <TouchableOpacity
                 style={{ elevation: 2 }}
-                onPress={() => { }}
+                onPress={() =>loading?{}: handleCodeInvite()}
               >
                 <Text style={{
                   borderBottomColor: 'grey', borderBottomWidth: 2, width: 140,
                   marginTop: 20, fontSize: 16, color: 'grey', display:canSendSmsAgain ? 'flex' : 'none'
                 }} >
-                  Enviar novamente 
+                  {
+                    loading?(<ActivityIndicator/>):'Enviar novamente'
+                  }
                 </Text>
               </TouchableOpacity>
 

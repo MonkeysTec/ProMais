@@ -2,9 +2,11 @@ import React, { useState } from "react"
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { Ionicons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign'
+import Feather from '@expo/vector-icons/Feather'
+import { ScrollView } from "react-native-gesture-handler";
 
 export const Redeem = () => {
-    const [step,setStep] = useState(4)
+    const [step,setStep] = useState(5)
     return(
     <View style={styles.container}>
       <View style={styles.containerRed}>
@@ -71,13 +73,32 @@ export const Redeem = () => {
           </TouchableOpacity>
         </View>
       }
-      <View style={styles.cardWarning}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-          <AntDesign name="exclamationcircle" size={20} color={'red'} />
-          <Text style={{ color: 'red', fontWeight: 700 }}>Atenção:</Text>
+      {step === 5 &&
+        <View style={styles.cardBalance}>
+          <Ionicons name={'arrow-back'} size={31} color={'#374649'} /> 
+          <Text style={styles.text}>Resgate realizado com sucesso</Text>
+          <ScrollView style={{ borderWidth: 1, borderColor: '#a9a9a9', height: 300, width: '95%', borderRadius: 12, padding: 20}}>
+            <Text style={{ fontSize: 14, color: '#a9a9a9', fontWeight: 600}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris elementum tortor felis, id varius libero dapibus ut. Sed consequat felis felis, nec lacinia ante pharetra sed. Nulla et turpis vel tortor elementum malesuada. Nulla semper ornare lectus non dignissim. Donec rhoncus sollicitudin orci, in mattis libero convallis nec. Nunc vel posuere augue. Proin vulputate scelerisque elit, id sodales nulla lacinia eget. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus dignissim vulputate dictum. Aliquam pulvinar aliquet dolor, at eleifend ante pretium ac.</Text>
+            <Text style={{ fontSize: 14, color: '#a9a9a9', fontWeight: 600}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris elementum tortor felis, id varius libero dapibus ut. Sed consequat felis felis, nec lacinia ante pharetra sed. Nulla et turpis vel tortor elementum malesuada. Nulla semper ornare lectus non dignissim. Donec rhoncus sollicitudin orci, in mattis libero convallis nec. Nunc vel posuere augue. Proin vulputate scelerisque elit, id sodales nulla lacinia eget. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus dignissim vulputate dictum. Aliquam pulvinar aliquet dolor, at eleifend ante pretium ac.</Text>
+          </ScrollView>
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            <Feather name="send" size={18} color="red" />
+            <Text style={{ fontSize: 16, fontWeight: 600, color: 'red', textDecorationColor: 'red', textDecorationLine: 'underline' }}>Compartilhar comprovante</Text>
+          </View>
+          <TouchableOpacity  style={styles.joinButton}>
+            <Text style={styles.joinText}>{step !== 5 ? 'Continuar' : 'Tela inicial'}</Text>
+          </TouchableOpacity>
         </View>
-        <Text style={{ paddingRight: 10 }}>Você só pode realizar transferências via PIX para sua conta pessoal. Não é permitido a transferência para terceiros pelo aplicativo do Clube Pro+.</Text>
-      </View>
+      }
+      {step !== 5 &&
+        <View style={styles.cardWarning}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <AntDesign name="exclamationcircle" size={20} color={'red'} />
+            <Text style={{ color: 'red', fontWeight: 700 }}>Atenção:</Text>
+          </View>
+          <Text style={{ paddingRight: 10 }}>Você só pode realizar transferências via PIX para sua conta pessoal. Não é permitido a transferência para terceiros pelo aplicativo do Clube Pro+.</Text>
+        </View>
+      }
     </View>
   )
 }
@@ -107,7 +128,6 @@ const styles = StyleSheet.create({
   cardBalance: {
     width: '80%',
     backgroundColor: 'white',
-    height: 450,
     borderRadius: 8,
     marginTop: -70,
     shadowColor: '#000',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const QrCodeScreen: React.FC = () => {
+const QRCodeScreen: React.FC = () => {
   return (
     <View style={styles.container}>
         <View>
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QrCodeScreen;
+export default QRCodeScreen;
