@@ -4,9 +4,10 @@ import { Image } from 'react-native';
 import HomeScreen from '../screens/Home';
 import News from '../screens/News';
 import Bipador from '../screens/Bipador';
+import { Ionicons } from '@expo/vector-icons';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
-import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 const TabNavigator: React.FC = () => (
@@ -32,6 +33,8 @@ const TabNavigator: React.FC = () => (
     })}
   >
     <Tab.Screen name="Home" options={{ headerShown: false }}   component={HomeScreen} />
+    <Tab.Screen name="Profile" options={{ headerShown: false }}   component={HomeScreen} />
+
 
   </Tab.Navigator>
 );
