@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput, Alert, Linking } from 'react-native';
 import { RainbowLine } from '../../components/RainbowLine';
 import { MaterialIcons } from '@expo/vector-icons';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
@@ -11,7 +11,11 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen: React.FC = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+  const loadInBrowser = (url:any) => {
+    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -98,7 +102,7 @@ const ProfileScreen: React.FC = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => { }}
+            onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
