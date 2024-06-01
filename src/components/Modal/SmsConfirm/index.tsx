@@ -76,7 +76,7 @@ const { user, login, logout } = useAuth();
           email:email
         })
         code?.(codeResponse,company);
-      } catch (error) {
+      } catch (error: any) {
         if(error.response.data.message==='Código incorreto.'){
           return setWarningType('WrongCode')
         }
