@@ -19,12 +19,10 @@ const navigation = useNavigation();
   const handleLogin = async () => {
   
     try {
-      console.log('entrou')
       const {data} = await api.post('/users/system/login/v1', {
         email: email,
         password: password,
       });
-      console.log(data)
   
       if (data.status === 200) {
         setModalConfim(true)
@@ -83,8 +81,7 @@ const navigation = useNavigation();
       </View>
       {
       modalCOnfirm &&(
-        <ModalSMSConfirm email={email} />
-
+        <ModalSMSConfirm email={email} phone='' type='LOGIN'  />
       )
       }
 

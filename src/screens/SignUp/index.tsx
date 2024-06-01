@@ -1,23 +1,95 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { RainbowLine } from '../../components/RainbowLine';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import api from '../../services/api';
+import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
+import Moment from 'moment';
 
 const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [step, setStep] = useState(1)
+  const [email1, setEmail1] = useState('')
+  const [name, setName] = useState('')
+  const [dataBirth, setData] = useState('')
+  const [typeModal, setTypeModal] = useState<'EMAIL'|'SMS'>('EMAIL')
 
-  const handleNext = () => {
+  const [modalSms, setModalSms] = useState(false)
+
+
+  const [cpf, setCpf] = useState('')
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('')
+  const [code, setCode] = useState('')
+  const [company, setCompany] = useState('')
+
+
+///api/tempcode/v1/toregister/email
+  const handleCodeSms = async (code:string,company:string)=>{
+    setCode(code)
+    setCompany(company)
+    setModalSms(false)
+ 
+  }
+
+const handleFinalRegister = async ()=>{
+  if(password!==password2){
+   return  Alert.alert('Senhas não são iguais,verifique')
+  }
+  const parts = name.trim().split(' ');
+    const firstName = parts.shift();
+    const lastName = parts.join(' ');
+    let dateVar = Moment(dataBirth, 'DD/MM/YYYY');
+    
+  try {
+    console.log(code)
+    const {data} = await api.post('/users/v1',{
+      email:email1, 
+      firstName,
+      lastName, 
+      password:password, 
+      primaryPhone:phone, 
+      isReceivePush: true,
+      isReceiveSMS: true,
+      isReceiveEmail: true,
+      companyUser: {
+          company:company,                            
+          dateBirth:dateVar.utc().format(), 
+          document:cpf
+      }
+    },{
+      headers:{
+        'temp_auth_code':code
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+  const handleNext = async () => {
+
+    if(step===1){
+      setTypeModal('EMAIL')
+      setModalSms(true)
+
+    }
+    if(step===2){
+      setTypeModal('SMS')
+      setModalSms(true)
+
+    }
     setStep(step+1)
-    if (step === 4) 
-      navigation.replace('Main');
+    
   };
 
   const handleBack = () => {
     setStep(step-1)
-    if (step === 1) 
-      navigation.replace('Start');
+    
   };
 
   return (
@@ -36,7 +108,7 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Text style={styles.counter}>{step}/3</Text>
             <Text style={styles.title}>Faça seu cadastro</Text>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Insira seu e-mail'/>
+              <TextInput style={styles.input} onChangeText={(e)=>setEmail1(e)} placeholder='Insira seu e-mail'/>
             </View>
             <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
               <Text style={styles.joinText}>Próximo</Text>
@@ -49,16 +121,16 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Text style={styles.counter}>{step}/3</Text>
             <Text style={styles.title}>Continue seu cadastro</Text>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Insira seu e-mail'/>
+              <TextInput style={styles.input} onChangeText={(e)=>setName(e)} placeholder='Nome completo'/>
             </View>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Insira seu CPF'/>
+              <TextInput style={styles.input} onChangeText={(e)=>setCpf(e)} placeholder='Insira seu CPF'/>
             </View>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Insira a data de nascimento'/>
+              <TextInput style={styles.input} onChangeText={(e)=>setData(e)} placeholder='Insira a data de nascimento'/>
             </View>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Insira seu telefone'/>
+              <TextInput style={styles.input} onChangeText={(e)=>setPhone(e)}  placeholder='Insira seu telefone'/>
             </View>
             <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
               <Text style={styles.joinText}>Próximo</Text>
@@ -71,12 +143,12 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Text style={styles.counter}>{step}/3</Text>
             <Text style={styles.title}>Finalize seu cadastro</Text>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Insira uma senha'/>
+              <TextInput style={styles.input} onChangeText={(e)=>setPassword(e)}  placeholder='Insira uma senha'/>
             </View>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Confirme sua senha'/>
+              <TextInput style={styles.input} onChangeText={(e)=>setPassword2(e)}  placeholder='Confirme sua senha'/>
             </View>
-            <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
+            <TouchableOpacity onPress={handleFinalRegister} style={styles.joinButton}>
               <Text style={styles.joinText}>Finalizar</Text>
               <Ionicons name={'arrow-forward'} size={18} color={'#fff'} />
             </TouchableOpacity>
@@ -104,6 +176,12 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
         </TouchableOpacity>
         <Image source={require('../../assets/© TotalEnergies - 2023.png')} style={styles.image} />
       </View>
+      {
+        modalSms&&(
+          <ModalSMSConfirm phone={phone} type={typeModal} email={email1} code={(code,company)=>handleCodeSms(code,company)}/>
+
+        )
+      }
     </View>
   );
 };

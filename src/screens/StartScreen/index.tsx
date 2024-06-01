@@ -4,14 +4,17 @@ import { RainbowLine } from '../../components/RainbowLine';
 import { Dots } from '../../components/Dots';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+const StartScreen: React.FC = () => {
+  const navigation = useNavigation()
   const handleLogin = () => {
-    navigation.replace('Login');
+
+    navigation.navigate('Login');
   };
 
   const handleSignUp = () => {
-    navigation.replace('SignUp');
+    navigation.navigate('Register');
   };
 
   return (

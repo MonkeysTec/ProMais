@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Image } from 'react-native';
 import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
+import StartScreen from '../screens/StartScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,8 +19,10 @@ const NotAuthRoutes = () => {
         
       }}
     >
-      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Start" component={StartScreen} />
       <Stack.Screen name="Register" component={SignUp} />
+      <Stack.Screen name="Login" component={Login} />
+
 
       
 
