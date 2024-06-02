@@ -69,6 +69,14 @@ const DistributorsScreen: React.FC = () => {
         <Text style={{ fontWeight: '600', color: 'black', fontSize: 18, marginBottom:15 }} >
           Distribuidores participantes
         </Text>
+        <TouchableOpacity onPress={async() => {
+          const {data} = await api.get('/distributor/v1/?status=ACTIVE');
+          console.log(data)
+        }}>
+
+          <Text>Pegar Distribuidores</Text>
+          
+        </TouchableOpacity>
         <View style={{ backgroundColor: 'white', borderRadius: 15, padding: 25, height:'75%' }} >
           <Text style={{ color: 'red', fontSize: 20, fontWeight: '600', marginTop: 0 }} >
             Distribuidor

@@ -7,11 +7,14 @@ import CardNews from '../../components/CardNews';
 import api from '../../services/api';
 import axios from 'axios';
 import FAQScreen from '../FAQ';
+import { useAuth } from '../../context/LoginContext';
 
 
 const ProductsScreen: React.FC = () => {
 
+  const { user, login, logout } = useAuth();
   
+ 
   const products = [
     {
       Category: 'Produto Teste',
@@ -74,6 +77,14 @@ const ProductsScreen: React.FC = () => {
         <Text style={{ fontWeight: '700', color: 'red', fontSize: 22, marginBottom:15 }} >
           Produtos participantes
         </Text>
+        <TouchableOpacity onPress={async() => {
+          const {data} = await api.get('/product/v1/?isOnCampaign=1&status=ACTIVE');
+          console.log(data)
+        }}>
+
+          <Text>Pegar Produtos</Text>
+          
+        </TouchableOpacity>
         <View style={{ backgroundColor: 'white', borderRadius: 15, padding: 15, height:'75%' }} >
           
           <ScrollView style={{ width: '100%', height: '100%' }} >

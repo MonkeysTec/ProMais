@@ -7,6 +7,8 @@ import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
 import { useNavigation } from '@react-navigation/native';
 import Entypo from '@expo/vector-icons/Entypo';
 import { HomeNewInfo } from '../../components/Modal/HomeNewInfo';
+import { useAuth } from '../../context/LoginContext';
+import DeviceInfo from 'react-native-device-info';
 
 const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
@@ -20,6 +22,7 @@ const menuItems = [
 
 
 const HomeScreen: React.FC = () => {
+  const { user, login, logout } = useAuth();
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
@@ -160,14 +163,22 @@ const HomeScreen: React.FC = () => {
       Others: 'Saiba mais sobre isso!'
     },
   ]
+
+
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
         <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <TouchableOpacity onPress={logout}>
+
+          <Text>Deslogar</Text>
+          
+        </TouchableOpacity>
+
         <Ionicons name="reload" size={24} color="white" />
       </View>
       <View>
-        <HomeNewInfo NewInfos={newInfoSample}  />
+        <HomeNewInfo NewInfos={newInfoSample} />
       </View>
       <View style={styles.cardBalance}>
         <View style={{ position: 'absolute', top: 10, right: 10 }} >
@@ -214,7 +225,7 @@ const HomeScreen: React.FC = () => {
                 <Image source={require('../../assets/IconTotalEnergies.png')}
                   style={{ width: '100%', height: '100%' }} />
               </View> : <AntDesign name={item.icon} size={24} color="#000" />}
-           
+
             <Text style={styles.menuItemText}>{item.title}</Text>
 
             <Ionicons name="chevron-forward" size={24} color="#000" />
@@ -293,11 +304,11 @@ const HomeScreen: React.FC = () => {
                                 <Text style={styles.modalDarkMainText}>
                                   {item.date}</Text>
                                 <Text style={styles.modalSmallGreyText} >
-                                  QR Code: { showPasswordExtratoQrCode ? item.QrCode : "**************"}</Text>
+                                  QR Code: {showPasswordExtratoQrCode ? item.QrCode : "**************"}</Text>
                               </View>
                               <Text
                                 style={styles.modalGreenText}>
-                                R$ { showPasswordExtratoQrCode ? item.Value : "*********"}</Text>
+                                R$ {showPasswordExtratoQrCode ? item.Value : "*********"}</Text>
                             </View>
                           ))}
                         </ScrollView> : null}
@@ -310,10 +321,10 @@ const HomeScreen: React.FC = () => {
                                 <Text style={styles.modalDarkMainText}>
                                   {item.Method}</Text>
                                 <Text style={styles.modalSmallGreyText} >
-                                  {item.Type}: { showPasswordExtratoPix ? item.Key : "*********"}</Text>
+                                  {item.Type}: {showPasswordExtratoPix ? item.Key : "*********"}</Text>
                               </View>
                               <Text style={styles.modalGreenText}>
-                                R$ { showPasswordExtratoPix ? item.Value : "*********"}</Text>
+                                R$ {showPasswordExtratoPix ? item.Value : "*********"}</Text>
                             </View>
                           ))}
                         </ScrollView> : null}
@@ -341,10 +352,10 @@ const HomeScreen: React.FC = () => {
                         <Ionicons name="close" size={24} color="grey" />
                       </TouchableOpacity>
                       <View style={{ position: 'absolute', top: 0, right: 40 }} >
-                          <TouchableOpacity onPress={() => setShowPasswordCodesQrCode(!showPasswordCodesQrCode)}>
-                            <Entypo name={showPasswordCodesQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
-                          </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity onPress={() => setShowPasswordCodesQrCode(!showPasswordCodesQrCode)}>
+                          <Entypo name={showPasswordCodesQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                        </TouchableOpacity>
+                      </View>
                     </View>
                     <View style={{
                       flexDirection: 'row',
@@ -370,7 +381,7 @@ const HomeScreen: React.FC = () => {
 
                             </View>
                             <Text style={styles.modalGreenText}>
-                               {showPasswordCodesQrCode ? '+' + item.Points : '***'} pontos</Text>
+                              {showPasswordCodesQrCode ? '+' + item.Points : '***'} pontos</Text>
                           </View>
                         ))}
                       </ScrollView>
