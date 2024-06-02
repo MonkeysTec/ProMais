@@ -111,7 +111,6 @@ const { user, login, logout } = useAuth();
         console.log(error)
       }
     }else{
-      console.log(smscode.join(''))
       try {
         const {data} = await api.post(`/users/system/login/validateotp/v1`,{
           email:email
@@ -121,7 +120,8 @@ const { user, login, logout } = useAuth();
 
           }
         })    
-        login(data.refreshTokenCode)
+        const user = await api.get('/users/me/v1');
+        login(user.data)
         setModalVisible(false)
 
       } catch (error) {
