@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { ScrollView } from 'react-native-gesture-handler';
+import api from '../../../services/api';
 
-interface ModalNewInfo {
-  NewInfos: Array<NewInfoModel>
-}
+
 interface NewInfoModel {
-  Title: string,
-  Date: string,
-  Description: string,
-  Others: string,
+  id: string;
+  created_at: string;
+  title: string;
+  shortDescription: string;
+  expiresOn: string;
+  update_at: string;
+  imageURL: string;
+  status: string;
+  type: string;
+  urlToMore: string;
 
 }
-export const HomeNewInfo = (NewInfo: ModalNewInfo) => {
+export const HomeNewInfo = () => {
 
 
   const [modalVisible, setModalVisible] = useState(true);
@@ -22,9 +27,19 @@ export const HomeNewInfo = (NewInfo: ModalNewInfo) => {
     setModalVisible(false);
   };
 
+  const [newsData, setNewsData] = useState<NewInfoModel[]>([])
 
 
+  const newsGet = async() => {
+    
+    const { data } = await api.get('/news/v1/?onlyNotExpired=true&status=ACTIVE');
 
+    setNewsData(data.results)
+  }
+
+  useEffect(() => {
+    newsGet();
+  })
   return (
 
     <Modal
@@ -47,13 +62,13 @@ export const HomeNewInfo = (NewInfo: ModalNewInfo) => {
           </View>
           <ScrollView>
             <View style={{ width: '100%', alignItems: 'center' }}>
-              {NewInfo.NewInfos.map((item, index) => {
+              {newsData.map((item, index) => {
                 return (
                   <View style={{ width: '100%', marginBottom: 20 }} key={index}>
-                    <Text style={{ fontSize: 24, fontWeight: 'bold', color:'red' }}>{item.Title}</Text>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', color:'grey' }}>{item.Description}</Text>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.Others}</Text>
-                    <Text style={{ fontSize: 12, fontWeight: 'bold', color:'grey'  }}>{item.Date}</Text>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color:'red' }}>{item.title}</Text>
+                    <Text style={{ fontSize: 14, fontWeight: 'bold', color:'grey' }}>{item.shortDescription}</Text>
+                   {/*  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.Others}</Text> */}
+                    <Text style={{ fontSize: 12, fontWeight: 'bold', color:'grey'  }}>{item.created_at}</Text>
                   </View>
                 )
               })}
