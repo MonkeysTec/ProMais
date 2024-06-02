@@ -9,8 +9,51 @@ import axios from 'axios';
 import FAQScreen from '../FAQ';
 
 
-const DistributorsScreen: React.FC = () => {
 
+interface DistributorsModel {
+  _id: string;
+  fantasyName: string;
+  socialName: string;
+  document: string;
+  logo: string;
+  email: string;
+  primaryPhone: string;
+  company: string;
+  created_at: string;
+  update_at: string;
+  status: string;
+  address: string;
+  address_number: string;
+  address_neighborhood: string;
+  address_postal_code: string;
+  address_complement: string;
+  address_city: string;
+  address_state: string;
+  type: string;
+  pixKeyType: string;
+  pixKey: string | null;
+  subtype: string | null;
+  regionalRepresentative: string;
+  regionalManager: string;
+  regionalExecutive: string;
+  responsibleSeller: string | null;
+  mainCompFantasyName: string;
+  mainCompSocialName: string;
+}
+
+const DistributorsScreen: React.FC = () => {
+  const [distributorsNew, setDistributorsNew] = useState<DistributorsModel[]>([])
+
+
+  const getDistributors = async () => {
+
+    const { data } = await api.get('/distributor/v1/?status=ACTIVE');
+    console.log(data);
+    setDistributorsNew(data.results);
+  }
+  useEffect(() => {
+    getDistributors();
+  },[])
   const distributors = [
     {
       firstName:'Rodrigo',
@@ -69,20 +112,13 @@ const DistributorsScreen: React.FC = () => {
         <Text style={{ fontWeight: '600', color: 'black', fontSize: 18, marginBottom:15 }} >
           Distribuidores participantes
         </Text>
-        <TouchableOpacity onPress={async() => {
-          const {data} = await api.get('/distributor/v1/?status=ACTIVE');
-          console.log(data)
-        }}>
-
-          <Text>Pegar Distribuidores</Text>
-          
-        </TouchableOpacity>
+       
         <View style={{ backgroundColor: 'white', borderRadius: 15, padding: 25, height:'75%' }} >
           <Text style={{ color: 'red', fontSize: 20, fontWeight: '600', marginTop: 0 }} >
             Distribuidor
           </Text>
           <ScrollView style={{ width: '100%', height: '100%' }} >
-            {distributors.map((dist, index) => (
+            {distributorsNew.map((dist, index) => (
               <TouchableOpacity key={index} style={{ 
                 flexDirection: 'row', 
               
@@ -91,7 +127,7 @@ const DistributorsScreen: React.FC = () => {
                 <View style={{ flexDirection: 'row' }} >
                   <View >
                     <Text style={{ color: 'black', fontSize: 16, fontWeight: '600' }} >
-                      {dist.firstName} {dist.lastName}
+                      {dist.fantasyName} 
                     </Text>
                    
                   </View>

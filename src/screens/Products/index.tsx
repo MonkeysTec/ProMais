@@ -9,12 +9,42 @@ import axios from 'axios';
 import FAQScreen from '../FAQ';
 import { useAuth } from '../../context/LoginContext';
 
+interface Product {
+  amountBox: number;
+  company: string | null;
+  created_at: string;
+  description: string;
+  gamma: string;
+  isOnCampaign: number;
+  monetaryValue: number;
+  name: string;
+  photoURL: string;
+  points: number;
+  short_name: string;
+  sku: number;
+  status: string;
+  update_at: string;
+  _id: string;
+}
 
 const ProductsScreen: React.FC = () => {
 
   const { user, login, logout } = useAuth();
-  
- 
+
+  const [productsNew, setProductsNew] = useState<Product[]>([])
+
+
+  const getProducts = async () => {
+
+    const { data } = await api.get('/product/v1/?isOnCampaign=1&status=ACTIVE');
+    console.log(data);
+    setProductsNew(data.results);
+  }
+  useEffect(() => {
+    getProducts();
+  },[])
+
+
   const products = [
     {
       Category: 'Produto Teste',
@@ -74,52 +104,46 @@ const ProductsScreen: React.FC = () => {
       <View style={{ padding: 40 }} >
 
 
-        <Text style={{ fontWeight: '700', color: 'red', fontSize: 22, marginBottom:15 }} >
+        <Text style={{ fontWeight: '700', color: 'red', fontSize: 22, marginBottom: 15 }} >
           Produtos participantes
         </Text>
-        <TouchableOpacity onPress={async() => {
-          const {data} = await api.get('/product/v1/?isOnCampaign=1&status=ACTIVE');
-          console.log(data)
-        }}>
+       
+        <View style={{ backgroundColor: 'white', borderRadius: 15, padding: 15, height: '75%' }} >
 
-          <Text>Pegar Produtos</Text>
-          
-        </TouchableOpacity>
-        <View style={{ backgroundColor: 'white', borderRadius: 15, padding: 15, height:'75%' }} >
-          
           <ScrollView style={{ width: '100%', height: '100%' }} >
-            {products.map((prod, index) => (
-              <TouchableOpacity key={index} style={{ 
-                flexDirection: 'row', 
-              
-              
-              paddingVertical:15, 
-              borderBottomWidth: 1, borderBottomColor: '#F3F3F3' }} >
+            {productsNew.map((prod, index) => (
+              <TouchableOpacity key={index} style={{
+                flexDirection: 'row',
+
+
+                paddingVertical: 15,
+                borderBottomWidth: 1, borderBottomColor: '#F3F3F3'
+              }} >
                 <View style={{ flexDirection: 'row' }} >
-                  
-                  <View style={{width:80, height:80, borderWidth:1, borderColor:'grey'}} >
-                  {prod.ImageUrl ? 
-                  <Image source={{ uri: prod.ImageUrl }} 
-                  style={{ width: '100%', height: '100%' }} />
-                  : 
-                  null}
+
+                  <View style={{ width: 80, height: 80, borderWidth: 1, borderColor: 'grey' }} >
+                    {prod.photoURL ?
+                      <Image source={{ uri: prod.photoURL }}
+                        style={{ width: '100%', height: '100%' }} />
+                      :
+                      null}
                   </View>
-                  <View style={{marginLeft:20}} >
+                  <View style={{ marginLeft: 20 }} >
                     <Text style={{ color: 'black', fontSize: 12, fontWeight: '400' }} >
-                      {prod.Category}
+                      {prod.gamma}
                     </Text>
                     <Text style={{ color: 'red', fontSize: 16, fontWeight: '700' }} >
-                      {prod.Name}
+                      {prod.name}
                     </Text>
-                    <Text style={{ color: 'black', fontSize: 20, fontWeight: '600', marginTop:5 }} >
-                      {prod.Points} Pontos
+                    <Text style={{ color: 'black', fontSize: 20, fontWeight: '600', marginTop: 5 }} >
+                      {prod.points} Pontos
                     </Text>
-                   
+
                   </View>
                 </View>
-                
+
               </TouchableOpacity>
-            
+
             ))}
 
 
