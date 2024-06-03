@@ -27,6 +27,7 @@ const HomeScreen: React.FC = () => {
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
+
   const [extractType, setExtractType] = useState('General' || 'Reclaim')
   const closeModal = () => {
     setModalVisible(false);
