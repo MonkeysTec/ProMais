@@ -1,56 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+
 import api from '../../services/api';
 import { useAuth } from '../../context/LoginContext';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 const QRCodeScreen: React.FC = () => {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+
   const [scanned, setScanned] = useState(false);
   const [data, setData] = useState<string>('');
   const { user, login, logout } = useAuth();
-  console.log(user)
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
-
-
+  const [permission, requestPermission] = useCameraPermissions();
 
   const handleBarCodeScanned = async ({ type, data }: { type: string, data: string }) => {
     setScanned(true);
     setData(data);
-    console.log('Trying to Read QRCODE')
-    try {
-      const response = await api.put(`/qrcodes/v1/beep/${data}`)
-      console.log(response.data);
-    } catch (error) {
-      console.error('Erro na requisição:', error);
-    }
-
+      try {
+        try {
+          const response = await api.put(`/qrcodes/v1/beep/${data}`);
+          console.log(response.data);
+        } catch (error) {
+          console.error('Erro na requisição:', error);
+        }
+      } catch (error) {
+        console.log(error)
+      }
   };
 
-  if (hasPermission === null) {
-    return <Text>Solicitando permissão para usar a câmera</Text>;
+
+  if (!permission) {
+    // Camera permissions are still loading.
+    return <View />;
   }
-  if (hasPermission === false) {
-    return <Text>Sem acesso à câmera</Text>;
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.barcodeBox}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
+        <CameraView
+       onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
         />
+        
       </View>
       {scanned && <Button title={'Toque para escanear novamente'} onPress={() => setScanned(false)} />}
-      {scanned ? <Text>{data}</Text> : <Text> Aponte a câmera para o QRCode</Text>}
-
+      <Text>{scanned ? data : 'Codigo não escaneado'}</Text>
     </View>
   );
 };

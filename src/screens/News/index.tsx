@@ -21,13 +21,7 @@ const News: React.FC<{ navigation: any }> = ({navigation}) => {
     useEffect(() => {
       const getNewsApi = async () => {
         try {
-          const response = await fetch('https://api-dev.clubepromais.com.br/api/news/v1/?onlyNotExpired=true&status=ACTIVE', {
-            method: 'GET',
-            headers: {
-              'Accept': '*/*',
-              'User-Agent':'insomnia/9.2.0'
-            }
-          });
+          const response = await fetch('https://api-dev.clubepromais.com.br/api/news/v1/?onlyNotExpired=true&status=ACTIVE');
       
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

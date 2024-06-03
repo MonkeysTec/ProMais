@@ -39,7 +39,7 @@ export const HomeNewInfo = () => {
 
   useEffect(() => {
     newsGet();
-  })
+  },[])
   return (
 
     <Modal
