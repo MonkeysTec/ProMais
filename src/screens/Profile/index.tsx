@@ -10,8 +10,10 @@ import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { useAuth } from '../../context/LoginContext';
 
 const ProfileScreen: React.FC = () => {
+  const { user, login, logout } = useAuth();
   const navigation = useNavigation();
   const loadInBrowser = (url: any) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
@@ -161,6 +163,11 @@ const ProfileScreen: React.FC = () => {
             </View>
             <Text>Distribuidores participantes</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={{backgroundColor:'#D8D8D8', width:120, padding:5, borderRadius:10}} onPress={logout}>
+
+          <Text style={{fontWeight:'700'}} >Sair dessa conta</Text>
+          
+        </TouchableOpacity>
         </View>
         <View style={{ paddingHorizontal: 40, gap: 15 }} >
           <Text style={{ color: 'grey' }}  >
