@@ -23,26 +23,14 @@ const QRCodeScreen: React.FC = () => {
   const handleBarCodeScanned = async ({ type, data }: { type: string, data: string }) => {
     setScanned(true);
     setData(data);
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': user,
-    };
-      try {
-        try {
-          const response = await api.put(`/qrcodes/v1/beep/${data}`, {
-            headers: {
-              'Authorization': user
-            },
-            withCredentials: true // Habilita o envio de cookies
-          });
-      
-          console.log(response.data);
-        } catch (error) {
-          console.error('Erro na requisição:', error);
-        }
-      } catch (error) {
-        console.log(error)
-      }
+    console.log('Trying to Read QRCODE')
+    try {
+      const response = await api.put(`/qrcodes/v1/beep/${data}`)
+      console.log(response.data);
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+    }
+
   };
 
   if (hasPermission === null) {
@@ -61,7 +49,8 @@ const QRCodeScreen: React.FC = () => {
         />
       </View>
       {scanned && <Button title={'Toque para escanear novamente'} onPress={() => setScanned(false)} />}
-      <Text>{data}</Text>
+      {scanned ? <Text>{data}</Text> : <Text> Aponte a câmera para o QRCode</Text>}
+
     </View>
   );
 };
