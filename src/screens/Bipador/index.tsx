@@ -35,7 +35,7 @@ const Bipador: React.FC = () => {
     },
 
   ]);
-
+  
   const handleBipChange = (index: number, newStatus: string) => {
     setBipadoresSample(prevState => {
       const updatedBipadoresSample = [...prevState];
@@ -54,7 +54,7 @@ const Bipador: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá DASDASMax</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       
