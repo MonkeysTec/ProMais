@@ -68,6 +68,7 @@ const { user, login, logout } = useAuth();
           email: email,
           password: password,
         });
+        console.log(data)
         setLoading(false)
 
       } catch (error) {
@@ -102,6 +103,7 @@ const { user, login, logout } = useAuth();
     }else if(type==='SMS'){
       
       try {
+        console.log(phone)
         const {data} = await api.post(`/tempcode/check/v1/${smscode.join('')}`,{
           type:'CHECK_NUMBER',
           phone:phone

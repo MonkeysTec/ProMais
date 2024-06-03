@@ -2,7 +2,7 @@ import axios from 'axios';
 const header = {
     'Content-Type': 'application/json',
     'Accept-Language': 'pt-BR',
-    'User-Agent': `teste`
+
     // Authorization: token,
 };
 const api = axios.create({
@@ -24,4 +24,4 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-export default api;
+export default api;

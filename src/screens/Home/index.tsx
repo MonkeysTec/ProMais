@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
 import { useNavigation } from '@react-navigation/native';
+import Entypo from '@expo/vector-icons/Entypo';
+import { HomeNewInfo } from '../../components/Modal/HomeNewInfo';
 import { useAuth } from '../../context/LoginContext';
+import DeviceInfo from 'react-native-device-info';
+import api from '../../services/api';
 
 const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
   { title: 'Codigo escaneado', icon: 'scan1', modal: 'ScannedCodes' },
   { title: 'Indique um "bipador"', icon: 'user', path: 'Bipador' },
-  { title: 'Conheça Total Energies', icon: 'smileo', path: 'News' },
+  { title: 'Conheça Total Energies', icon: '', path: 'News' },
   { title: 'LubConsult', icon: 'tool' },
   { title: 'Como funciona', icon: 'questioncircleo' },
   { title: 'FAQ', icon: 'infocirlceo' },
@@ -19,120 +23,98 @@ const menuItems = [
 
 
 const HomeScreen: React.FC = () => {
-const navigation = useNavigation()
+  const { user, login, logout } = useAuth();
+  const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
-const { user, login, logout } = useAuth();
+
   const [extractType, setExtractType] = useState('General' || 'Reclaim')
   const closeModal = () => {
     setModalVisible(false);
   };
+  const [showPasswordSaldo, setShowPasswordSaldo] = useState(false);
+  const [showPasswordExtratoQrCode, setShowPasswordExtratoQrCode] = useState(false);
+  const [showPasswordExtratoPix, setShowPasswordExtratoPix] = useState(false);
+  const [showPasswordCodesQrCode, setShowPasswordCodesQrCode] = useState(false);
+ 
 
-  const ExtractGeneralSample = [
-    {
-      date: '23/03/2023',
-      QrCode: '112233445566',
-      Value: '30,00'
 
-    },
-    {
-      date: '25/03/2023',
-      QrCode: '883999299323',
-      Value: '40,00'
 
-    },
-    {
-      date: '27/03/2023',
-      QrCode: '06356343234',
-      Value: '12,30'
+  const [ExtractGeneralData, setExtractGeneralData] = useState([])
 
-    },
-    {
-      date: '29/03/2023',
-      QrCode: '622356343234',
-      Value: '30,10'
+  const [userMonetaryBalance, setUserMonetaryBalance] = useState('');
 
-    },
-    {
-      date: '30/03/2023',
-      QrCode: '99356343234',
-      Value: '10,65'
+  const [name, setName] = useState('');
 
-    },
-  ]
-  const ExtractReclaimSample = [
-    {
-      date: '23/03/2023',
-      Key: '112233445566',
-      Type: 'Chave Pix',
-      Method: 'Transferência',
-      Value: '30,00'
+  const getBalance = async () => {
 
-    },
-    {
-      date: '25/03/2023',
-      Key: '883999299323',
-      Type: 'Chave Pix',
-      Method: 'Transferência',
-      Value: '40,00'
+    const { data } = await api.get('/points/values/v1/');
+    console.log(data);
+    if(data.result.availableMonetayValue){
+      setUserMonetaryBalance(data.result.availableMonetayValue.toFixed(2));
+    }
+  }
+  const getExtractGeneral = async () => {
 
-    },
-    {
-      date: '30/03/2023',
-      Key: '06356343234',
-      Type: 'Chave Pix',
-      Method: 'Transferência',
-      Value: '50,30'
+    const { data } = await api.get('/points/v1/?onlyValid=true');
+    console.log(data);
+    if(data.results){
+      setExtractGeneralData(data.results);
+    }
+  }
 
-    },
-  ]
+  const getUserName = async () => {
 
-  const ScannedCodesSample = [
-    {
-      date: '23/03/2023',
-      QrCode: '112233445566',
-      Points: '30',
-      ProductName: 'Teclado Gamer'
+    const { data } = await api.get('/users/me/v1/');
+    
+    if(data){
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+     setName(nameUser)
+    }
+  }
+  
+  const formatDate = (isoString:string) => {
+    const date = new Date(isoString);
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1; // Months are zero-indexed
+    const year = date.getUTCFullYear();
+  
+    // Format the date as DD/MM/YYYY
+    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+  };
+  
 
-    },
-    {
-      date: '25/03/2023',
-      QrCode: '883999299323',
-      Points: '40',
-      ProductName: 'Mouse Gamer'
+  useEffect(() => {
+    getBalance();
+    getExtractGeneral();
+    getUserName();
+  },[])
 
-    },
-    {
-      date: '27/03/2023',
-      QrCode: '06356343234',
-      Points: '12',
-      ProductName: 'Monitor Gamer'
 
-    },
-    {
-      date: '29/03/2023',
-      QrCode: '622356343234',
-      Points: '30',
-      ProductName: 'Garrafa Gamer'
-
-    },
-    {
-      date: '30/03/2023',
-      QrCode: '99356343234',
-      Points: '10',
-      ProductName: 'Cabo HDMI Gamer'
-
-    },
-  ]
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
+        
+
         <Ionicons name="reload" size={24} color="white" />
       </View>
+      <View>
+        <HomeNewInfo />
+      </View>
       <View style={styles.cardBalance}>
+        <View style={{ position: 'absolute', top: 10, right: 10 }} >
+          <TouchableOpacity onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}>
+            <Entypo name={showPasswordSaldo ? 'eye' : 'eye-with-line'} size={24} color="black" />
+          </TouchableOpacity>
+        </View>
         <Text style={{ color: 'black', fontWeight: '600' }}>Saldo</Text>
-        <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>R$420,00</Text>
+        <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>
+          {showPasswordSaldo ?  userMonetaryBalance : '********'}</Text>
+
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <AntDesign name="filetext1" size={24} color="#A6A6A6" />
           <TouchableOpacity style={styles.button}>
@@ -163,8 +145,14 @@ const { user, login, logout } = useAuth();
               }
 
             }}>
-            <AntDesign name={item.icon} size={24} color="#000" />
+            {!item.icon ?
+              <View style={{ alignItems: 'center', width: 24, height: 12 }} >
+                <Image source={require('../../assets/IconTotalEnergies.png')}
+                  style={{ width: '100%', height: '100%' }} />
+              </View> : <AntDesign name={item.icon} size={24} color="#000" />}
+
             <Text style={styles.menuItemText}>{item.title}</Text>
+
             <Ionicons name="chevron-forward" size={24} color="#000" />
           </TouchableOpacity>
         ))}
@@ -190,6 +178,20 @@ const { user, login, logout } = useAuth();
                       >
                         <Ionicons name="close" size={24} color="grey" />
                       </TouchableOpacity>
+                      {extractType === 'General' ?
+                        <View style={{ position: 'absolute', top: 0, right: 40 }} >
+                          <TouchableOpacity onPress={() => setShowPasswordExtratoQrCode(!showPasswordExtratoQrCode)}>
+                            <Entypo name={showPasswordExtratoQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                          </TouchableOpacity>
+                        </View> : null
+                      }
+                      {extractType === 'Reclaim' ?
+                        <View style={{ position: 'absolute', top: 0, right: 40 }} >
+                          <TouchableOpacity onPress={() => setShowPasswordExtratoPix(!showPasswordExtratoPix)}>
+                            <Entypo name={showPasswordExtratoQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                          </TouchableOpacity>
+                        </View> : null
+                      }
                     </View>
                     <View style={{
                       flexDirection: 'row', borderBottomColor: 'grey',
@@ -221,34 +223,34 @@ const { user, login, logout } = useAuth();
 
                       {extractType === 'General' ?
                         <ScrollView style={{ maxHeight: 'auto', marginBottom: 50 }} >
-                          {ExtractGeneralSample.map((item, index) => (
-                            <View key={index}style={styles.modalViewColumnContainer}>
+                          {ExtractGeneralData.map((item, index) => (
+                            <View key={index} style={styles.modalViewColumnContainer}>
                               <View style={{ flexDirection: 'column' }} >
                                 <Text style={styles.modalDarkMainText}>
-                                  {item.date}</Text>
+                                {formatDate(item.created_at)}</Text>
                                 <Text style={styles.modalSmallGreyText} >
-                                  QR Code #{item.QrCode}</Text>
+                                  QR Code: {showPasswordExtratoQrCode ? item.qrcode : "**************"}</Text>
                               </View>
                               <Text
                                 style={styles.modalGreenText}>
-                                R$ {item.Value}</Text>
+                                R$ {showPasswordExtratoQrCode ? item.totalMonetaryValue.toFixed(2)  : "*********"}</Text>
                             </View>
                           ))}
                         </ScrollView> : null}
                       {extractType === 'Reclaim' ?
                         <ScrollView style={{ maxHeight: 'auto', marginBottom: 50 }} >
-                          {ExtractReclaimSample.map((item, index) => (
-                              <View key={index} style={styles.modalViewColumnContainer}>
-                                <View style={{ flexDirection: 'column' }} >
-                                  <Text style={styles.modalSmallGreyText}>{item.date}</Text>
-                                  <Text style={styles.modalDarkMainText}>
-                                    {item.Method}</Text>
-                                  <Text style={styles.modalSmallGreyText} >
-                                    {item.Type}: {item.Key}</Text>
-                                </View>
-                                <Text style={styles.modalGreenText}>
-                                  R$ {item.Value}</Text>
+                          {ExtractGeneralData.map((item, index) => (
+                            <View key={index} style={styles.modalViewColumnContainer}>
+                              <View style={{ flexDirection: 'column' }} >
+                                <Text style={styles.modalSmallGreyText}>{formatDate(item.created_at)}</Text>
+                                <Text style={styles.modalDarkMainText}>
+                                  Transferência</Text>
+                                <Text style={styles.modalSmallGreyText} >
+                                Chave Pix: {showPasswordExtratoPix ? item.pixKey : "*********"}</Text>
                               </View>
+                              <Text style={styles.modalGreenText}>
+                                R$ {showPasswordExtratoPix ? item.totalMonetaryValue.toFixed(2) : "*********"}</Text>
+                            </View>
                           ))}
                         </ScrollView> : null}
                     </View>
@@ -274,6 +276,11 @@ const { user, login, logout } = useAuth();
                         onPress={closeModal}>
                         <Ionicons name="close" size={24} color="grey" />
                       </TouchableOpacity>
+                      <View style={{ position: 'absolute', top: 0, right: 40 }} >
+                        <TouchableOpacity onPress={() => setShowPasswordCodesQrCode(!showPasswordCodesQrCode)}>
+                          <Entypo name={showPasswordCodesQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                        </TouchableOpacity>
+                      </View>
                     </View>
                     <View style={{
                       flexDirection: 'row',
@@ -285,7 +292,7 @@ const { user, login, logout } = useAuth();
                     </View>
                     <View style={{ flexDirection: 'column', gap: 10 }} >
                       <ScrollView style={{ maxHeight: 'auto', marginBottom: 50 }} >
-                        {ScannedCodesSample.map((item, index) => (
+                        {ExtractGeneralData.map((item, index) => (
                           <View key={index} style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between', width: '100%',
@@ -293,12 +300,13 @@ const { user, login, logout } = useAuth();
                             padding: 10
                           }}>
                             <View style={{ flexDirection: 'column' }} >
-                              <Text style={styles.modalSmallGreyText} >Escaneado em: {item.date}</Text>
-                              <Text style={styles.modalDarkMainText}>Produto {item.ProductName}</Text>
-                              <Text style={styles.modalSmallGreyText} >QR Code #{item.QrCode}</Text>
+                              <Text style={styles.modalSmallGreyText} >Escaneado em: {formatDate(item.created_at)}</Text>
+                              <Text style={styles.modalDarkMainText}>{item.productaName}</Text>
+                              <Text style={styles.modalSmallGreyText} >QR Code: {showPasswordCodesQrCode ? item.qrcode : '******'}</Text>
+
                             </View>
                             <Text style={styles.modalGreenText}>
-                              + {item.Points} pontos</Text>
+                              {showPasswordCodesQrCode ? '+' + item.totalPoints.toFixed(2) : '***'} pontos</Text>
                           </View>
                         ))}
                       </ScrollView>
@@ -499,7 +507,8 @@ const styles = StyleSheet.create({
   },
   modalDarkMainText: {
     color: 'black',
-    fontSize: 16
+    fontSize: 16,
+    maxWidth:200
   },
   modalGreenText: {
     color: '#85D151',

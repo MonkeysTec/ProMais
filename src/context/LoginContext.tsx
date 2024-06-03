@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Axios } from 'axios';
+import api from '../services/api';
 
 interface User {
   username: string;
@@ -37,13 +39,25 @@ export const AuthProvider =  ({children}:AuthProviderType) => {
     setUser(userData);
     // Armazena o usuário no localStorage
     AsyncStorage.setItem('user', JSON.stringify(userData));
+    console.log(userData)
   };
 
-  const logout = () => {
+  const logout = async () => {
     // Lógica para fazer logout (por exemplo, limpar o usuário da sessão)
     setUser(null);
     // Remove o usuário do localStorage
     AsyncStorage.removeItem('user');
+
+    try {
+      const {data} = await api.post('/users/system/logout/v1');
+  
+      console.log(data)
+   
+    } catch (error) {
+      // Exibir mensagem de erro
+     
+      console.error(error);
+    }
   };
 
   return (
