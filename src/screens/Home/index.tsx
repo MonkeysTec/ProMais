@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Modal, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -15,12 +15,11 @@ import Feather from '@expo/vector-icons/Feather';
 const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
   { title: 'Codigo escaneado', icon: 'scan1', modal: 'ScannedCodes' },
-
   { title: 'Indique um "bipador"', icon: 'user', path: 'Bipador' },
   { title: 'Conheça Total Energies', icon: '', path: 'News' },
-  { title: 'LubConsult', icon: 'tool' },
+  { title: 'LubConsult', icon: 'tool', path:'lubconsult' },
   { title: 'Como funciona', icon: 'questioncircleo' },
-  { title: 'FAQ', icon: 'infocirlceo' },
+  { title: 'FAQ', icon: 'infocirlceo', path:'FAQ' },
 ];
 
 
@@ -47,6 +46,10 @@ const HomeScreen: React.FC = () => {
   const [userMonetaryBalance, setUserMonetaryBalance] = useState('');
 
   const [name, setName] = useState('');
+
+  const loadInBrowser = (url: any) => {
+    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+  };
 
   const getBalance = async () => {
     const { data } = await api.get('/points/values/v1/');
@@ -166,10 +169,15 @@ const HomeScreen: React.FC = () => {
           <TouchableOpacity
             key={index} style={styles.menuItem}
             onPress={() => {
-              if (item.path) {
+              if (item.path && item.path !== 'lubconsult') {
 
                 navigation.navigate(item.path)
               }
+              if (item.path === 'lubconsult') {
+
+                loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') 
+              }
+              
               if (item.modal) {
                 setModalType(item.modal)
                 setModalVisible(true)
