@@ -160,7 +160,9 @@ const HomeScreen: React.FC = () => {
             <View style={styles.underline} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.greenButton}>
+        <TouchableOpacity onPress={() => 
+          navigation.navigate('Redeem')
+        } style={styles.greenButton}>
           <FontAwesome name="dollar" size={20} color="white" style={styles.icon} />
           <Text style={styles.greenButtonText}>Resgatar agora</Text>
         </TouchableOpacity>
