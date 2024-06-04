@@ -33,9 +33,9 @@ export const Redeem: React.FC = () => {
       }
 
       console.log(data)
-      /* const response = await api.post('/points/rescue/v1/', data);
+      const response = await api.post('/points/rescue/v1/', data);
   
-      console.log(response); */
+      console.log(response);
 
     } catch (error) {
       console.log('Erro ao tentar transferir o valor: ', error)
