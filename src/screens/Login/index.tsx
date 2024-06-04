@@ -63,7 +63,7 @@ const navigation = useNavigation();
         placeholder='Insira sua senha'
         value={password}
         onChangeText={setPassword}
-        secureTextEntry={showPassword}
+        secureTextEntry={!showPassword}
       />
       <View style={{position:'absolute', bottom:10, right:10}} >
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
