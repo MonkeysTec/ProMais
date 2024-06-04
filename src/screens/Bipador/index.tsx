@@ -32,7 +32,7 @@ const Bipador: React.FC = () => {
       nameUser += ' ';
       nameUser += data.token.user.lastName;
       setName(nameUser)
-      console.log(data)
+      
     }
   }
 
