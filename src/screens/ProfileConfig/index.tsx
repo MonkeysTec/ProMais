@@ -34,7 +34,24 @@ const ProfileConfigScreen: React.FC = () => {
    
   },[]);
 
+  const [name, setName] = useState('');
+  const getUserName = async () => {
 
+    const { data } = await api.get('/users/me/v1/');
+
+    if (data) {
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+      setName(nameUser)
+    }
+  }
+  useEffect(() => {
+
+    getUserName();
+   
+  },[])
   return (
     <View style={styles.container}>
       <SafeAreaView />
