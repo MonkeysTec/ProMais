@@ -1,47 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
 
 const Bipador: React.FC = () => {
   const navigation = useNavigation()
   const [bipadoresSample, setBipadoresSample] = useState([
-    {
-      name: 'Mariana',
-      Status: 'Yes',
-    },
-    {
-      name: 'Roberto',
-      Status: 'No',
-    },
-    {
-      name: 'Juliana',
-      Status: 'Yes',
-    },
-    {
-      name: 'Carlos',
-      Status: 'Yes',
-    },
-    {
-      name: 'Pedro',
-      Status: 'Pending',
-    },
-    {
-      name: 'Matheus',
-      Status: 'Pending',
-    },
 
   ]);
 
-  const handleBipChange = (index: number, newStatus: string) => {
-    setBipadoresSample(prevState => {
-      const updatedBipadoresSample = [...prevState];
-      updatedBipadoresSample[index].Status = newStatus;
-      return updatedBipadoresSample;
-    });
+  const getBipadores = async () => {
+
+    const { data } = await api.get('/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER');
+    console.log(data);
+    if(data){
+      setBipadoresSample(data.results);
+    }
+    
+  }
+
+  useEffect(() => {
+    getBipadores();
+  },[])
+
+  const handleBipChange = async(index: number, newStatus: string, bipId: string) => {
+    let bipadoresNew = [...bipadoresSample];
+   if(newStatus === 'NOT_ACTIVE'){
+    bipadoresNew[index].registrationStatus = 'SUSPENDED';
+    setBipadoresSample(bipadoresNew);
+    try{
+      const { data } = await api.put(`/users/system/suspend/v1/${bipId}`);
+      if(data.message === 'success'){
+        getBipadores()
+      }
+    }catch(error){
+      console.log(error)
+    }
+  }
+   
+   if(newStatus === 'ACTIVE'){
+    bipadoresNew[index].registrationStatus = 'ACTIVE';
+    setBipadoresSample(bipadoresNew);
+    try{
+
+      const { data } = await api.put(`/users/system/activate/v1/${bipId}`);
+      if(data.message === 'success'){
+        getBipadores()
+      }
+    }catch(error){
+      console.log(error)
+    }
+   }
   };
   const handleDelete = (index: number) => {
     setBipadoresSample(prevState => {
@@ -118,7 +131,8 @@ const Bipador: React.FC = () => {
               </Text>
 
             </View>
-            {bipadoresSample.map((bip, index) => (
+            
+            {bipadoresSample.length > 0 ? bipadoresSample.map((bip, index) => (
               <View key={index} style={{
                 flexDirection: 'row', width: '100%',
                 justifyContent: 'flex-start', marginTop: 10
@@ -127,20 +141,21 @@ const Bipador: React.FC = () => {
                   marginRight: 70, fontSize: 16, color: 'grey',
                   fontWeight: '600', width: 100
                 }} >
-                  {bip.name}
+                  {bip.nameUser}
                 </Text>
                 <View style={{ width: 80 }} >
 
-                  {bip.Status === 'Yes' ?
-                    <TouchableOpacity onPress={() => handleBipChange(index, 'No')} >
+                  {bip.registrationStatus === 'ACTIVE' ?
+                    <TouchableOpacity onPress={() => handleBipChange(index, 'NOT_ACTIVE', bip.systemUserID)} >
 
                       <MaterialIcons style={{ margin: -15 }} name="toggle-on" size={60} color="#85D151" />
                     </TouchableOpacity>
                     :
                     null
                   }
-                  {bip.Status === 'No' ?
-                    <TouchableOpacity onPress={() => handleBipChange(index, 'Yes')}>
+                  {bip.registrationStatus !== 'INVITE_NOT_ACCEPT' && 
+                  bip.registrationStatus !== 'ACTIVE'  ?
+                    <TouchableOpacity onPress={() => handleBipChange(index, 'ACTIVE', bip.systemUserID)}>
 
                       <MaterialIcons style={{ margin: -15 }} name="toggle-off" size={60} color="grey" />
                     </TouchableOpacity>
@@ -148,7 +163,7 @@ const Bipador: React.FC = () => {
                     :
                     null
                   }
-                  {bip.Status === 'Pending' ?
+                  {bip.registrationStatus === 'INVITE_NOT_ACCEPT' ?
                     <View style={{ flexDirection: 'row', marginLeft: -25 }} >
                       <AntDesign style={{ top: 2 }} name="exclamationcircle" size={16} color="#D7D711" />
                       <Text style={{ color: '#D7D711' }} > Pendente</Text>
@@ -167,7 +182,7 @@ const Bipador: React.FC = () => {
 
                 </View>
               </View>
-            ))}
+            )) : <Text>Carregando...</Text>}
 
           </View>
 

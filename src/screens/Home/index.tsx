@@ -41,7 +41,7 @@ const HomeScreen: React.FC = () => {
 
 
 
-
+  const [ExtractRescuesData, setExtractRescuesData] = useState([])
   const [ExtractGeneralData, setExtractGeneralData] = useState([])
 
   const [userMonetaryBalance, setUserMonetaryBalance] = useState('');
@@ -49,21 +49,32 @@ const HomeScreen: React.FC = () => {
   const [name, setName] = useState('');
 
   const getBalance = async () => {
-
     const { data } = await api.get('/points/values/v1/');
-    console.log(data);
-    if (data.result.availableMonetayValue) {
+
+    if(data.result.availableMonetayValue){
       setUserMonetaryBalance(data.result.availableMonetayValue.toFixed(2));
     }
   }
   const getExtractGeneral = async () => {
 
     const { data } = await api.get('/points/v1/?onlyValid=true');
-    console.log(data);
-    if (data.results) {
+
+    if(data.results){
       setExtractGeneralData(data.results);
     }
   }
+  const getExtractRescues = async () => {
+    try{
+      const { data } = await api.get('/points/v1/?onlyValid=true');
+
+     
+    }catch(error){
+      console.log('Rescues: ', error)
+
+    }
+    
+  }
+
 
   const getUserName = async () => {
 
@@ -88,12 +99,28 @@ const HomeScreen: React.FC = () => {
     return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+
+      getBalance();
+      getExtractGeneral();
+      getUserName();
+      getExtractRescues();
+      
+    }, 10000);
+
+    
+    return () => clearInterval(interval);
+  }, []); 
+  
+
 
   useEffect(() => {
     getBalance();
     getExtractGeneral();
     getUserName();
-  }, [])
+    getExtractRescues();
+  },[])
 
 
   return (
@@ -112,7 +139,9 @@ const HomeScreen: React.FC = () => {
           <TouchableOpacity onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}>
             <Entypo name={showPasswordSaldo ? 'eye' : 'eye-with-line'} size={24} color="black" />
           </TouchableOpacity>
+          
         </View>
+       
         <Text style={{ color: 'black', fontWeight: '600' }}>Saldo</Text>
         <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>
           {showPasswordSaldo ? userMonetaryBalance : '********'}</Text>
@@ -248,7 +277,7 @@ const HomeScreen: React.FC = () => {
                         </ScrollView> : null}
                       {extractType === 'Reclaim' ?
                         <ScrollView style={{ maxHeight: 'auto', marginBottom: 50 }} >
-                          {ExtractGeneralData.map((item, index) => (
+                          {ExtractRescuesData.map((item, index) => (
                             <View key={index} style={styles.modalViewColumnContainer}>
                               <View style={{ flexDirection: 'column' }} >
                                 <Text style={styles.modalSmallGreyText}>{formatDate(item.created_at)}</Text>
