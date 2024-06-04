@@ -20,6 +20,8 @@ const Stack = createStackNavigator();
 import DistributorsScreen from '../screens/Distributors';
 import ProductsScreen from '../screens/Products';
 import { Redeem } from '../screens/Redeem';
+import QrCodeScreenAfter from '../screens/QrCodeScreenAfter';
+import QrCodeScreenBefore from '../screens/QrCodeScreenBefore';
 
 const Tab = createBottomTabNavigator();
 
@@ -44,6 +46,8 @@ const StackNavigator: React.FC = () => (
     <Stack.Screen name="Products" component={ProductsScreen} />
     <Stack.Screen name="Distributors" component={DistributorsScreen} />
     <Stack.Screen name="Redeem" component={Redeem} />
+    <Stack.Screen name="QrCodeAfter" component={QrCodeScreenAfter} />
+    <Stack.Screen name="QRCodeRead" component={QRCodeScreen} />
   </Stack.Navigator>
 );
 
@@ -70,7 +74,7 @@ const TabNavigator: React.FC = () => (
     })}
   >
     <Tab.Screen name="Home" component={StackNavigator} options={{ headerShown: false }} />
-    <Tab.Screen name="QRCode" component={QRCodeScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="QRCode" component={QrCodeScreenBefore} options={{ headerShown: false }} />
     <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
 );
