@@ -16,26 +16,9 @@ const data = [
     },
     // Add more data objects as needed
   ];
-const News: React.FC<{ navigation: any }> = ({navigation}) => {
+const News: React.FC = () => {
 
-    useEffect(() => {
-      const getNewsApi = async () => {
-        try {
-          const response = await fetch('https://api-dev.clubepromais.com.br/api/news/v1/?onlyNotExpired=true&status=ACTIVE');
-      
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-      
-          const data = await response.json();
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      }
-      
-      getNewsApi();
-      
-    }, []);
+    
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
