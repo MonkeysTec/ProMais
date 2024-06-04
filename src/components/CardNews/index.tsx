@@ -15,7 +15,7 @@ const CardNews = ({date,description,image,title}:CardNewsProps) => {
     <View style={styles.cardContent}>
       <Text style={styles.cardDate}>{date}</Text>
       <Text style={styles.cardTitle}>{title}</Text>
-      <Text style={styles.cardDescription}>{description}</Text>
+      <Text style={styles.cardDescription}>{description}...</Text>
       <TouchableOpacity style={styles.cardButton} onPress={() => console.log('Saiba mais pressed')}>
       <Text style={styles.cardButtonText}>Saiba mais</Text>
     </TouchableOpacity>
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
     cardDescription: {
       fontSize: 14,
       color: '#333',
-      height:80
+      height:80,
+      width:180
     },
     cardButton: {
       padding: 12,

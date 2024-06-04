@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -6,6 +6,61 @@ import { FontAwesome } from '@expo/vector-icons';
 import CardNews from '../../components/CardNews';
 import api from '../../services/api';
 import axios from 'axios';
+interface NewInfoModel {
+  id: string;
+  created_at: string;
+  title: string;
+  shortDescription: string;
+  expiresOn: string;
+  update_at: string;
+  imageURL: string;
+  status: string;
+  type: string;
+  urlToMore: string;
+
+}
+
+
+const News: React.FC = () => {
+  const [newsData, setNewsData] = useState<NewInfoModel[]>([])
+  const [name, setName] = useState('');
+  const getUserName = async () => {
+
+    const { data } = await api.get('/users/me/v1/');
+
+    if (data) {
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+      setName(nameUser)
+    }
+  }
+
+  const newsGet = async() => {
+    
+    const { data } = await api.get('/news/v1/?onlyNotExpired=true&status=ACTIVE');
+
+    setNewsData(data.results)
+  }
+
+  useEffect(() => {
+    newsGet();
+    getUserName();
+  },[])
+
+
+
+
+  const formatDate = (isoString: string) => {
+    const date = new Date(isoString);
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1; // Months are zero-indexed
+    const year = date.getUTCFullYear();
+
+    // Format the date as DD/MM/YYYY
+    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+  };
 
 const data = [
     {
@@ -16,39 +71,22 @@ const data = [
     },
     // Add more data objects as needed
   ];
-const News: React.FC<{ navigation: any }> = ({navigation}) => {
-
-    useEffect(() => {
-      const getNewsApi = async () => {
-        try {
-          const response = await fetch('https://api-dev.clubepromais.com.br/api/news/v1/?onlyNotExpired=true&status=ACTIVE');
-      
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-      
-          const data = await response.json();
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      }
-      
-      getNewsApi();
-      
-    }, []);
+  
+const News: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
-      {data.map((item, index) => (
+      {newsData.map((item, index) => (
         <CardNews
           key={index}
-          date={item.date}
+          date={formatDate(item.created_at)}
           title={item.title}
-          description={item.description}
-          image={item.image}
+          description={item.shortDescription.substring(0, 100)}
+          image={item.imageURL}
+          
         />
       ))}
       

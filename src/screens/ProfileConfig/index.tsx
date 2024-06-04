@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput, Alert, Linking } from 'react-native';
 import { RainbowLine } from '../../components/RainbowLine';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -9,22 +9,64 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
 
 const ProfileConfigScreen: React.FC = () => {
   const navigation = useNavigation();
-  const loadInBrowser = (url: any) => {
-    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
-  };
+  const [name, setName] = useState('');
+  const getUserName = async () => {
 
+    const { data } = await api.get('/users/me/v1/');
+
+    if (data) {
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+      setName(nameUser)
+     
+    }
+  }
+
+  useEffect(() => {
+
+    getUserName();
+   
+  },[]);
+
+  const [name, setName] = useState('');
+  const getUserName = async () => {
+
+    const { data } = await api.get('/users/me/v1/');
+
+    if (data) {
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+      setName(nameUser)
+    }
+  }
+  useEffect(() => {
+
+    getUserName();
+   
+  },[])
   return (
     <View style={styles.container}>
       <SafeAreaView />
       <RainbowLine />
       <View style={styles.insideContainer}>
+        <TouchableOpacity onPress={() => { navigation.navigate('Profile') }} style={styles.backContainer}>
+
+          
+          <Ionicons name={'arrow-back'} size={31} color={'#d9d9d9'} />
+
+        </TouchableOpacity>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
           <View>
             <Text style={{ color: 'black', fontSize: 24 }} >
-              Maxwell
+             {name}
             </Text>
             <Text style={{ color: 'grey', fontSize: 14 }}>
               Nome do Cargo
@@ -57,7 +99,7 @@ const ProfileConfigScreen: React.FC = () => {
 
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => { }}
+            onPress={() => { navigation.navigate('ChangePassword') }}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
@@ -85,10 +127,6 @@ const ProfileConfigScreen: React.FC = () => {
             <Text>Desativar minha conta</Text>
           </TouchableOpacity>
 
-
-
-
-
         </View>
 
         <View>
@@ -106,7 +144,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     width: '100%',
   },
-
+  backContainer: {
+    marginTop: 0
+  },
 
   insideContainer: {
 

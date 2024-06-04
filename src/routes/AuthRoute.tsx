@@ -22,6 +22,7 @@ import ProductsScreen from '../screens/Products';
 import { Redeem } from '../screens/Redeem';
 import QrCodeScreenAfter from '../screens/QrCodeScreenAfter';
 import QrCodeScreenBefore from '../screens/QrCodeScreenBefore';
+import ChangePassword from '../screens/ChangePassword';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,6 +49,8 @@ const StackNavigator: React.FC = () => (
     <Stack.Screen name="Redeem" component={Redeem} />
     <Stack.Screen name="QrCodeAfter" component={QrCodeScreenAfter} />
     <Stack.Screen name="QRCodeRead" component={QRCodeScreen} />
+    <Stack.Screen name="News" component={News} />
+    <Stack.Screen name="ChangePassword" component={ChangePassword} />
   </Stack.Navigator>
 );
 
