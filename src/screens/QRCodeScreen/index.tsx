@@ -4,6 +4,7 @@ import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import api from '../../services/api';
 import { useAuth } from '../../context/LoginContext';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { useNavigation } from '@react-navigation/native';
 
 const QRCodeScreen: React.FC = () => {
 
@@ -11,14 +12,21 @@ const QRCodeScreen: React.FC = () => {
   const [data, setData] = useState<string>('');
   const { user, login, logout } = useAuth();
   const [permission, requestPermission] = useCameraPermissions();
+  const navigation = useNavigation();
+
 
   const handleBarCodeScanned = async ({ type, data }: { type: string, data: string }) => {
     setScanned(true);
     setData(data);
       try {
         try {
-          const response = await api.put(`/qrcodes/v1/beep/${data}`);
-          console.log(response.data);
+           const response = await api.put(`/qrcodes/v1/beep/${data}`);
+          
+          if(response.data){
+            setScanned(false);
+            navigation.navigate('QrCodeAfter')
+
+          } 
         } catch (error) {
           console.error('Erro na requisição:', error);
         }
@@ -37,8 +45,8 @@ const QRCodeScreen: React.FC = () => {
     // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Text style={{ textAlign: 'center' }}>Nós precisamos de permissão para usar a camera.</Text>
+        <Button onPress={requestPermission} title="Dar permissão" />
       </View>
     );
   }
@@ -53,7 +61,7 @@ const QRCodeScreen: React.FC = () => {
         
       </View>
       {scanned && <Button title={'Toque para escanear novamente'} onPress={() => setScanned(false)} />}
-      <Text>{scanned ? data : 'Codigo não escaneado'}</Text>
+      
     </View>
   );
 };
