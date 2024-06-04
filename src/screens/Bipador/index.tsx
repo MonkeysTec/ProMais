@@ -9,9 +9,9 @@ import api from '../../services/api';
 
 const Bipador: React.FC = () => {
   const navigation = useNavigation()
-  const [bipadoresSample, setBipadoresSample] = useState([
-
-  ]);
+  const [bipadoresSample, setBipadoresSample] = useState([]);
+  const [name, setName] = useState('');
+  
 
   const getBipadores = async () => {
 
@@ -22,9 +22,23 @@ const Bipador: React.FC = () => {
     }
     
   }
+  const getUserName = async () => {
+
+    const { data } = await api.get('/users/me/v1/');
+
+    if (data) {
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+      setName(nameUser)
+      console.log(data)
+    }
+  }
 
   useEffect(() => {
     getBipadores();
+    getUserName();
   },[])
 
   const handleBipChange = async(index: number, newStatus: string, bipId: string) => {
@@ -67,7 +81,7 @@ const Bipador: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       
