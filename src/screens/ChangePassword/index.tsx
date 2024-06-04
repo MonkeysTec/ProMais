@@ -4,20 +4,72 @@ import { RainbowLine } from '../../components/RainbowLine';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import api from '../../services/api';
 
 const ChangePassword: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(1);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
-  const handleNext = () => {
-    setStep(step+1)
-    if (step === 2) 
-      navigation.replace('Login');
+
+
+  const handleNext = async () => {
+
+
+    if (newPassword === confirmNewPassword) {
+
+
+
+      try {
+        const dataPassword = {
+          password: oldPassword
+        }
+        const { data } = await api.post('/users/system/check/password/v1', dataPassword);
+        
+        if (data) {
+          try{
+            const newDataPassword = {
+              newPassword
+            }
+            console.log('Sua senha antiga confere, trocando para a nova...')
+  
+            const { data } = await api.post('/users/system/password/change/online/v1', newDataPassword);
+  
+            if (data) {
+              console.log('Senha trocada com sucesso!')
+  
+            } else {
+              console.log('Essa não é sua senha antiga')
+            }
+
+          }
+          catch(error)
+          {
+            console.log(error)
+          }
+
+
+
+        } else {
+          console.log('Essa não é sua senha antiga')
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+
+
+    }
+    else {
+      console.log('Novas senhas não conferem')
+    }
   };
 
   const handleBack = () => {
-    setStep(step-1)
-    if (step === 1) 
-      navigation.replace('Start');
+
+
+    navigation.replace('ProfileConfig');
   };
 
   return (
@@ -26,22 +78,19 @@ const ChangePassword: React.FC<{ navigation: any }> = ({ navigation }) => {
       <RainbowLine />
       <View style={styles.insideContainer}>
         <TouchableOpacity onPress={handleBack} style={styles.backContainer}>
-          {step === 3 ?
-            <AntDesign name={'checkcircle'} size={50} color={'#85d151'} /> :
-            <Ionicons name={'arrow-back'} size={31} color={'#d9d9d9'} /> 
-          }
+          <Ionicons name={'arrow-back'} size={31} color={'#d9d9d9'} />
         </TouchableOpacity>
-        {step === 1 && 
+        {step === 1 &&
           <>
             <Text style={styles.title}>Alterar senha</Text>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Insira sua senha atual'/>
+              <TextInput onChangeText={(value) => setOldPassword(value)} style={styles.input} placeholder='Insira sua senha atual' />
             </View>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Insira sua nova senha'/>
+              <TextInput onChangeText={(value) => setNewPassword(value)} style={styles.input} placeholder='Insira sua nova senha' />
             </View>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder='Confirme sua senha'/>
+              <TextInput onChangeText={(value) => setConfirmNewPassword(value)} style={styles.input} placeholder='Confirme sua senha' />
             </View>
             <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
               <Text style={styles.joinText}>Finalizar</Text>
@@ -51,15 +100,15 @@ const ChangePassword: React.FC<{ navigation: any }> = ({ navigation }) => {
         }
         {step === 2 &&
           <>
-          <View>
+            <View>
               <Text style={styles.finishTitle}>Pronto!</Text>
               <Text style={styles.contactTextBlack}>Sua senha foi alterada com sucesso!</Text>
               <Text style={styles.contactTextBlack}>Acesse agora mesmo...</Text>
               <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
-              <Text style={styles.joinText}>Entrar</Text>
-              <Ionicons name={'arrow-forward'} size={18} color={'#fff'} />
-            </TouchableOpacity>
-          </View>
+                <Text style={styles.joinText}>Entrar</Text>
+                <Ionicons name={'arrow-forward'} size={18} color={'#fff'} />
+              </TouchableOpacity>
+            </View>
           </>
         }
         <TouchableOpacity style={styles.contactContainer}>
@@ -138,7 +187,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000000',
     textShadowColor: '#000',
-    textShadowOffset: {width: 1, height: 1},
+    textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
   },
   joinButton: {

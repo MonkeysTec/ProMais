@@ -36,6 +36,16 @@ export const HomeNewInfo = () => {
 
     setNewsData(data.results)
   }
+  
+  const formatDate = (isoString: string) => {
+    const date = new Date(isoString);
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1; // Months are zero-indexed
+    const year = date.getUTCFullYear();
+
+    // Format the date as DD/MM/YYYY
+    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+  };
 
   useEffect(() => {
     newsGet();
@@ -68,7 +78,7 @@ export const HomeNewInfo = () => {
                     <Text style={{ fontSize: 24, fontWeight: 'bold', color:'red' }}>{item.title}</Text>
                     <Text style={{ fontSize: 14, fontWeight: 'bold', color:'grey' }}>{item.shortDescription}</Text>
                    {/*  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.Others}</Text> */}
-                    <Text style={{ fontSize: 12, fontWeight: 'bold', color:'grey'  }}>{item.created_at}</Text>
+                    <Text style={{ fontSize: 12, fontWeight: 'bold', color:'grey'  }}>{formatDate(item.created_at)}</Text>
                   </View>
                 )
               })}

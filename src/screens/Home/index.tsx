@@ -16,9 +16,9 @@ const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
   { title: 'Codigo escaneado', icon: 'scan1', modal: 'ScannedCodes' },
   { title: 'Indique um "bipador"', icon: 'user', path: 'Bipador' },
-  { title: 'Conheça Total Energies', icon: '', path: 'News' },
+  { title: 'Conheça Total Energies', icon: '', path:'browserTotalEnergies' },
   { title: 'LubConsult', icon: 'tool', path:'lubconsult' },
-  { title: 'Como funciona', icon: 'questioncircleo' },
+  { title: 'Como funciona', icon: 'questioncircleo', path: 'News' },
   { title: 'FAQ', icon: 'infocirlceo', path:'FAQ' },
 ];
 
@@ -175,7 +175,7 @@ const HomeScreen: React.FC = () => {
           <TouchableOpacity
             key={index} style={styles.menuItem}
             onPress={() => {
-              if (item.path && item.path !== 'lubconsult') {
+              if (item.path && item.path !== 'lubconsult' && item.path !== 'browserTotalEnergies') {
 
                 navigation.navigate(item.path)
               }
@@ -188,13 +188,16 @@ const HomeScreen: React.FC = () => {
                 setModalType(item.modal)
                 setModalVisible(true)
               }
-
+              if(item.path === 'browserTotalEnergies'){
+                loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') 
+              }
             }}>
             {!item.icon ?
               <View style={{ alignItems: 'center', width: 24, height: 12 }} >
                 <Image source={require('../../assets/IconTotalEnergies.png')}
                   style={{ width: '100%', height: '100%' }} />
               </View> : <AntDesign name={item.icon} size={24} color="#000" />}
+              
 
             <Text style={styles.menuItemText}>{item.title}</Text>
 
