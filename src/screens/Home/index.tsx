@@ -139,9 +139,7 @@ const HomeScreen: React.FC = () => {
           </TouchableOpacity>
           
         </View>
-        <TouchableOpacity onPress={() => getExtractRescues()}>
-           <Text>Rescues</Text>
-          </TouchableOpacity>
+       
         <Text style={{ color: 'black', fontWeight: '600' }}>Saldo</Text>
         <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>
           {showPasswordSaldo ?  userMonetaryBalance : '********'}</Text>
