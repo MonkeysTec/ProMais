@@ -71,8 +71,7 @@ const data = [
     },
     // Add more data objects as needed
   ];
-  
-const News: React.FC = () => {
+
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
