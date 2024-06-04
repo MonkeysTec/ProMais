@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput, Alert, Linking } from 'react-native';
 import { RainbowLine } from '../../components/RainbowLine';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -11,14 +11,35 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useAuth } from '../../context/LoginContext';
+import api from '../../services/api';
 
 const ProfileScreen: React.FC = () => {
   const { user, login, logout } = useAuth();
+  const [name, setName] = useState('');
   const navigation = useNavigation();
   const loadInBrowser = (url: any) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
 
+  const getUserName = async () => {
+
+    const { data } = await api.get('/users/me/v1/');
+
+    if (data) {
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+      setName(nameUser)
+      console.log(data)
+    }
+  }
+
+  useEffect(() => {
+
+    getUserName();
+   
+  },[])
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -27,7 +48,7 @@ const ProfileScreen: React.FC = () => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
           <View>
             <Text style={{ color: 'black', fontSize: 24 }} >
-              Maxwell
+              {name}
             </Text>
             <Text style={{ color: 'grey', fontSize: 14 }}>
               Nome do Cargo
