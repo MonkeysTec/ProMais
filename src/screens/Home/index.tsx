@@ -68,8 +68,8 @@ const HomeScreen: React.FC = () => {
   }
   const getExtractRescues = async () => {
     try{
-      const { data } = await api.get('/points/v1/?onlyValid=true');
-
+      const { data } = await api.get('/rescues/v1/');
+      console.log(data)
      
     }catch(error){
       console.log('Rescues: ', error)
