@@ -39,7 +39,7 @@ export const AuthProvider =  ({children}:AuthProviderType) => {
     setUser(userData);
     // Armazena o usuário no localStorage
     AsyncStorage.setItem('user', JSON.stringify(userData));
-    console.log(userData)
+    
   };
 
   const logout = async () => {
@@ -51,7 +51,7 @@ export const AuthProvider =  ({children}:AuthProviderType) => {
     try {
       const {data} = await api.post('/users/system/logout/v1');
   
-      console.log(data)
+     
    
     } catch (error) {
       // Exibir mensagem de erro

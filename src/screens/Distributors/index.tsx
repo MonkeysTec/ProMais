@@ -48,7 +48,7 @@ const DistributorsScreen: React.FC = () => {
   const getDistributors = async () => {
 
     const { data } = await api.get('/distributor/v1/?status=ACTIVE');
-    console.log(data);
+    
     setDistributorsNew(data.results);
   }
   useEffect(() => {

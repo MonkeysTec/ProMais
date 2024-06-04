@@ -44,7 +44,7 @@ const handleFinalRegister = async ()=>{
     let dateVar = Moment(dataBirth, 'DD/MM/YYYY');
     
   try {
-    console.log(code)
+    
     const {data} = await api.post('/users/v1',{
       email:email1, 
       firstName,

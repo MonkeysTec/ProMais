@@ -37,7 +37,7 @@ const ProductsScreen: React.FC = () => {
   const getProducts = async () => {
 
     const { data } = await api.get('/product/v1/?isOnCampaign=1&status=ACTIVE');
-    console.log(data);
+    
     setProductsNew(data.results);
   }
   useEffect(() => {

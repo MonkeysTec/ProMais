@@ -16,7 +16,7 @@ const Bipador: React.FC = () => {
   const getBipadores = async () => {
 
     const { data } = await api.get('/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER');
-    console.log(data);
+    
     if(data){
       setBipadoresSample(data.results);
     }
