@@ -103,20 +103,7 @@ const ProfileScreen: React.FC = () => {
             </View>
             <Text>Fale conosco</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => navigation.navigate('Products')}
-          >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
 
-<Feather name="box" size={20} color="black" />
-            </View>
-            <Text>Produtos participantes</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
             onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}
@@ -140,10 +127,10 @@ const ProfileScreen: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center', borderRadius: 50
             }}>
-              <View style={{alignItems:'center', width:24, height:12}} >
+              <View style={{ alignItems: 'center', width: 24, height: 12 }} >
 
-                <Image source={require('../../assets/IconTotalEnergies.png')} 
-                style={{ width: '100%', height: '100%' }} />
+                <Image source={require('../../assets/IconTotalEnergies.png')}
+                  style={{ width: '100%', height: '100%' }} />
               </View>
 
             </View>
@@ -159,15 +146,15 @@ const ProfileScreen: React.FC = () => {
               justifyContent: 'center', borderRadius: 50
             }}>
 
-<FontAwesome6 name="users" size={20} color="black" />
+              <FontAwesome6 name="users" size={20} color="black" />
             </View>
             <Text>Distribuidores participantes</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{backgroundColor:'#D8D8D8', width:120, padding:5, borderRadius:10}} onPress={logout}>
+          <TouchableOpacity style={{ backgroundColor: '#D8D8D8', width: 120, padding: 5, borderRadius: 10 }} onPress={logout}>
 
-          <Text style={{fontWeight:'700'}} >Sair dessa conta</Text>
-          
-        </TouchableOpacity>
+            <Text style={{ fontWeight: '700' }} >Sair dessa conta</Text>
+
+          </TouchableOpacity>
         </View>
         <View style={{ paddingHorizontal: 40, gap: 15 }} >
           <Text style={{ color: 'grey' }}  >

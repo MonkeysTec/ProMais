@@ -10,10 +10,12 @@ import { HomeNewInfo } from '../../components/Modal/HomeNewInfo';
 import { useAuth } from '../../context/LoginContext';
 import DeviceInfo from 'react-native-device-info';
 import api from '../../services/api';
+import Feather from '@expo/vector-icons/Feather';
 
 const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
   { title: 'Codigo escaneado', icon: 'scan1', modal: 'ScannedCodes' },
+
   { title: 'Indique um "bipador"', icon: 'user', path: 'Bipador' },
   { title: 'Conheça Total Energies', icon: '', path: 'News' },
   { title: 'LubConsult', icon: 'tool' },
@@ -36,7 +38,7 @@ const HomeScreen: React.FC = () => {
   const [showPasswordExtratoQrCode, setShowPasswordExtratoQrCode] = useState(false);
   const [showPasswordExtratoPix, setShowPasswordExtratoPix] = useState(false);
   const [showPasswordCodesQrCode, setShowPasswordCodesQrCode] = useState(false);
- 
+
 
 
 
@@ -50,7 +52,7 @@ const HomeScreen: React.FC = () => {
 
     const { data } = await api.get('/points/values/v1/');
     console.log(data);
-    if(data.result.availableMonetayValue){
+    if (data.result.availableMonetayValue) {
       setUserMonetaryBalance(data.result.availableMonetayValue.toFixed(2));
     }
   }
@@ -58,7 +60,7 @@ const HomeScreen: React.FC = () => {
 
     const { data } = await api.get('/points/v1/?onlyValid=true');
     console.log(data);
-    if(data.results){
+    if (data.results) {
       setExtractGeneralData(data.results);
     }
   }
@@ -66,39 +68,39 @@ const HomeScreen: React.FC = () => {
   const getUserName = async () => {
 
     const { data } = await api.get('/users/me/v1/');
-    
-    if(data){
+
+    if (data) {
       let nameUser = '';
       nameUser += data.token.user.firstName;
       nameUser += ' ';
       nameUser += data.token.user.lastName;
-     setName(nameUser)
+      setName(nameUser)
     }
   }
-  
-  const formatDate = (isoString:string) => {
+
+  const formatDate = (isoString: string) => {
     const date = new Date(isoString);
     const day = date.getUTCDate();
     const month = date.getUTCMonth() + 1; // Months are zero-indexed
     const year = date.getUTCFullYear();
-  
+
     // Format the date as DD/MM/YYYY
     return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
   };
-  
+
 
   useEffect(() => {
     getBalance();
     getExtractGeneral();
     getUserName();
-  },[])
+  }, [])
 
 
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
         <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
-        
+
 
         <Ionicons name="reload" size={24} color="white" />
       </View>
@@ -113,7 +115,7 @@ const HomeScreen: React.FC = () => {
         </View>
         <Text style={{ color: 'black', fontWeight: '600' }}>Saldo</Text>
         <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>
-          {showPasswordSaldo ?  userMonetaryBalance : '********'}</Text>
+          {showPasswordSaldo ? userMonetaryBalance : '********'}</Text>
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <AntDesign name="filetext1" size={24} color="#A6A6A6" />
@@ -156,6 +158,13 @@ const HomeScreen: React.FC = () => {
             <Ionicons name="chevron-forward" size={24} color="#000" />
           </TouchableOpacity>
         ))}
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate('Products')}
+        >
+          <Feather name="box" size={24} color="black" />
+          <Text style={styles.menuItemText}>Produtos participantes</Text>
+        </TouchableOpacity>
         {modalVisible ?
           <View>
             {modalType === 'Extract' ?
@@ -227,13 +236,13 @@ const HomeScreen: React.FC = () => {
                             <View key={index} style={styles.modalViewColumnContainer}>
                               <View style={{ flexDirection: 'column' }} >
                                 <Text style={styles.modalDarkMainText}>
-                                {formatDate(item.created_at)}</Text>
+                                  {formatDate(item.created_at)}</Text>
                                 <Text style={styles.modalSmallGreyText} >
                                   QR Code: {showPasswordExtratoQrCode ? item.qrcode : "**************"}</Text>
                               </View>
                               <Text
                                 style={styles.modalGreenText}>
-                                R$ {showPasswordExtratoQrCode ? item.totalMonetaryValue.toFixed(2)  : "*********"}</Text>
+                                R$ {showPasswordExtratoQrCode ? item.totalMonetaryValue.toFixed(2) : "*********"}</Text>
                             </View>
                           ))}
                         </ScrollView> : null}
@@ -246,7 +255,7 @@ const HomeScreen: React.FC = () => {
                                 <Text style={styles.modalDarkMainText}>
                                   Transferência</Text>
                                 <Text style={styles.modalSmallGreyText} >
-                                Chave Pix: {showPasswordExtratoPix ? item.pixKey : "*********"}</Text>
+                                  Chave Pix: {showPasswordExtratoPix ? item.pixKey : "*********"}</Text>
                               </View>
                               <Text style={styles.modalGreenText}>
                                 R$ {showPasswordExtratoPix ? item.totalMonetaryValue.toFixed(2) : "*********"}</Text>
@@ -508,7 +517,7 @@ const styles = StyleSheet.create({
   modalDarkMainText: {
     color: 'black',
     fontSize: 16,
-    maxWidth:200
+    maxWidth: 200
   },
   modalGreenText: {
     color: '#85D151',
