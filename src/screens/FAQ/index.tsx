@@ -138,10 +138,28 @@ const FAQScreen: React.FC = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [selectedFAQ, setSelectedFAQ] = useState(null);
 
+  const [name, setName] = useState('');
+  const getUserName = async () => {
+
+    const { data } = await api.get('/users/me/v1/');
+
+    if (data) {
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+      setName(nameUser)
+    }
+  }
+  useEffect(() => {
+
+    getUserName();
+   
+  },[])
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       <ScrollView style={{width:'100%', height:'100%', marginLeft:30}} >

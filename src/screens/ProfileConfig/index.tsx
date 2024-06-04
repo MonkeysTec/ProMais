@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput, Alert, Linking } from 'react-native';
 import { RainbowLine } from '../../components/RainbowLine';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -9,13 +9,30 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
 
 const ProfileConfigScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const loadInBrowser = (url: any) => {
-    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
-  };
 
+ 
+
+  const [name, setName] = useState('');
+  const getUserName = async () => {
+
+    const { data } = await api.get('/users/me/v1/');
+
+    if (data) {
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+      setName(nameUser)
+    }
+  }
+  useEffect(() => {
+
+    getUserName();
+   
+  },[])
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -24,7 +41,7 @@ const ProfileConfigScreen: React.FC = () => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
           <View>
             <Text style={{ color: 'black', fontSize: 24 }} >
-              Maxwell
+              {name}
             </Text>
             <Text style={{ color: 'grey', fontSize: 14 }}>
               Nome do Cargo
