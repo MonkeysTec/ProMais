@@ -62,6 +62,17 @@ const News: React.FC = () => {
     return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
   };
 
+const data = [
+    {
+      date: '28/05/2024',
+      title: 'Lorem ipsum dolor',
+      description: `Lorem ipsum dolor site`,
+      image: 'https://via.placeholder.com/150',
+    },
+    // Add more data objects as needed
+  ];
+  
+const News: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>

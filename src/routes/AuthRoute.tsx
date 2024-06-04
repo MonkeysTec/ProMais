@@ -20,6 +20,7 @@ const Stack = createStackNavigator();
 import DistributorsScreen from '../screens/Distributors';
 import ProductsScreen from '../screens/Products';
 import { Redeem } from '../screens/Redeem';
+import ChangePassword from '../screens/ChangePassword';
 
 const Tab = createBottomTabNavigator();
 
@@ -45,6 +46,7 @@ const StackNavigator: React.FC = () => (
     <Stack.Screen name="Distributors" component={DistributorsScreen} />
     <Stack.Screen name="Redeem" component={Redeem} />
     <Stack.Screen name="News" component={News} />
+    <Stack.Screen name="ChangePassword" component={ChangePassword} />
   </Stack.Navigator>
 );
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -11,16 +11,16 @@ const Bipador: React.FC = () => {
   const navigation = useNavigation()
   const [bipadoresSample, setBipadoresSample] = useState([]);
   const [name, setName] = useState('');
-  
+
 
   const getBipadores = async () => {
 
     const { data } = await api.get('/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER');
-    
-    if(data){
+
+    if (data) {
       setBipadoresSample(data.results);
     }
-    
+
   }
   const getUserName = async () => {
 
@@ -32,43 +32,82 @@ const Bipador: React.FC = () => {
       nameUser += ' ';
       nameUser += data.token.user.lastName;
       setName(nameUser)
-      
+
     }
+  }
+  const inviteNewBeeper = async () => {
+
+    try {
+      const { data } = await api.get('/users/gen/jwe/v1');
+
+      if (data) {
+        console.log('JWE token found, can invite a beeper!')
+        const jweToken = data.jwe;
+        try {
+
+          const { data } = await api.get('/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER');
+
+          if (data) {
+
+            console.log('Url to invitation found!, trying to prepare invite url');
+
+            let urlInvite = data.urlToInvite;
+
+            urlInvite += jweToken;
+            Linking.openURL(urlInvite).catch(err => console.error("Couldn't load page", err));
+            console.log('Invite created! Opening browser');
+
+
+          }
+
+        } catch (error) {
+          console.log(error)
+        }
+
+      }
+
+    }
+    catch (error) {
+      console.log(error)
+    }
+
+
+
   }
 
   useEffect(() => {
     getBipadores();
     getUserName();
-  },[])
+  }, [])
 
-  const handleBipChange = async(index: number, newStatus: string, bipId: string) => {
+  const handleBipChange = async (index: number, newStatus: string, bipId: string) => {
     let bipadoresNew = [...bipadoresSample];
-   if(newStatus === 'NOT_ACTIVE'){
-    bipadoresNew[index].registrationStatus = 'SUSPENDED';
-    setBipadoresSample(bipadoresNew);
-    try{
-      const { data } = await api.put(`/users/system/suspend/v1/${bipId}`);
-      if(data.message === 'success'){
-        getBipadores()
+    if (newStatus === 'NOT_ACTIVE') {
+      bipadoresNew[index].registrationStatus = 'SUSPENDED';
+      setBipadoresSample(bipadoresNew);
+      try {
+        const { data } = await api.put(`/users/system/suspend/v1/${bipId}`);
+        if (data.message === 'success') {
+          getBipadores()
+        }
+      } catch (error) {
+        console.log(error)
       }
-    }catch(error){
-      console.log(error)
     }
-  }
-   
-   if(newStatus === 'ACTIVE'){
-    bipadoresNew[index].registrationStatus = 'ACTIVE';
-    setBipadoresSample(bipadoresNew);
-    try{
 
-      const { data } = await api.put(`/users/system/activate/v1/${bipId}`);
-      if(data.message === 'success'){
-        getBipadores()
+    if (newStatus === 'ACTIVE') {
+      bipadoresNew[index].registrationStatus = 'ACTIVE';
+      setBipadoresSample(bipadoresNew);
+      try {
+
+        const { data } = await api.put(`/users/system/activate/v1/${bipId}`);
+        if (data.message === 'success') {
+          getBipadores()
+        }
+      } catch (error) {
+        console.log(error)
       }
-    }catch(error){
-      console.log(error)
     }
-   }
   };
   const handleDelete = (index: number) => {
     setBipadoresSample(prevState => {
@@ -84,15 +123,17 @@ const Bipador: React.FC = () => {
         <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
-      
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', 
-        gap: 10, width: '100%', 
-        marginLeft: 80 }} onPress={() => navigation.navigate('Home')} >
 
-          <Feather style={{ top: 10 }} name="arrow-left" size={24} color="black" />
-          <Text style={styles.homeText}>Home</Text>
-        </TouchableOpacity>
-      
+      <TouchableOpacity style={{
+        flexDirection: 'row', alignItems: 'center',
+        gap: 10, width: '100%',
+        marginLeft: 80
+      }} onPress={() => navigation.navigate('Home')} >
+
+        <Feather style={{ top: 10 }} name="arrow-left" size={24} color="black" />
+        <Text style={styles.homeText}>Home</Text>
+      </TouchableOpacity>
+
       <View style={{
 
         marginLeft: 10,
@@ -108,7 +149,7 @@ const Bipador: React.FC = () => {
           borderRadius: 10, padding: 15
         }} >
 
-          <TouchableOpacity >
+          <TouchableOpacity onPress={() => inviteNewBeeper()} >
             <View style={{
               backgroundColor: 'red', borderRadius: 40, width: 200, justifyContent: 'center',
               height: 25, alignItems: 'center', flexDirection: 'row', marginTop: 20
@@ -145,7 +186,7 @@ const Bipador: React.FC = () => {
               </Text>
 
             </View>
-            
+
             {bipadoresSample.length > 0 ? bipadoresSample.map((bip, index) => (
               <View key={index} style={{
                 flexDirection: 'row', width: '100%',
@@ -167,8 +208,8 @@ const Bipador: React.FC = () => {
                     :
                     null
                   }
-                  {bip.registrationStatus !== 'INVITE_NOT_ACCEPT' && 
-                  bip.registrationStatus !== 'ACTIVE'  ?
+                  {bip.registrationStatus !== 'INVITE_NOT_ACCEPT' &&
+                    bip.registrationStatus !== 'ACTIVE' ?
                     <TouchableOpacity onPress={() => handleBipChange(index, 'ACTIVE', bip.systemUserID)}>
 
                       <MaterialIcons style={{ margin: -15 }} name="toggle-off" size={60} color="grey" />
