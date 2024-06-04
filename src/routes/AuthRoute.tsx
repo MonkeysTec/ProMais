@@ -44,6 +44,7 @@ const StackNavigator: React.FC = () => (
     <Stack.Screen name="Products" component={ProductsScreen} />
     <Stack.Screen name="Distributors" component={DistributorsScreen} />
     <Stack.Screen name="Redeem" component={Redeem} />
+    <Stack.Screen name="News" component={News} />
   </Stack.Navigator>
 );
 
