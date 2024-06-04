@@ -151,7 +151,11 @@ const HomeScreen: React.FC = () => {
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <AntDesign name="filetext1" size={24} color="#A6A6A6" />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={() => {
+             setModalType('Extract');
+             setExtractType('General')
+             setModalVisible(true);
+          }} style={styles.button}>
             <Text style={styles.buttonText}>Ver extrato</Text>
             <View style={styles.underline} />
           </TouchableOpacity>
