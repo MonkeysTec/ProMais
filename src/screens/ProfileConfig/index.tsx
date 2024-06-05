@@ -10,10 +10,12 @@ import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
+import { useAuth } from '../../context/LoginContext';
 
 const ProfileConfigScreen: React.FC = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
+  const { user, login, logout } = useAuth();
   const getUserName = async () => {
 
     const { data } = await api.get('/users/me/v1/');
@@ -27,6 +29,7 @@ const ProfileConfigScreen: React.FC = () => {
      
     }
   }
+
 
   useEffect(() => {
 
@@ -101,7 +104,7 @@ const ProfileConfigScreen: React.FC = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => { }}
+            onPress={logout}
           >
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,

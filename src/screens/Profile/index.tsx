@@ -171,7 +171,8 @@ const ProfileScreen: React.FC = () => {
             </View>
             <Text>Distribuidores participantes</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: '#D8D8D8', width: 120, padding: 5, borderRadius: 10 }} onPress={logout}>
+          <TouchableOpacity style={{ backgroundColor: '#D8D8D8', width: 120, padding: 5, borderRadius: 10 }} 
+          onPress={logout}>
 
             <Text style={{ fontWeight: '700' }} >Sair dessa conta</Text>
 
