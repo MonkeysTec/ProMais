@@ -53,105 +53,81 @@ const ProfileScreen: React.FC = () => {
             <Text style={{ color: 'grey', fontSize: 14 }}>
               Nome do Cargo
             </Text>
-
           </View>
           <View>
             <TouchableOpacity
               style={styles.touchableBody}
-              onPress={() => { }}
-            >
+              onPress={() => { }} >
               <View style={{
                 backgroundColor: '#D8D8D8', width: 66, height: 66,
                 alignItems: 'center',
                 justifyContent: 'center', borderRadius: 50
               }}>
-
                 <Ionicons name="person-outline" size={35} color="black" />
               </View>
-
             </TouchableOpacity>
           </View>
-
         </View>
-
       </View>
       <View style={{ flexDirection: 'column' }}>
-
         <View style={{ paddingHorizontal: 40, gap: 15, marginBottom: 20 }} >
           <Text style={{ color: 'grey' }}  >
             Ajuda
           </Text>
           <TouchableOpacity
             style={styles.touchableBody}
-            onPress={() => { navigation.navigate('ProfileConfig') }}
-          >
+            onPress={() => { navigation.navigate('ProfileConfig') }}>
             <View style={styles.iconView}>
-
               <Octicons name="gear" size={20} color="black" />
             </View>
             <Text>Configurações</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.touchableBody}
-            onPress={() => navigation.navigate('FAQ')}
-          >
+            onPress={() => navigation.navigate('FAQ')} >
             <View style={styles.iconView}>
-
               <Ionicons name="chatbox-outline" size={20} color="black" />
-
             </View>
             <Text>FAQ</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.touchableBody}
-            onPress={() => navigation.navigate('ContactUs')}
-          >
+            onPress={() => navigation.navigate('ContactUs')}>
             <View style={styles.iconView}>
-
               <FontAwesome5 name="headset" size={20} color="black" />
             </View>
             <Text>Fale conosco</Text>
           </TouchableOpacity>
-
           <TouchableOpacity
             style={styles.touchableBody}
-            onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}
-          >
+            onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}>
             <View style={styles.iconView}>
-
               <Feather name="droplet" size={24} color="black" />
             </View>
             <Text>LubConsult</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.touchableBody}
-            onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}
-          >
+            onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}>
             <View style={styles.iconView}>
               <View style={{ alignItems: 'center', width: 24, height: 12 }} >
-
                 <Image source={require('../../assets/IconTotalEnergies.png')}
                   style={{ width: '100%', height: '100%' }} />
               </View>
-
             </View>
             <Text>Conheça Total Energies</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.touchableBody}
-            onPress={() => navigation.navigate('Distributors')}
-          >
+            onPress={() => navigation.navigate('Distributors')}  >
             <View style={styles.iconView}>
-
               <FontAwesome6 name="users" size={20} color="black" />
             </View>
             <Text>Distribuidores participantes</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ backgroundColor: '#D8D8D8', width: 140, padding: 10, borderRadius: 10 }} 
           onPress={logout}>
-
             <Text style={{ fontWeight: '700' }} >Sair dessa conta</Text>
-
           </TouchableOpacity>
         </View>
         <View style={{ paddingHorizontal: 40, gap: 15 }} >
@@ -170,25 +146,16 @@ const ProfileScreen: React.FC = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.touchableBody}
-            onPress={() => navigation.navigate('Terms')}
-          >
+            onPress={() => navigation.navigate('Terms')}>
             <View style={styles.iconView}>
-
               <AntDesign name="bars" size={20} color="black" />
             </View>
             <Text>Políticas</Text>
           </TouchableOpacity>
-
-
-
-
         </View>
-
         <View>
-
         </View>
       </View>
-
     </View>
   );
 };
