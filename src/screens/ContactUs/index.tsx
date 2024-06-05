@@ -5,9 +5,11 @@ import { Picker } from '@react-native-picker/picker';
 import api from '../../services/api';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../context/LoginContext';
 
 
 const ContactUsScreen: React.FC = () => {
+  const { user, userName, login, logout } = useAuth();
   const [name, setName] = useState('');
   const [assunto, setAssunto] = useState('');
   const [descrição, setDescrição] = useState('');
@@ -84,7 +86,7 @@ const ContactUsScreen: React.FC = () => {
       
       <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       <View style={{ width: '100%', height: '100%', padding: 30 }}  >

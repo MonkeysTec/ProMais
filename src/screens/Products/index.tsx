@@ -29,7 +29,7 @@ interface Product {
 
 const ProductsScreen: React.FC = () => {
 
-  const { user, login, logout } = useAuth();
+  const { user,userName, login, logout } = useAuth();
 
   const [productsNew, setProductsNew] = useState<Product[]>([])
 
@@ -98,7 +98,7 @@ const ProductsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       <View style={{ padding: 40 }} >

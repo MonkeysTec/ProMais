@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import FAQScreen from '../FAQ';
 import { WebView } from 'react-native-webview';
+import { useAuth } from '../../context/LoginContext';
 
 
 const { height, width } = Dimensions.get('window');
@@ -2438,12 +2439,13 @@ class=MsoHyperlink><span lang=PT><span style='text-decoration:none'>&nbsp;</span
   `};
 
 const TermsScreen: React.FC = () => {
+  const { user, userName, login, logout } = useAuth();
   const [showDetails, setShowDetails] = useState(false);
   const [selectedFAQ, setSelectedFAQ] = useState(null);
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       <ScrollView >

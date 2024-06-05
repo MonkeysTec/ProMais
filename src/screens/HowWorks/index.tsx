@@ -7,36 +7,19 @@ import CardNews from '../../components/CardNews';
 import api from '../../services/api';
 import axios from 'axios';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useAuth } from '../../context/LoginContext';
 
 
 const HowWorks: React.FC = () => {
-
+  const { user, userName, login, logout } = useAuth();
   const [name, setName] = useState('');
-  const getUserName = async () => {
 
-    const { data } = await api.get('/users/me/v1/');
-
-    if (data) {
-      let nameUser = '';
-      nameUser += data.token.user.firstName;
-      nameUser += ' ';
-      nameUser += data.token.user.lastName;
-      setName(nameUser)
-
-    }
-  }
-
-  useEffect(() => {
-
-    getUserName();
-
-  }, [])
 
 
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       <View style={{

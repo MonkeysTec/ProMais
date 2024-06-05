@@ -6,78 +6,51 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
+import { useAuth } from '../../context/LoginContext';
+
 
 const Bipador: React.FC = () => {
+  const { user, userName, login, logout } = useAuth();
   const navigation = useNavigation()
   const [bipadoresSample, setBipadoresSample] = useState([]);
   const [name, setName] = useState('');
 
 
   const getBipadores = async () => {
-
     const { data } = await api.get('/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER');
-
     if (data) {
       setBipadoresSample(data.results);
     }
-
   }
-  const getUserName = async () => {
 
-    const { data } = await api.get('/users/me/v1/');
-
-    if (data) {
-      let nameUser = '';
-      nameUser += data.token.user.firstName;
-      nameUser += ' ';
-      nameUser += data.token.user.lastName;
-      setName(nameUser)
-
-    }
-  }
   const inviteNewBeeper = async () => {
-
     try {
       const { data } = await api.get('/users/gen/jwe/v1');
-
       if (data) {
         console.log('JWE token found, can invite a beeper!')
         const jweToken = data.jwe;
         try {
-
           const { data } = await api.get('/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER');
-
           if (data) {
-
             console.log('Url to invitation found!, trying to prepare invite url');
-
             let urlInvite = data.urlToInvite;
-
             urlInvite += jweToken;
             Linking.openURL(urlInvite).catch(err => console.error("Couldn't load page", err));
             console.log('Invite created! Opening browser');
-
-
           }
-
         } catch (error) {
           console.log(error)
         }
-
       }
-
     }
     catch (error) {
       console.log(error)
     }
-
-
-
   }
 
   useEffect(() => {
     getBipadores();
-    getUserName();
+   
   }, [])
 
   const handleBipChange = async (index: number, newStatus: string, bipId: string) => {
@@ -120,7 +93,7 @@ const Bipador: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
 

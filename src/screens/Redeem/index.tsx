@@ -7,8 +7,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import api from "../../services/api";
 import axios from "axios";
+import { useAuth } from "../../context/LoginContext";
 
 export const Redeem: React.FC = () => {
+  const { user, userName, login, logout } = useAuth();
   const [step, setStep] = useState(1);
   const navigation = useNavigation();
   const [pixTransferType, setPixTransferType] = useState('');
@@ -100,7 +102,7 @@ export const Redeem: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       {step === 1 &&

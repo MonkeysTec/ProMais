@@ -24,7 +24,7 @@ const menuItems = [
 
 
 const HomeScreen: React.FC = () => {
-  const { user, login, logout } = useAuth();
+  const { user, userName, login, logout } = useAuth();
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
@@ -66,50 +66,31 @@ const HomeScreen: React.FC = () => {
   const getExtractRescues = async () => {
     try{
       const { data } = await api.get('/rescues/v1/');
-     
      if(data.results){
       setExtractRescuesData(data.results);
     }
     }catch(error){
       console.log('Rescues: ', error)
-
     }
-    
-  }
 
-  const getUserName = async () => {
-
-    const { data } = await api.get('/users/me/v1/');
-
-    if (data) {
-      let nameUser = '';
-      nameUser += data.token.user.firstName;
-      nameUser += ' ';
-      nameUser += data.token.user.lastName;
-      setName(nameUser)
-    }
   }
 
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
     const day = date.getUTCDate();
-    const month = date.getUTCMonth() + 1; // Months are zero-indexed
+    const month = date.getUTCMonth() + 1; 
     const year = date.getUTCFullYear();
 
-    // Format the date as DD/MM/YYYY
+
     return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
-
       getBalance();
       getExtractGeneral();
-      getUserName();
       getExtractRescues();
-      
     }, 15000);
-
     
     return () => clearInterval(interval);
   }, []); 
@@ -117,14 +98,13 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     getBalance();
     getExtractGeneral();
-    getUserName();
     getExtractRescues();
   },[])
 
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       <View>

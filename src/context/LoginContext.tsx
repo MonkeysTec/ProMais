@@ -12,6 +12,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  userName: string | null;
   login: (userData: User) => void;
   logout: () => void;
 }
@@ -22,23 +23,53 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider =  ({children}:AuthProviderType) => {
   const [user, setUser] = useState<User | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
     // Verifica o localStorage ao iniciar o aplicativo
     async function loadUserFromLocalStorage() {
       const storedUser = await AsyncStorage.getItem('user');
+      const storedUserName = await AsyncStorage.getItem('userName');
       if (storedUser) {
         setUser(JSON.parse(storedUser));
+
       }
+      if (storedUserName) {
+        setUserName(JSON.parse(storedUserName));
+      }else{
+        
+        if(user){
+
+          getNameUser();
+        }
+      }
+      
     }
     loadUserFromLocalStorage();
   }, []);
+
+  const getNameUser = async () => {
+
+    const { data } = await api.get('/users/me/v1/');
+
+    if (data) {
+      let nameUser = '';
+      nameUser += data.token.user.firstName;
+      nameUser += ' ';
+      nameUser += data.token.user.lastName;
+      setUserName(nameUser);
+      AsyncStorage.setItem('userName', JSON.stringify(nameUser));
+      console.log('userName, retrieved')
+    }
+  }
 
   const login = (userData: User) => {
     // Lógica para autenticar o usuário (por exemplo, fazer uma chamada à API)
     setUser(userData);
     // Armazena o usuário no localStorage
     AsyncStorage.setItem('user', JSON.stringify(userData));
+    
+    getNameUser();
     
   };
 
@@ -47,7 +78,7 @@ export const AuthProvider =  ({children}:AuthProviderType) => {
     setUser(null);
     // Remove o usuário do localStorage
     AsyncStorage.removeItem('user');
-
+    AsyncStorage.removeItem('userName');
     try {
       const {data} = await api.post('/users/system/logout/v1');
   
@@ -61,7 +92,7 @@ export const AuthProvider =  ({children}:AuthProviderType) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user,userName, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

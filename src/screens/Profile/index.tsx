@@ -14,32 +14,14 @@ import { useAuth } from '../../context/LoginContext';
 import api from '../../services/api';
 
 const ProfileScreen: React.FC = () => {
-  const { user, login, logout } = useAuth();
+  const { user,userName, login, logout } = useAuth();
   const [name, setName] = useState('');
   const navigation = useNavigation();
   const loadInBrowser = (url: any) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
 
-  const getUserName = async () => {
 
-    const { data } = await api.get('/users/me/v1/');
-
-    if (data) {
-      let nameUser = '';
-      nameUser += data.token.user.firstName;
-      nameUser += ' ';
-      nameUser += data.token.user.lastName;
-      setName(nameUser)
-     
-    }
-  }
-
-  useEffect(() => {
-
-    getUserName();
-   
-  },[])
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -48,7 +30,7 @@ const ProfileScreen: React.FC = () => {
         <View style={styles.touchableBody} >
           <View>
             <Text style={{ color: 'black', fontSize: 24 }} >
-              {name}
+              {userName}
             </Text>
             <Text style={{ color: 'grey', fontSize: 14 }}>
               Nome do Cargo

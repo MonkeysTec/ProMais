@@ -7,6 +7,7 @@ import CardNews from '../../components/CardNews';
 import api from '../../services/api';
 import axios from 'axios';
 import FAQScreen from '../FAQ';
+import { useAuth } from '../../context/LoginContext';
 
 
 
@@ -43,7 +44,7 @@ interface DistributorsModel {
 
 const DistributorsScreen: React.FC = () => {
   const [distributorsNew, setDistributorsNew] = useState<DistributorsModel[]>([])
-
+  const { user, userName, login, logout } = useAuth();
 
   const getDistributors = async () => {
 
@@ -103,7 +104,7 @@ const DistributorsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       <View style={{ padding: 40 }} >

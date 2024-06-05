@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import CardNews from '../../components/CardNews';
 import api from '../../services/api';
 import axios from 'axios';
+import { useAuth } from '../../context/LoginContext';
 interface NewInfoModel {
   id: string;
   created_at: string;
@@ -24,18 +25,7 @@ interface NewInfoModel {
 const News: React.FC = () => {
   const [newsData, setNewsData] = useState<NewInfoModel[]>([])
   const [name, setName] = useState('');
-  const getUserName = async () => {
-
-    const { data } = await api.get('/users/me/v1/');
-
-    if (data) {
-      let nameUser = '';
-      nameUser += data.token.user.firstName;
-      nameUser += ' ';
-      nameUser += data.token.user.lastName;
-      setName(nameUser)
-    }
-  }
+  const { user, userName, login, logout } = useAuth();
 
   const newsGet = async() => {
     
@@ -46,7 +36,7 @@ const News: React.FC = () => {
 
   useEffect(() => {
     newsGet();
-    getUserName();
+   
   },[])
 
 
@@ -75,7 +65,7 @@ const data = [
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       {newsData.map((item, index) => (

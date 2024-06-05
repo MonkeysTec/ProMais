@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import CardNews from '../../components/CardNews';
 import api from '../../services/api';
 import axios from 'axios';
+import { useAuth } from '../../context/LoginContext';
 
 const dataFAQ = [
   {
@@ -137,29 +138,13 @@ const dataFAQ = [
 const FAQScreen: React.FC = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [selectedFAQ, setSelectedFAQ] = useState(null);
-
+  const { user, userName, login, logout } = useAuth();
   const [name, setName] = useState('');
-  const getUserName = async () => {
-
-    const { data } = await api.get('/users/me/v1/');
-
-    if (data) {
-      let nameUser = '';
-      nameUser += data.token.user.firstName;
-      nameUser += ' ';
-      nameUser += data.token.user.lastName;
-      setName(nameUser)
-    }
-  }
-  useEffect(() => {
-
-    getUserName();
-   
-  },[])
+  
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {name}</Text>
+        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
         <Ionicons name="reload" size={24} color="white" />
       </View>
       <ScrollView style={{width:'100%', height:'100%', marginLeft:30}} >

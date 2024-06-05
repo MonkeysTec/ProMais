@@ -15,34 +15,8 @@ import { useAuth } from '../../context/LoginContext';
 const ProfileConfigScreen: React.FC = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
-  const { user, login, logout } = useAuth();
-  const getUserName = async () => {
+  const { user,userName, login, logout } = useAuth();
 
-    const { data } = await api.get('/users/me/v1/');
-
-    if (data) {
-      let nameUser = '';
-      nameUser += data.token.user.firstName;
-      nameUser += ' ';
-      nameUser += data.token.user.lastName;
-      setName(nameUser)
-     
-    }
-  }
-
-
-  useEffect(() => {
-
-    getUserName();
-   
-  },[]);
-
-  
-  useEffect(() => {
-
-    getUserName();
-   
-  },[])
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -57,12 +31,11 @@ const ProfileConfigScreen: React.FC = () => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
           <View>
             <Text style={{ color: 'black', fontSize: 24 }} >
-             {name}
+             {userName}
             </Text>
             <Text style={{ color: 'grey', fontSize: 14 }}>
               Nome do Cargo
             </Text>
-
           </View>
           <View>
             <TouchableOpacity
@@ -74,24 +47,17 @@ const ProfileConfigScreen: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center', borderRadius: 50
               }}>
-
                 <Ionicons name="person-outline" size={35} color="black" />
               </View>
-
             </TouchableOpacity>
           </View>
-
         </View>
-
       </View>
       <View style={{ flexDirection: 'column' }}>
-
         <View style={{ paddingHorizontal: 40, gap: 15, marginBottom: 20 }} >
-
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
-            onPress={() => { navigation.navigate('ChangePassword') }}
-          >
+            onPress={() => { navigation.navigate('ChangePassword') }}>
             <View style={{
               backgroundColor: '#D8D8D8', width: 32, height: 32,
               alignItems: 'center',
