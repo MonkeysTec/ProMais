@@ -45,7 +45,7 @@ const ProfileScreen: React.FC = () => {
       <SafeAreaView />
       <RainbowLine />
       <View style={styles.insideContainer}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
+        <View style={styles.touchableBody} >
           <View>
             <Text style={{ color: 'black', fontSize: 24 }} >
               {name}
@@ -57,7 +57,7 @@ const ProfileScreen: React.FC = () => {
           </View>
           <View>
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+              style={styles.touchableBody}
               onPress={() => { }}
             >
               <View style={{
@@ -82,28 +82,20 @@ const ProfileScreen: React.FC = () => {
             Ajuda
           </Text>
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            style={styles.touchableBody}
             onPress={() => { navigation.navigate('ProfileConfig') }}
           >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
+            <View style={styles.iconView}>
 
               <Octicons name="gear" size={20} color="black" />
             </View>
             <Text>Configurações</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            style={styles.touchableBody}
             onPress={() => navigation.navigate('FAQ')}
           >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
+            <View style={styles.iconView}>
 
               <Ionicons name="chatbox-outline" size={20} color="black" />
 
@@ -111,14 +103,10 @@ const ProfileScreen: React.FC = () => {
             <Text>FAQ</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            style={styles.touchableBody}
             onPress={() => navigation.navigate('ContactUs')}
           >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
+            <View style={styles.iconView}>
 
               <FontAwesome5 name="headset" size={20} color="black" />
             </View>
@@ -126,28 +114,20 @@ const ProfileScreen: React.FC = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            style={styles.touchableBody}
             onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}
           >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
+            <View style={styles.iconView}>
 
               <Feather name="droplet" size={24} color="black" />
             </View>
             <Text>LubConsult</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            style={styles.touchableBody}
             onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}
           >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
+            <View style={styles.iconView}>
               <View style={{ alignItems: 'center', width: 24, height: 12 }} >
 
                 <Image source={require('../../assets/IconTotalEnergies.png')}
@@ -158,20 +138,16 @@ const ProfileScreen: React.FC = () => {
             <Text>Conheça Total Energies</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            style={styles.touchableBody}
             onPress={() => navigation.navigate('Distributors')}
           >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
+            <View style={styles.iconView}>
 
               <FontAwesome6 name="users" size={20} color="black" />
             </View>
             <Text>Distribuidores participantes</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: '#D8D8D8', width: 120, padding: 5, borderRadius: 10 }} 
+          <TouchableOpacity style={{ backgroundColor: '#D8D8D8', width: 140, padding: 10, borderRadius: 10 }} 
           onPress={logout}>
 
             <Text style={{ fontWeight: '700' }} >Sair dessa conta</Text>
@@ -183,28 +159,20 @@ const ProfileScreen: React.FC = () => {
             Termos de uso
           </Text>
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            style={styles.touchableBody}
             onPress={() => navigation.navigate('Rules')}
           >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
+            <View style={styles.iconView}>
 
               <Feather name="book" size={20} color="black" />
             </View>
             <Text>Regras</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            style={styles.touchableBody}
             onPress={() => navigation.navigate('Terms')}
           >
-            <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
-              alignItems: 'center',
-              justifyContent: 'center', borderRadius: 50
-            }}>
+            <View style={styles.iconView}>
 
               <AntDesign name="bars" size={20} color="black" />
             </View>
@@ -237,6 +205,19 @@ const styles = StyleSheet.create({
 
     width: '100%',
     padding: 50
+  },
+  touchableBody: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: 10
+  },
+  iconView:{
+    backgroundColor: '#D8D8D8', 
+    width: 32, 
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center', 
+    borderRadius: 50
   },
 
 
