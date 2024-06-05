@@ -16,7 +16,7 @@ export const Redeem: React.FC = () => {
   const [totalBalanceAmount, setTotalBalanceAmount] = useState(0);
   const [name, setName] = useState('');
   const [amountToReclaim, setAmountToReclaim] = useState<Number>();
-
+  const [errorType, setErrorType] = useState('');
 
   const tryTransferReclaim = async () => {
 
@@ -32,13 +32,41 @@ export const Redeem: React.FC = () => {
         pixType: pixTransferType
       }
 
-      console.log(data)
-      const response = await api.post('/points/rescue/v1/', data);
-  
-      console.log(response);
 
-    } catch (error) {
-      console.log('Erro ao tentar transferir o valor: ', error)
+      const response = await api.post('/points/rescue/v1/', data);
+
+      if (response) {
+        console.log('Resgate efetuado com sucesso, buscando conta pix alvo');
+       
+        try {
+          const { data } = await api.get('/rescues/v1/');
+          console.log(data);
+          if (data.results[0]) {
+            if (data.results[0].paymentStatusName === 'Cancelado' || data.results[0].paymentStatusName === null) {
+              setStep(6);
+              setErrorType('Chave Pix Não Válida!');
+            }
+            if(data.results[0].paymentStatusName === 'Pago'){
+              setStep(5);
+              
+            }
+            if (data.results[0].paymentStatusName === 'Dados de entrada inválidos') {
+              setStep(6);
+              setErrorType('Dados de entrada inválidos!');
+            }
+          }
+
+        } catch (error) {
+          console.log('Rescues: ', error)
+
+        }
+
+      }
+    }
+    catch (error) {
+      console.log('Erro ao tentar transferir o valor: ', error);
+      setStep(6);
+      setErrorType('Valor minimo de 100 reais ou chave inválida');
     }
   }
 
@@ -134,7 +162,8 @@ export const Redeem: React.FC = () => {
             style={styles.input}
             placeholder={`Insira ${pixTransferType}`}
             onChangeText={(value) => {
-              setPixKey(value)}}
+              setPixKey(value)
+            }}
             maxLength={14}
             value={pixKey}
           /> : null}
@@ -142,7 +171,8 @@ export const Redeem: React.FC = () => {
             style={styles.input}
             placeholder={`Insira ${pixTransferType}`}
             onChangeText={(value) => {
-              setPixKey(value)}}
+              setPixKey(value)
+            }}
             maxLength={12}
 
             value={pixKey}
@@ -151,7 +181,8 @@ export const Redeem: React.FC = () => {
             style={styles.input}
             placeholder={`Insira ${pixTransferType}`}
             onChangeText={(value) => {
-              setPixKey(value)}}
+              setPixKey(value)
+            }}
             maxLength={32}
             value={pixKey}
           /> : null}
@@ -159,7 +190,8 @@ export const Redeem: React.FC = () => {
             style={styles.input}
             placeholder={`Insira ${pixTransferType}`}
             onChangeText={(value) => {
-              setPixKey(value)}}
+              setPixKey(value)
+            }}
             maxLength={40}
             value={pixKey}
           /> : null}
@@ -177,10 +209,12 @@ export const Redeem: React.FC = () => {
         <View style={styles.cardBalance}>
           <Ionicons onPress={() => setStep(2)} name={'arrow-back'} size={31} color={'#374649'} />
           <Text style={styles.text}>Qual o valor do resgate?</Text>
-          <Text style={{ fontSize: 18, fontWeight: 400 }}>Saldo disponível par resgate em conta: <Text style={{ fontSize: 22, fontWeight: 600, 
-            marginTop: -20 }}>R$ {totalBalanceAmount}</Text>
+          <Text style={{ fontSize: 18, fontWeight: 400 }}>Saldo disponível par resgate em conta: <Text style={{
+            fontSize: 22, fontWeight: 600,
+            marginTop: -20
+          }}>R$ {totalBalanceAmount}</Text>
           </Text>
-          
+
           <TextInput
             style={styles.input}
             placeholder='0,00'
@@ -191,7 +225,7 @@ export const Redeem: React.FC = () => {
             value={amountToReclaim?.toString()}
           />
 
-          <Text style={{ position: 'absolute', top: 244, left: 30, fontSize:20, fontWeight:'700' }} >
+          <Text style={{ position: 'absolute', top: 255, left: 30, fontSize: 20, fontWeight: '700' }} >
             R$
           </Text>
 
@@ -227,6 +261,7 @@ export const Redeem: React.FC = () => {
           <TouchableOpacity onPress={() => {
 
             tryTransferReclaim();
+            setStep(7);
           }} style={styles.joinButton}>
             <Text style={styles.joinText}>Continuar</Text>
           </TouchableOpacity>
@@ -235,10 +270,20 @@ export const Redeem: React.FC = () => {
       {step === 5 &&
         <View style={styles.cardBalance}>
           <Ionicons name={'arrow-back'} onPress={() => setStep(4)} size={31} color={'#374649'} />
-          <Text style={styles.text}>Resgate realizado com sucesso</Text>
-          <ScrollView style={{ borderWidth: 1, borderColor: '#a9a9a9', height: 300, width: '95%', borderRadius: 12, padding: 20 }}>
-            <Text style={{ fontSize: 14, color: '#a9a9a9', fontWeight: 600 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris elementum tortor felis, id varius libero dapibus ut. Sed consequat felis felis, nec lacinia ante pharetra sed. Nulla et turpis vel tortor elementum malesuada. Nulla semper ornare lectus non dignissim. Donec rhoncus sollicitudin orci, in mattis libero convallis nec. Nunc vel posuere augue. Proin vulputate scelerisque elit, id sodales nulla lacinia eget. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus dignissim vulputate dictum. Aliquam pulvinar aliquet dolor, at eleifend ante pretium ac.</Text>
-            <Text style={{ fontSize: 14, color: '#a9a9a9', fontWeight: 600 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris elementum tortor felis, id varius libero dapibus ut. Sed consequat felis felis, nec lacinia ante pharetra sed. Nulla et turpis vel tortor elementum malesuada. Nulla semper ornare lectus non dignissim. Donec rhoncus sollicitudin orci, in mattis libero convallis nec. Nunc vel posuere augue. Proin vulputate scelerisque elit, id sodales nulla lacinia eget. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus dignissim vulputate dictum. Aliquam pulvinar aliquet dolor, at eleifend ante pretium ac.</Text>
+          <View style={{ flexDirection: 'row', gap: 14 }} >
+            <TouchableOpacity
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+              onPress={() => { }}
+            >
+              <AntDesign name="checkcircle" size={55} color="#85D151" />
+            </TouchableOpacity>
+            <Text style={styles.text}>Resgate realizado com sucesso</Text>
+          </View>
+          <ScrollView style={{ borderWidth: 1, borderColor: '#a9a9a9', height: 200, width: '95%', borderRadius: 12, padding: 20 }}>
+            <Text style={{ fontSize: 14, color: '#a9a9a9', fontWeight: 600 }}>
+
+            </Text>
+
           </ScrollView>
           <View style={{ flexDirection: 'row', gap: 10 }}>
             <Feather name="send" size={18} color="red" />
@@ -249,7 +294,51 @@ export const Redeem: React.FC = () => {
           </TouchableOpacity>
         </View>
       }
+      {step === 6 &&
+        <View style={styles.cardBalance}>
+
+          <View style={{ flexDirection: 'row', gap: 14 }} >
+            <TouchableOpacity
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+              onPress={() => { }}
+            >
+              <AntDesign name="closecircle" size={55} color="red" />
+            </TouchableOpacity>
+            <Text style={styles.text}>Houve um erro no resgate</Text>
+          </View>
+          <Text style={{ fontWeight: '600', fontSize: 20 }}>Verifique as regras a seguir</Text>
+          <Text style={{}}>-Resgate minimo: 100,00 reais</Text>
+          <Text style={{}}>-Se a chave pix é um CPF, escolha o CPF na primeira pagina(o mesmo para as outras opções)
+          </Text>
+          <Text style={{}}>Caso tenha verificado as regras acima, e ainda sim deu erro, por gentileza,
+            contate o suporte.
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.joinButton}>
+            <Text style={styles.joinText}>Voltar a Home</Text>
+          </TouchableOpacity>
+        </View>
+      }
       {step === 7 &&
+        <View style={styles.cardBalance}>
+
+          <View style={{ flexDirection: 'row', gap: 14 }} >
+            <TouchableOpacity
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+              onPress={() => { }}
+            >
+              <AntDesign name="exclamationcircle" size={24} color="orange" />
+            </TouchableOpacity>
+            <Text style={styles.text}>Em processamento...</Text>
+          </View>
+          <Text style={{ fontWeight: '600', fontSize: 20 }}>Por favor aguarde nesta página!</Text>
+          <Text style={{}}>-Esse processamento pode durar até 30 segundos</Text>
+         
+          <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.joinButton}>
+            <Text style={styles.joinText}>Voltar a Home</Text>
+          </TouchableOpacity>
+        </View>
+      }
+      {step === 8 &&
         <View style={styles.cardWarning}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
             <AntDesign name="exclamationcircle" size={20} color={'red'} />
@@ -328,9 +417,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 25,
     width: '95%',
-   
-    fontSize:20,
-    fontWeight:'700'
+
+    fontSize: 20,
+    fontWeight: '700'
   },
   loginButton: {
     width: '95%',
