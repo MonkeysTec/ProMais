@@ -18,7 +18,7 @@ const menuItems = [
   { title: 'Indique um "bipador"', icon: 'user', path: 'Bipador' },
   { title: 'Conheça Total Energies', icon: '', path:'browserTotalEnergies' },
   { title: 'LubConsult', icon: 'tool', path:'lubconsult' },
-  { title: 'Como funciona', icon: 'questioncircleo', path: 'News' },
+  { title: 'Como funciona', icon: 'questioncircleo', path: 'HowWorks' },
   { title: 'FAQ', icon: 'infocirlceo', path:'FAQ' },
 ];
 
@@ -69,7 +69,7 @@ const HomeScreen: React.FC = () => {
   const getExtractRescues = async () => {
     try{
       const { data } = await api.get('/rescues/v1/');
-      console.log(data)
+     
      
     }catch(error){
       console.log('Rescues: ', error)

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, TextInput, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
-
+import api from '../../services/api';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 
 
 const ContactUsScreen: React.FC = () => {
   const [name, setName] = useState('');
   const [assunto, setAssunto] = useState('');
   const [descrição, setDescrição] = useState('');
-
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const aboutOptions = [
     'Acesso',
     'Elogio',
@@ -20,8 +22,67 @@ const ContactUsScreen: React.FC = () => {
     'Outros'
   ]
 
+  const sendEmail = async () => {
+
+    try {
+    
+      const data = {
+        email: name,
+        title: assunto,
+        description: descrição
+      }
+
+     
+      const response = await api.post('/email/contactus/v1/', data);
+      console.log(response)
+      if(response){
+        setShowConfirmModal(true);
+      }
+
+    } catch (error) {
+      console.log('Erro ao tentar enviar email: ', error)
+    }
+  }
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <>
+      {showConfirmModal ?
+      
+      <View style={styles.container}>
+      <SafeAreaView />
+
+      <View style={styles.insideContainer}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
+
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            onPress={() => { }}
+          >
+            <AntDesign name="checkcircle" size={55} color="#85D151" />
+          </TouchableOpacity>
+
+
+        </View>
+        <Text style={{fontWeight:'800', fontSize:30, color:"#85D151"}} >
+          Boa!{'\n'}Sua mensagem foi enviada
+        </Text>
+        <Text style={{fontWeight:'500', fontSize:20, color:"black"}}>
+         Recebemos seu recado e em breve, nossa equipe Pro+ entrará em contato com você!
+        </Text>
+        <TouchableOpacity onPress={() => {
+            navigation.navigate('Home')
+          }} style={styles.joinButton}>
+            <Text style={styles.joinText}>Voltar para a home</Text>
+          </TouchableOpacity>
+         
+      </View>
+
+
+    </View>
+      : 
+      
+      
+      <View style={styles.container}>
       <View style={styles.containerRed}>
         <Text style={{ color: 'white', fontWeight: '800' }}>Olá Max</Text>
         <Ionicons name="reload" size={24} color="white" />
@@ -35,7 +96,7 @@ const ContactUsScreen: React.FC = () => {
           <TextInput
             value={name}
             onChangeText={text => setName(text)}
-            placeholder="Nome"
+            placeholder="Email para contato"
             style={{ borderRadius: 50, marginBottom:20, 
               borderWidth: 2, borderColor: 'grey', padding: 5, paddingLeft: 30, width:'100%', 
               height:50 }}
@@ -70,13 +131,17 @@ const ContactUsScreen: React.FC = () => {
           />
         </View>
         <View>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={() => sendEmail()} style={styles.button}>
             <Text style={styles.buttonText}>Enviar</Text>
           </TouchableOpacity>
         </View>
       </View>
 
     </View>
+      
+      }
+    </>
+    
   );
 };
 
@@ -118,6 +183,30 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
   },
+  insideContainer: {
+
+    width: '100%',
+    padding: 50
+  },
+  joinButton: {
+    backgroundColor: '#85d151',
+    width: 200,
+    height: 50,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: '#85d151',
+    marginTop:20
+  },
+  joinText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: 'bold'
+  },
+
 });
 
 export default ContactUsScreen;
