@@ -70,6 +70,9 @@ const HomeScreen: React.FC = () => {
     try{
       const { data } = await api.get('/rescues/v1/');
       console.log(data)
+      if(data){
+        setExtractRescuesData(data.results)
+      }
      
     }catch(error){
       console.log('Rescues: ', error)
@@ -110,7 +113,7 @@ const HomeScreen: React.FC = () => {
       getUserName();
       getExtractRescues();
       
-    }, 10000);
+    }, 15000);
 
     
     return () => clearInterval(interval);
@@ -302,6 +305,8 @@ const HomeScreen: React.FC = () => {
                                   Transferência</Text>
                                 <Text style={styles.modalSmallGreyText} >
                                   Chave Pix: {showPasswordExtratoPix ? item.pixKey : "*********"}</Text>
+                                  <Text style={styles.modalSmallGreyText} >
+                                  Status: {item.paymentStatusName}</Text>
                               </View>
                               <Text style={styles.modalGreenText}>
                                 R$ {showPasswordExtratoPix ? item.totalMonetaryValue.toFixed(2) : "*********"}</Text>
