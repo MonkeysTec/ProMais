@@ -15,16 +15,18 @@ const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
   { title: 'Codigo escaneado', icon: 'scan1', modal: 'ScannedCodes' },
   { title: 'Indique um "bipador"', icon: 'user', path: 'Bipador' },
-  { title: 'Conheça Total Energies', icon: '', path:'browserTotalEnergies' },
-  { title: 'LubConsult', icon: 'tool', path:'lubconsult' },
+  { title: 'Conheça Total Energies', icon: '', path: 'browserTotalEnergies' },
+  { title: 'LubConsult', icon: 'tool', path: 'lubconsult' },
   { title: 'Como funciona', icon: 'questioncircleo', path: 'HowWorks' },
-  { title: 'FAQ', icon: 'infocirlceo', path:'FAQ' },
+  { title: 'FAQ', icon: 'infocirlceo', path: 'FAQ' },
 ];
 import * as Notifications from 'expo-notifications'
+import { sendPushNotification, useNotifications } from '../Notification';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const HomeScreen: React.FC = () => {
-  const { user, userName, login, logout } = useAuth();
+  const { user, userName, login, logout,sendPushNotification } = useAuth();
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
@@ -49,7 +51,7 @@ const HomeScreen: React.FC = () => {
   const getBalance = async () => {
     const { data } = await api.get('/points/values/v1/');
 
-    if(data.result.availableMonetayValue){
+    if (data.result.availableMonetayValue) {
       setUserMonetaryBalance(data.result.availableMonetayValue.toFixed(2));
     }
   }
@@ -58,18 +60,18 @@ const HomeScreen: React.FC = () => {
 
     const { data } = await api.get('/points/v1/?onlyValid=true');
 
-    if(data.results){
+    if (data.results) {
       setExtractGeneralData(data.results);
     }
   }
 
   const getExtractRescues = async () => {
-    try{
+    try {
       const { data } = await api.get('/rescues/v1/');
-     if(data.results){
-      setExtractRescuesData(data.results);
-    }
-    }catch(error){
+      if (data.results) {
+        setExtractRescuesData(data.results);
+      }
+    } catch (error) {
       console.log('Rescues: ', error)
     }
 
@@ -78,7 +80,7 @@ const HomeScreen: React.FC = () => {
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
     const day = date.getUTCDate();
-    const month = date.getUTCMonth() + 1; 
+    const month = date.getUTCMonth() + 1;
     const year = date.getUTCFullYear();
 
 
@@ -91,22 +93,20 @@ const HomeScreen: React.FC = () => {
       getExtractGeneral();
       getExtractRescues();
     }, 15000);
-    
+
     return () => clearInterval(interval);
-  }, []); 
-  
+  }, []);
+
   useEffect(() => {
     getBalance();
     getExtractGeneral();
     getExtractRescues();
-  },[])
-const handleCallNotification = async ()=>{
-  const {status} = await Notifications.getPermissionsAsync();
-  if(status !=='granted'){
-    Alert.alert("Nao permitido")
+    sendPushNotification({title:'Bem vindo ao App!', body:'Essa é a Home do Clube Pro +!'})
+  }, [])
+  const handleCallNotification = async () => {
+    sendPushNotification({title:'Você clicou no botao da home!', body:'Isso é um teste'})
+  
   }
-  console.log('Notificacao')
-}
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
@@ -122,24 +122,24 @@ const handleCallNotification = async ()=>{
             <Entypo name={showPasswordSaldo ? 'eye' : 'eye-with-line'} size={24} color="black" />
           </TouchableOpacity>
           <Button onPress={handleCallNotification} title='chamar notificacao' />
-          
+
         </View>
-       
+
         <Text style={{ color: 'black', fontWeight: '600' }}>Saldo</Text>
         <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>
           {showPasswordSaldo ? userMonetaryBalance : '********'}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <AntDesign name="filetext1" size={24} color="#A6A6A6" />
           <TouchableOpacity onPress={() => {
-             setModalType('Extract');
-             setExtractType('General')
-             setModalVisible(true);
+            setModalType('Extract');
+            setExtractType('General')
+            setModalVisible(true);
           }} style={styles.button}>
             <Text style={styles.buttonText}>Ver extrato</Text>
             <View style={styles.underline} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => 
+        <TouchableOpacity onPress={() =>
           navigation.navigate('Redeem')
         } style={styles.greenButton}>
           <FontAwesome name="dollar" size={20} color="white" style={styles.icon} />
@@ -158,14 +158,14 @@ const handleCallNotification = async ()=>{
                 navigation.navigate(item.path)
               }
               if (item.path === 'lubconsult') {
-                loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') 
+                loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult')
               }
               if (item.modal) {
                 setModalType(item.modal)
                 setModalVisible(true)
               }
-              if(item.path === 'browserTotalEnergies'){
-                loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') 
+              if (item.path === 'browserTotalEnergies') {
+                loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult')
               }
             }}>
             {!item.icon ?
@@ -213,9 +213,9 @@ const handleCallNotification = async ()=>{
                           <TouchableOpacity onPress={() => setShowPasswordExtratoPix(!showPasswordExtratoPix)}>
                             <Entypo name={showPasswordExtratoQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
                           </TouchableOpacity>
-                        </View> : null }
+                        </View> : null}
                     </View>
-                    <View style={{ flexDirection: 'row', borderBottomColor: 'grey', borderBottomWidth: 1, width: '100%', justifyContent: 'center', gap: 30}}>
+                    <View style={{ flexDirection: 'row', borderBottomColor: 'grey', borderBottomWidth: 1, width: '100%', justifyContent: 'center', gap: 30 }}>
                       <TouchableOpacity
                         style={extractType !== 'General' ?
                           styles.notselectedExtractButton :
@@ -260,7 +260,7 @@ const handleCallNotification = async ()=>{
                                   Transferência</Text>
                                 <Text style={styles.modalSmallGreyText} >
                                   Chave Pix: {showPasswordExtratoPix ? item.pixKey : "*********"}</Text>
-                                  <Text style={styles.modalSmallGreyText} >
+                                <Text style={styles.modalSmallGreyText} >
                                   Status: {item.paymentStatusName}</Text>
                               </View>
                               <Text style={styles.modalGreenText}>
@@ -281,7 +281,7 @@ const handleCallNotification = async ()=>{
                 onRequestClose={closeModal}>
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
-                    <View style={{flexDirection: 'row', width: '100%', justifyContent: 'flex-end' }}>
+                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end' }}>
                       <TouchableOpacity
                         style={{ elevation: 2 }}
                         onPress={closeModal}>
@@ -293,7 +293,7 @@ const handleCallNotification = async ()=>{
                         </TouchableOpacity>
                       </View>
                     </View>
-                    <View style={{flexDirection: 'row', width: '100%', marginBottom: 20}}>
+                    <View style={{ flexDirection: 'row', width: '100%', marginBottom: 20 }}>
                       <Text style={{ fontWeight: '400', fontSize: 16 }} >
                         Códigos escaneados
                       </Text>
@@ -526,21 +526,21 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     padding: 10
   },
-  eyeViewStyles:{
-    position: 'absolute', 
-    top: 0, 
+  eyeViewStyles: {
+    position: 'absolute',
+    top: 0,
     right: 40
   },
   modalViewContainer: {
     flexDirection: 'column', gap: 10
   },
   scrollViewContainer: {
-    maxHeight: 'auto', 
+    maxHeight: 'auto',
     marginBottom: 50
   },
   modalExtractView: {
     flexDirection: 'row',
-    width: '100%', 
+    width: '100%',
     justifyContent: 'flex-end'
   },
 

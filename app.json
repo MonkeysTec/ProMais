@@ -12,20 +12,22 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.agadfs.promais"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.agadfs.promais"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "74c6b3c7-3d53-4b4e-894b-ec32921497a8"
+        "projectId": "443caa1a-12a1-4b75-9cc7-2767d290cb2b"
       }
     }
   }

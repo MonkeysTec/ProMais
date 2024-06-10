@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
-import { Text, View, Button, Platform, Alert } from 'react-native';
-import * as Device from 'expo-device';
+import { useEffect, useRef, useState } from 'react';
 import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+import { Platform, Alert } from 'react-native';
 import Constants from 'expo-constants';
-import React from 'react';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -14,30 +13,32 @@ Notifications.setNotificationHandler({
   }),
 });
 
-
-
-async function sendPushNotification(expoPushToken: string) {
-  const message = {
-    to: expoPushToken,
-    sound: 'default',
-    title: 'Original Title',
-    body: 'And here is the body!',
-    data: { someData: 'goes here' },
-  };
-
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(message),
-  });
+async function sendPushNotification(expoPushToken:any, dataPush:any) {
+    console.log(dataPush)
+  for(let i = 0; dataPush.length > i ; i++){
+    
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: dataPush[i].title,
+      body: dataPush[i].body,
+      data: { someData: 'goes here' },
+    };
+  
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  }
+  
 }
 
-
-function handleRegistrationError(errorMessage: string) {
+function handleRegistrationError(errorMessage) {
   Alert.alert(errorMessage);
   throw new Error(errorMessage);
 }
@@ -76,7 +77,7 @@ async function registerForPushNotificationsAsync() {
       ).data;
       console.log(pushTokenString);
       return pushTokenString;
-    } catch (e: unknown) {
+    } catch (e) {
       handleRegistrationError(`${e}`);
     }
   } else {
@@ -84,49 +85,34 @@ async function registerForPushNotificationsAsync() {
   }
 }
 
-export default function NotificationsScreen() {
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState<Notifications.Notification | undefined>(
-    undefined
-  );
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
-
+function useNotifications(pushData:any) {
+  
   useEffect(() => {
+    
     registerForPushNotificationsAsync()
-      .then(token => setExpoPushToken(token ?? ''))
-      .catch((error: any) => setExpoPushToken(`${error}`));
+      .then(token => {
+        if (token) {
+          console.log('Expo Push Token: j', token);
+          sendPushNotification(token, pushData);
+          AsyncStorage.setItem('PushToken', token);
+        }
+      })
+      .catch(error => console.log('Error registering for push notifications:', error));
+      
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
+    const notificationListener = Notifications.addNotificationReceivedListener(notification => {
+      console.log('Notification Received:', notification);
     });
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
+    const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log('Notification Response:', response);
     });
 
     return () => {
-      notificationListener.current &&
-        Notifications.removeNotificationSubscription(notificationListener.current);
-      responseListener.current &&
-        Notifications.removeNotificationSubscription(responseListener.current);
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
     };
   }, []);
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around' }}>
-      <Text>Your Expo push token: {expoPushToken}</Text>
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Title: {notification && notification.request.content.title} </Text>
-        <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
-      </View>
-      <Button
-        title="Press to Send Notification"
-        onPress={async () => {
-          await sendPushNotification(expoPushToken);
-        }}
-      />
-    </View>
-  );
 }
+
+export { sendPushNotification, registerForPushNotificationsAsync, handleRegistrationError, useNotifications };

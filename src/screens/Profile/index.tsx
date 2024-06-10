@@ -14,14 +14,17 @@ import { useAuth } from '../../context/LoginContext';
 import api from '../../services/api';
 
 const ProfileScreen: React.FC = () => {
-  const { user,userName, login, logout } = useAuth();
+  const { user,userName, login, logout, sendPushNotification } = useAuth();
   const [name, setName] = useState('');
   const navigation = useNavigation();
   const loadInBrowser = (url: any) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
 
-
+  const handleCallNotification = async () => {
+    sendPushNotification({title:'Esse é o perfil!', body:'Isso é um teste do botao perfil'})
+  
+  }
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -35,6 +38,7 @@ const ProfileScreen: React.FC = () => {
             <Text style={{ color: 'grey', fontSize: 14 }}>
               Nome do Cargo
             </Text>
+            <Button onPress={handleCallNotification} title='chamar notificacao' />
           </View>
           <View>
             <TouchableOpacity
