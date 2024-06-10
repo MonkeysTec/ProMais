@@ -19,15 +19,14 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.agadfs.promais"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "443caa1a-12a1-4b75-9cc7-2767d290cb2b"
+        "projectId": "c0575a23-08bb-4e0e-81fa-124b36b03e3a"
       }
     }
   }
