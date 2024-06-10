@@ -196,19 +196,44 @@ const HomeScreen: React.FC = () => {
             {!item.icon ?
               <View style={{ alignItems: 'center', width: 24, height: 12 }} >
                 <Image source={require('../../assets/IconTotalEnergies.png')}
-                  style={{ width: '100%', height: '100%' }} />
-              </View> : <AntDesign name={item.icon} size={24} color="#000" />}
+                  style={{ width: '100%', height: '100%', tintColor: "rgba(255, 0, 0, 0.65)", }} />
+              </View> : <AntDesign name={item.icon} size={24} color="red" />}
             <Text style={styles.menuItemText}>{item.title}</Text>
-
-            <Ionicons name="chevron-forward" size={24} color="#000" />
+            <View
+                style={{
+                  backgroundColor: "#85d151",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 50,
+               
+                  height:30, 
+                  width:30
+                }}
+              >
+                 <Ionicons name="chevron-forward" size={24} color="white" />
+              </View>
+           
           </TouchableOpacity>
         ))}
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => navigation.navigate('Products')}
         >
-          <Feather name="box" size={24} color="black" />
+          <Feather name="box" size={24} color="red" />
           <Text style={styles.menuItemText}>Produtos participantes</Text>
+          <View
+                style={{
+                  backgroundColor: "#85d151",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 50,
+               
+                  height:30, 
+                  width:30
+                }}
+              >
+                 <Ionicons name="chevron-forward" size={24} color="white" />
+              </View>
         </TouchableOpacity>
         {modalVisible ?
           <View>
