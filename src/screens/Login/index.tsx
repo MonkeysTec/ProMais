@@ -100,7 +100,7 @@ const navigation = useNavigation();
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     width: '100%',
   },
   input: {

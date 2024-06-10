@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import FAQScreen from '../FAQ';
 import { WebView } from 'react-native-webview';
 import { useAuth } from '../../context/LoginContext';
+import { stylesDefault } from '../../components/Body';
 
 
 const { height, width } = Dimensions.get('window');
@@ -497,12 +498,15 @@ outro, por mais privilegiado que seja. </span></p>
 `};
 
 const RulesScreen: React.FC = () => {
-  const { user, userName, login, logout } = useAuth();
+  const { userName } = useAuth();
   return (
     <View style={styles.container}>
-      <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
-        <Ionicons name="reload" size={24} color="white" />
+      <View style={stylesDefault.RedViewHeaderContainer}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end' }} >
+          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
+        </View>
+
       </View>
       <ScrollView >
         <WebView

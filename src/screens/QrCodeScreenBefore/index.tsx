@@ -14,24 +14,24 @@ const QrCodeScreenBefore: React.FC = () => {
   const [canSkip, setCanSkip] = useState(false);
   useFocusEffect(
     React.useCallback(() => {
-      // This code runs when the screen comes into focus
-      console.log('Navigated to QrCodeScreenBefore');
+      
+      
       if (dontShowAgain === true && canSkip === true) {
         navigation.navigate('QRCodeRead');
       }
       return () => {
-        // This code runs when the screen goes out of focus
-        console.log('Navigated away from QrCodeScreenBefore');
+      
+       
       };
     }, [dontShowAgain, canSkip])
   );
 
   return (
     <>
+      <RainbowLine />
+      <SafeAreaView />
     {dontShowAgain === false || canSkip === false ?
      <View style={styles.container}>
-      <SafeAreaView />
-      <RainbowLine />
       <View style={styles.insideContainer}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
 

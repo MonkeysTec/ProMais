@@ -36,23 +36,23 @@ const StackNavigator: React.FC = () => (
       cardStyle: { backgroundColor: 'white' },
     }}
   >
-    <Stack.Screen name="Home" component={HomeScreen} />
-    <Stack.Screen name="TotalEnergies" component={News} />
-    <Stack.Screen name="Bipador" component={Bipador} />
-    <Stack.Screen name="Profile" component={ProfileScreen} />
-    <Stack.Screen name="ProfileConfig" component={ProfileConfigScreen} />
-    <Stack.Screen name="FAQ" component={FAQScreen} />
-    <Stack.Screen name="ContactUs" component={ContactUsScreen} />
-    <Stack.Screen name="Rules" component={RulesScreen} />
-    <Stack.Screen name="Terms" component={TermsScreen} />
-    <Stack.Screen name="Products" component={ProductsScreen} />
-    <Stack.Screen name="Distributors" component={DistributorsScreen} />
-    <Stack.Screen name="Redeem" component={Redeem} />
-    <Stack.Screen name="QrCodeAfter" component={QrCodeScreenAfter} />
-    <Stack.Screen name="QRCodeRead" component={QRCodeScreen} />
-    <Stack.Screen name="News" component={News} />
-    <Stack.Screen name="ChangePassword" component={ChangePassword} />
-    <Stack.Screen name="HowWorks" component={HowWorks} />
+    <Stack.Screen name="Home" component={HomeScreen}  />
+    <Stack.Screen name="TotalEnergies" component={News}  />
+    <Stack.Screen name="Bipador" component={Bipador}  />
+    <Stack.Screen name="Profile" component={ProfileScreen}  />
+    <Stack.Screen name="ProfileConfig" component={ProfileConfigScreen}  />
+    <Stack.Screen name="FAQ" component={FAQScreen}  />
+    <Stack.Screen name="ContactUs" component={ContactUsScreen}  />
+    <Stack.Screen name="Rules" component={RulesScreen}  />
+    <Stack.Screen name="Terms" component={TermsScreen}  />
+    <Stack.Screen name="Products" component={ProductsScreen}  />
+    <Stack.Screen name="Distributors" component={DistributorsScreen}  />
+    <Stack.Screen name="Redeem" component={Redeem} options={{ headerShown: false }} />
+    <Stack.Screen name="QrCodeAfter" component={QrCodeScreenAfter}  />
+    <Stack.Screen name="QRCodeRead" component={QRCodeScreen}  />
+    <Stack.Screen name="News" component={News}  />
+    <Stack.Screen name="ChangePassword" component={ChangePassword}  />
+    <Stack.Screen name="HowWorks" component={HowWorks}  />
   </Stack.Navigator>
 );
 

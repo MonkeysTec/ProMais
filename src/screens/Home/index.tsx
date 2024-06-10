@@ -23,10 +23,11 @@ const menuItems = [
 import * as Notifications from 'expo-notifications'
 import { sendPushNotification, useNotifications } from '../Notification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { stylesDefault } from '../../components/Body';
 
 
 const HomeScreen: React.FC = () => {
-  const { user, userName,expoPushToken, login, logout, sendPushNotification } = useAuth();
+  const { user, userName, expoPushToken, login, logout, sendPushNotification } = useAuth();
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
@@ -96,21 +97,22 @@ const HomeScreen: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
+
   useEffect(() => {
     getBalance();
     getExtractGeneral();
     getExtractRescues();
-    
+
   }, [])
   useEffect(() => {
-    if(expoPushToken){
+    if (expoPushToken) {
       handleNewsNotification();
     }
-  },[expoPushToken])
+  }, [expoPushToken])
 
 
   const handleNewsNotification = async () => {
-   
+
     sendPushNotification({ title: 'Bem vindo ao App!', body: 'Essa é a Home do Clube Pro +!' })
 
   }
@@ -120,45 +122,57 @@ const HomeScreen: React.FC = () => {
   }
   return (
     <View style={styles.container}>
-      <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
-        <Ionicons name="reload" size={24} color="white" />
+      <View style={stylesDefault.RedViewHeaderContainer}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end' }} >
+          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
+        </View>
+        {/*  <Ionicons name="reload" size={24} color="white" /> */}
       </View>
       <View>
         <HomeNewInfo />
       </View>
-      <View style={styles.cardBalance}>
-        <View style={{ position: 'absolute', top: 10, right: 10 }} >
-          <TouchableOpacity onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}>
-            <Entypo name={showPasswordSaldo ? 'eye' : 'eye-with-line'} size={24} color="black" />
-          </TouchableOpacity>
-          <Button onPress={handleCallNotification} title='chamar notificacao' />
-
-        </View>
-
-        <Text style={{ color: 'black', fontWeight: '600' }}>Saldo</Text>
-        <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>
-          {showPasswordSaldo ? userMonetaryBalance : '********'}</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <AntDesign name="filetext1" size={24} color="#A6A6A6" />
-          <TouchableOpacity onPress={() => {
+      <View style={stylesDefault.ViewBody} >
+        <View style={styles.cardBalance}>
+          <View style={{
+            flexDirection: 'row', justifyContent: 'space-between',
+            width: '100%',
+            alignItems: 'center'
+          }} >
+            <Text style={{ color: 'black', fontWeight: '600', fontSize: 18 }}>Saldo</Text>
+            <TouchableOpacity style={{}} onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}>
+              <Entypo style={{padding:5}} name={showPasswordSaldo ? 'eye' : 'eye-with-line'} size={24} color="black" />
+            </TouchableOpacity>
+          </View>
+          {showPasswordSaldo &&
+            <Text style={{ color: 'black', fontWeight: '600', fontSize: 30, alignSelf: 'center' }}>R$ {userMonetaryBalance.replace(/\./g, ',')}</Text>
+          }
+          {/* <TouchableOpacity onPress={() => {
             setModalType('Extract');
             setExtractType('General')
             setModalVisible(true);
-          }} style={styles.button}>
-            <Text style={styles.buttonText}>Ver extrato</Text>
-            <View style={styles.underline} />
-          </TouchableOpacity>
+          }} style={{
+            flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent:'center',
+          
+          }}>
+            <AntDesign name="filetext1" size={24} color="black" />
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Ver extrato</Text>
+              <View style={styles.underline} />
+            </View>
+          </TouchableOpacity> */}
+          {showPasswordSaldo &&
+            <TouchableOpacity onPress={() =>
+              navigation.navigate('Redeem')
+            } style={styles.greenButton}>
+              <FontAwesome name="dollar" size={20} color="white" style={styles.icon} />
+              <Text style={styles.greenButtonText}>Resgatar agora</Text>
+            </TouchableOpacity>
+          }
+
         </View>
-        <TouchableOpacity onPress={() =>
-          navigation.navigate('Redeem')
-        } style={styles.greenButton}>
-          <FontAwesome name="dollar" size={20} color="white" style={styles.icon} />
-          <Text style={styles.greenButtonText}>Resgatar agora</Text>
-        </TouchableOpacity>
       </View>
-      <Image source={require('../../assets/home-img.png')} style={[styles.outline1, styles.imageBig]} />
-      <Text style={styles.text}>Clube Pro+. O clube de fidelidade da Total Energies.</Text>
+
 
       <ScrollView style={styles.menu}>
         {menuItems.map((item, index) => (
@@ -211,7 +225,7 @@ const HomeScreen: React.FC = () => {
                       <TouchableOpacity
                         style={{ elevation: 2 }}
                         onPress={closeModal}>
-                        <Ionicons name="close" size={24} color="grey" />
+                        <Ionicons name="close" size={24} color="black" />
                       </TouchableOpacity>
                       {extractType === 'General' ?
                         <View style={styles.eyeViewStyles} >
@@ -296,7 +310,7 @@ const HomeScreen: React.FC = () => {
                       <TouchableOpacity
                         style={{ elevation: 2 }}
                         onPress={closeModal}>
-                        <Ionicons name="close" size={24} color="grey" />
+                        <Ionicons name="close" size={24} color="black" />
                       </TouchableOpacity>
                       <View style={styles.eyeViewStyles} >
                         <TouchableOpacity onPress={() => setShowPasswordCodesQrCode(!showPasswordCodesQrCode)}>
@@ -352,27 +366,30 @@ const styles = StyleSheet.create({
   },
   containerRed: {
     backgroundColor: 'red',
-    height: 200,
+    height: 120,
     width: '100%',
     paddingHorizontal: 30,
+    marginBottom: 40,
     justifyContent: 'space-between',
     borderBottomLeftRadius: 40,
     flexDirection: 'row',
     alignItems: 'center',
+
   },
   cardBalance: {
-    width: '80%',
+    width: '100%',
     backgroundColor: 'white',
-    height: 230,
+    height: 'auto',
     borderRadius: 8,
-    marginTop: -70,
+    marginTop: -30,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    paddingTop: 30,
-    paddingLeft: 20,
+    shadowRadius: 25,
+    elevation: 10,
+    paddingHorizontal: 20,
+    paddingVertical:30,
+
     gap: 20,
   },
   text_subTitleSize: {
@@ -385,25 +402,27 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     paddingLeft: 10,
+
   },
   buttonText: {
-    color: '#A6A6A6',
+    color: 'black',
     fontSize: 16,
   },
   underline: {
     height: 1,
-    backgroundColor: '#A6A6A6',
+    backgroundColor: 'black',
     width: '100%',
     marginTop: 4,
   },
   greenButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#85D151',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 200,
-    width: 200
+    width: 'auto'
   },
   icon: {
     marginRight: 10,
@@ -413,8 +432,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   menu: {
-    width: '90%',
+    width: '100%',
     marginTop: 20,
+    paddingHorizontal: 20
   },
   menuItem: {
     flexDirection: 'row',

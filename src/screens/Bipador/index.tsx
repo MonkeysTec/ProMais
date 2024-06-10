@@ -7,6 +7,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import { useAuth } from '../../context/LoginContext';
+import { stylesDefault } from '../../components/Body';
 
 
 const Bipador: React.FC = () => {
@@ -50,7 +51,7 @@ const Bipador: React.FC = () => {
 
   useEffect(() => {
     getBipadores();
-   
+
   }, [])
 
   const handleBipChange = async (index: number, newStatus: string, bipId: string) => {
@@ -92,43 +93,46 @@ const Bipador: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
-        <Ionicons name="reload" size={24} color="white" />
+      <View style={stylesDefault.RedViewHeaderContainer}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end' }} >
+          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
+        </View>
+
       </View>
 
-      <TouchableOpacity style={{
+      {/* <TouchableOpacity style={{
         flexDirection: 'row', alignItems: 'center',
         gap: 10, width: '100%',
-        marginLeft: 80
+        marginLeft: 80, marginTop:-40
       }} onPress={() => navigation.navigate('Home')} >
 
         <Feather style={{ top: 10 }} name="arrow-left" size={24} color="black" />
         <Text style={styles.homeText}>Home</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <View style={{
-
-        marginLeft: 10,
-        marginBottom: 20,
-        width: '85%',
-        height: '60%'
+        marginTop:-50,
+        flexDirection: 'column', 
+        padding:20,
+        width: '100%',
+        height: '100%'
       }}>
         <View style={{
           flexDirection: 'column',
           backgroundColor: 'white',
           width: '100%',
-          height: '100%',
-          borderRadius: 10, padding: 15
+          height: 'auto',
+          borderRadius: 10, padding: 20
         }} >
 
           <TouchableOpacity onPress={() => inviteNewBeeper()} >
             <View style={{
-              backgroundColor: 'red', borderRadius: 40, width: 200, justifyContent: 'center',
-              height: 25, alignItems: 'center', flexDirection: 'row', marginTop: 20
+              backgroundColor: 'red', borderRadius: 40, width: '100%', justifyContent: 'center',
+              height: 50, alignItems: 'center', flexDirection: 'row'
             }} >
               <AntDesign name="adduser" size={24} color="white" />
-              <Text style={{ fontSize: 14, color: 'white', fontWeight: '700', marginLeft: 10 }}>
+              <Text style={{ fontSize: 16, color: 'white', fontWeight: '700', marginLeft: 10 }}>
                 Indique um bipador</Text>
 
             </View>
@@ -137,17 +141,17 @@ const Bipador: React.FC = () => {
             flexDirection: 'column', marginTop: 20
           }} >
 
-            <Text style={{ fontSize: 16, color: 'red', fontWeight: '700', marginLeft: 10 }}>
+            <Text style={{ fontSize: 16, color: 'red', fontWeight: '700' }}>
               Cadastrados</Text>
-            <Text style={{ fontSize: 16, color: 'grey', fontWeight: '700', marginLeft: 10 }}>
+            <Text style={{ fontSize: 16, color: 'grey', fontWeight: '700' }}>
               Gerencie os bipadores indicados</Text>
 
           </View>
           <View style={{
-            flexDirection: 'column', marginTop: 20
-          }} >
+            flexDirection: 'column', marginTop: 20, height:'auto'
+           }} >
 
-            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around' }} >
+            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }} >
               <Text style={{ marginRight: 70, fontSize: 16, color: 'red', fontWeight: '600' }} >
                 Nome
               </Text>
@@ -210,11 +214,9 @@ const Bipador: React.FC = () => {
 
                 </View>
               </View>
-            )) : <Text>Carregando...</Text>}
-
+            )) : <Text style={{ fontSize: 16, fontWeight: '700', 
+            alignSelf: 'flex-start', color:'grey' }} >Você ainda não indicou nenhum bipador</Text>}
           </View>
-
-
         </View>
 
       </View>
@@ -232,16 +234,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F3F3'
   },
 
-  containerRed: {
-    backgroundColor: 'red',
-    height: 150,
-    width: '100%',
-    paddingHorizontal: 30,
-    justifyContent: 'space-between',
-    borderBottomLeftRadius: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   homeText: {
     fontSize: 20,
 

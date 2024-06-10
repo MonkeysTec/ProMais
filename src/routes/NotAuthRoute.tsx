@@ -19,9 +19,9 @@ const NotAuthRoutes = () => {
         
       }}
     >
-      <Stack.Screen name="Start" component={StartScreen} />
-      <Stack.Screen name="Register" component={SignUp} />
-      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Start" component={StartScreen}  options={{ headerShown: false }}/>
+      <Stack.Screen name="Register" component={SignUp}  options={{ headerShown: false }}/>
+      <Stack.Screen name="Login" component={Login}  options={{ headerShown: false }}/>
 
 
       

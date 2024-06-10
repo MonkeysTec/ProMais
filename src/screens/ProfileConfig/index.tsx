@@ -14,7 +14,6 @@ import { useAuth } from '../../context/LoginContext';
 
 const ProfileConfigScreen: React.FC = () => {
   const navigation = useNavigation();
-  const [name, setName] = useState('');
   const { user,userName, login, logout } = useAuth();
 
   return (
@@ -25,16 +24,13 @@ const ProfileConfigScreen: React.FC = () => {
         <TouchableOpacity onPress={() => { navigation.navigate('Profile') }} style={styles.backContainer}>
 
           
-          <Ionicons name={'arrow-back'} size={31} color={'#d9d9d9'} />
+          <Ionicons name={'arrow-back'} size={31} color={'black'} />
 
         </TouchableOpacity>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems:'center' }} >
           <View>
-            <Text style={{ color: 'black', fontSize: 24 }} >
+            <Text style={{ color: 'red', fontSize: 24, fontWeight:'600' }} >
              {userName}
-            </Text>
-            <Text style={{ color: 'grey', fontSize: 14 }}>
-              Nome do Cargo
             </Text>
           </View>
           <View>
@@ -43,45 +39,45 @@ const ProfileConfigScreen: React.FC = () => {
               onPress={() => { }}
             >
               <View style={{
-                backgroundColor: '#D8D8D8', width: 66, height: 66,
+                backgroundColor: '#85d151', width: 66, height: 66,
                 alignItems: 'center',
                 justifyContent: 'center', borderRadius: 50
               }}>
-                <Ionicons name="person-outline" size={35} color="black" />
+                <Ionicons name="person-outline" size={35} color="white" />
               </View>
             </TouchableOpacity>
           </View>
         </View>
       </View>
       <View style={{ flexDirection: 'column' }}>
-        <View style={{ paddingHorizontal: 40, gap: 15, marginBottom: 20 }} >
+        <View style={{ paddingHorizontal: 40, gap: 20, marginBottom: 20 }} >
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
             onPress={() => { navigation.navigate('ChangePassword') }}>
             <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
+              backgroundColor: '#85d151', width: 44, height: 44,
               alignItems: 'center',
               justifyContent: 'center', borderRadius: 50
             }}>
 
-              <MaterialIcons name="lock" size={20} color="black" />
+              <MaterialIcons name="lock" size={30} color="white" />
             </View>
-            <Text>Redefinir senha</Text>
+            <Text style={{fontSize:20}} >Redefinir senha</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
             onPress={logout}
           >
             <View style={{
-              backgroundColor: '#D8D8D8', width: 32, height: 32,
+              backgroundColor: '#85d151', width: 44, height: 44,
               alignItems: 'center',
               justifyContent: 'center', borderRadius: 50
             }}>
 
-              <MaterialIcons name="person-off" size={20} color="black" />
+              <MaterialIcons name="person-off" size={30} color="white" />
 
             </View>
-            <Text>Desativar minha conta</Text>
+            <Text style={{fontSize:20}}>Desativar minha conta</Text>
           </TouchableOpacity>
 
         </View>
@@ -102,13 +98,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   backContainer: {
-    marginTop: 0
+    marginBottom: 30
   },
 
   insideContainer: {
 
     width: '100%',
-    padding: 50
+    padding: 50,
   },
 
 
