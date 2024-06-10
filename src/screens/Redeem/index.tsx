@@ -10,7 +10,7 @@ import axios from "axios";
 import { useAuth } from "../../context/LoginContext";
 
 export const Redeem: React.FC = () => {
-  const { user, userName, login, logout } = useAuth();
+  const { user, userName, login, logout, sendPushNotification } = useAuth();
   const [step, setStep] = useState(1);
   const navigation = useNavigation();
   const [pixTransferType, setPixTransferType] = useState('');
@@ -38,7 +38,7 @@ export const Redeem: React.FC = () => {
       const response = await api.post('/points/rescue/v1/', data);
 
       if (response) {
-        console.log('Resgate efetuado com sucesso, buscando conta pix alvo');
+        
        
         try {
           const { data } = await api.get('/rescues/v1/');
@@ -47,14 +47,22 @@ export const Redeem: React.FC = () => {
             if (data.results[0].paymentStatusName === 'Cancelado' || data.results[0].paymentStatusName === null) {
               setStep(6);
               setErrorType('Chave Pix Não Válida!');
+              sendPushNotification({
+                title:'Erro ao efetuar o resgate', 
+                body:`Favor verificar se essa chave pix é valida para o tipo de chave selecionada`})
             }
             if(data.results[0].paymentStatusName === 'Pago'){
               setStep(5);
-              
+              sendPushNotification({
+                title:'Resgate efetuado com sucesso!', 
+                body:`Um pix de ${pixTransferType} com chave ${pixKey} de valor ${amountToReclaim} foi efetuado com sucesso!`})
             }
             if (data.results[0].paymentStatusName === 'Dados de entrada inválidos') {
               setStep(6);
               setErrorType('Dados de entrada inválidos!');
+              sendPushNotification({
+                title:'Erro ao efetuar o resgate', 
+                body:`Dados de entrada inválidos!`})
             }
           }
 
@@ -67,6 +75,10 @@ export const Redeem: React.FC = () => {
     }
     catch (error) {
       console.log('Erro ao tentar transferir o valor: ', error);
+      sendPushNotification({
+        title:'Erro ao efetuar o resgate', 
+        body:`Verifique os dados inseridos e valor acima de 100 reais!`})
+    
       setStep(6);
       setErrorType('Valor minimo de 100 reais ou chave inválida');
     }
