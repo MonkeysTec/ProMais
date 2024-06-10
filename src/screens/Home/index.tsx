@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const HomeScreen: React.FC = () => {
-  const { user, userName, login, logout,sendPushNotification } = useAuth();
+  const { user, userName,expoPushToken, login, logout, sendPushNotification } = useAuth();
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
@@ -96,16 +96,27 @@ const HomeScreen: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
-
   useEffect(() => {
     getBalance();
     getExtractGeneral();
     getExtractRescues();
-    sendPushNotification({title:'Bem vindo ao App!', body:'Essa é a Home do Clube Pro +!'})
+    
   }, [])
+  useEffect(() => {
+    if(expoPushToken){
+      handleNewsNotification();
+    }
+  },[expoPushToken])
+
+
+  const handleNewsNotification = async () => {
+   
+    sendPushNotification({ title: 'Bem vindo ao App!', body: 'Essa é a Home do Clube Pro +!' })
+
+  }
   const handleCallNotification = async () => {
-    sendPushNotification({title:'Você clicou no botao da home!', body:'Isso é um teste'})
-  
+    sendPushNotification({ title: 'Você clicou no botao da home!', body: 'Isso é um teste' })
+
   }
   return (
     <View style={styles.container}>

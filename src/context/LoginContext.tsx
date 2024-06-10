@@ -73,6 +73,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  expoPushToken:string | null;
   userName: string | null;
   login: (userData: User) => void;
   logout: () => void;
@@ -156,7 +157,9 @@ export const AuthProvider =  ({children}:AuthProviderType) => {
     }
     loadUserFromLocalStorage();
     registerForPushNotificationsAsync()
-      .then(token => setExpoPushToken(token ?? ''))
+      .then(token => {
+        
+        setExpoPushToken(token ?? '')})
       .catch((error: any) => setExpoPushToken(`${error}`));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -220,7 +223,7 @@ export const AuthProvider =  ({children}:AuthProviderType) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user,userName, login, logout, sendPushNotification }}>
+    <AuthContext.Provider value={{ user,userName, expoPushToken, login, logout, sendPushNotification }}>
       {children}
     </AuthContext.Provider>
   );
