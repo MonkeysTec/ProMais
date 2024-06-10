@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Modal, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Modal, Linking, Button, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -11,7 +11,6 @@ import { useAuth } from '../../context/LoginContext';
 import DeviceInfo from 'react-native-device-info';
 import api from '../../services/api';
 import Feather from '@expo/vector-icons/Feather';
-
 const menuItems = [
   { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
   { title: 'Codigo escaneado', icon: 'scan1', modal: 'ScannedCodes' },
@@ -21,6 +20,7 @@ const menuItems = [
   { title: 'Como funciona', icon: 'questioncircleo', path: 'HowWorks' },
   { title: 'FAQ', icon: 'infocirlceo', path:'FAQ' },
 ];
+import * as Notifications from 'expo-notifications'
 
 
 const HomeScreen: React.FC = () => {
@@ -100,7 +100,13 @@ const HomeScreen: React.FC = () => {
     getExtractGeneral();
     getExtractRescues();
   },[])
-
+const handleCallNotification = async ()=>{
+  const {status} = await Notifications.getPermissionsAsync();
+  if(status !=='granted'){
+    Alert.alert("Nao permitido")
+  }
+  console.log('Notificacao')
+}
   return (
     <View style={styles.container}>
       <View style={styles.containerRed}>
@@ -115,6 +121,7 @@ const HomeScreen: React.FC = () => {
           <TouchableOpacity onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}>
             <Entypo name={showPasswordSaldo ? 'eye' : 'eye-with-line'} size={24} color="black" />
           </TouchableOpacity>
+          <Button onPress={handleCallNotification} title='chamar notificacao' />
           
         </View>
        

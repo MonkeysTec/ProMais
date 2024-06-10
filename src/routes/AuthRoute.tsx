@@ -24,6 +24,7 @@ import QrCodeScreenAfter from '../screens/QrCodeScreenAfter';
 import QrCodeScreenBefore from '../screens/QrCodeScreenBefore';
 import ChangePassword from '../screens/ChangePassword';
 import HowWorks from '../screens/HowWorks';
+import NotificationsScreen from '../screens/Notification';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +37,7 @@ const StackNavigator: React.FC = () => (
       cardStyle: { backgroundColor: 'white' },
     }}
   >
-    <Stack.Screen name="Home" component={HomeScreen} />
+    <Stack.Screen name="Home" component={NotificationsScreen} />
     <Stack.Screen name="TotalEnergies" component={News} />
     <Stack.Screen name="Bipador" component={Bipador} />
     <Stack.Screen name="Profile" component={ProfileScreen} />
