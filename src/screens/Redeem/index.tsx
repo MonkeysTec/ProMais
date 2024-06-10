@@ -75,6 +75,10 @@ export const Redeem: React.FC = () => {
     }
     catch (error) {
       console.log('Erro ao tentar transferir o valor: ', error);
+      sendPushNotification({
+        title:'Erro ao efetuar o resgate', 
+        body:`Verifique os dados inseridos e valor acima de 100 reais!`})
+    
       setStep(6);
       setErrorType('Valor minimo de 100 reais ou chave inválida');
     }
