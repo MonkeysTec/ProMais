@@ -94,93 +94,96 @@ const ContactUsScreen: React.FC = () => {
             </View>
             {/*  <Ionicons name="reload" size={24} color="white" /> */}
           </View>
-          <View style={{padding:20, top:-50}} >
-
-          <View style={{ width: "100%", height: "auto", padding: 30, 
-            backgroundColor:'white', borderRadius:20 }}>
-            <View style={{ marginBottom: 20 }}>
-              <Text style={{ color: "red", fontWeight: "800", fontSize: 29 }}>
-                Fale conosco
-              </Text>
-            </View>
-            <View>
-              <TextInput
-                value={name}
-                onChangeText={(text) => setName(text)}
-                placeholder="Email para contato"
+          <View style={{ padding: 20, top: -50 }}>
+            <View
+              style={{
+                width: "100%",
+                height: "auto",
+                padding: 30,
+                backgroundColor: "white",
+                borderRadius: 20,
+              }}
+            >
+              <View style={{ marginBottom: 20 }}>
+                <Text style={{ color: "red", fontWeight: "800", fontSize: 29 }}>
+                  Fale conosco
+                </Text>
+              </View>
+              <View>
+                <TextInput
+                  value={name}
+                  onChangeText={(text) => setName(text)}
+                  placeholder="Email para contato"
+                  style={{
+                    borderRadius: 50,
+                    marginBottom: 20,
+                    borderWidth: 2,
+                    borderColor: "grey",
+                    padding: 5,
+                    paddingLeft: 30,
+                    width: "100%",
+                    height: 50,
+                  }}
+                />
+              </View>
+              <View
                 style={{
                   borderRadius: 50,
                   marginBottom: 20,
                   borderWidth: 2,
                   borderColor: "grey",
                   padding: 5,
-                  paddingLeft: 30,
                   width: "100%",
                   height: 50,
                 }}
-              />
-            </View>
-            <View
-              style={{
-                borderRadius: 50,
-                marginBottom: 20,
-                borderWidth: 2,
-                borderColor: "grey",
-                padding: 5,
-                width: "100%",
-                height: 50,
-              }}
-            >
-              <Picker
-                style={{ bottom: 10 }}
-                selectedValue={assunto}
-                onValueChange={(itemValue) => setAssunto(itemValue)}
               >
-                {aboutOptions.map((item, index) => (
-                  <Picker.Item label={item} value={index} key={index} />
-                ))}
-              </Picker>
-            </View>
-            <View
-              style={{
-                borderTopStartRadius: 20,
-                borderTopEndRadius: 20,
-                borderBottomStartRadius: 20,
-                borderBottomEndRadius: 20,
-                marginBottom: 20,
-                borderWidth: 2,
-                borderColor: "grey",
-                width: "100%",
-                height: 180,
-              }}
-            >
-              <TextInput
+                <Picker
+                  style={{ bottom: 10 }}
+                  selectedValue={assunto}
+                  onValueChange={(itemValue) => setAssunto(itemValue)}
+                >
+                  {aboutOptions.map((item, index) => (
+                    <Picker.Item label={item} value={index} key={index} />
+                  ))}
+                </Picker>
+              </View>
+              <View
                 style={{
+                  borderTopStartRadius: 20,
+                  borderTopEndRadius: 20,
+                  borderBottomStartRadius: 20,
+                  borderBottomEndRadius: 20,
                   marginBottom: 20,
-                  padding: 5,
-                  paddingLeft: 8,
+                  borderWidth: 2,
+                  borderColor: "grey",
                   width: "100%",
                   height: 180,
                 }}
-                value={descrição}
-                onChangeText={(text) => setDescrição(text)}
-                placeholder="Descrição"
-                multiline
-                numberOfLines={4}
-              />
-            </View>
-            <View>
-              <TouchableOpacity
-                onPress={() => sendEmail()}
-                style={styles.button}
               >
-                <Text style={styles.buttonText}>Enviar</Text>
-              </TouchableOpacity>
+                <TextInput
+                  style={{
+                    marginBottom: 20,
+                    padding: 5,
+                    paddingLeft: 8,
+                    width: "100%",
+                    height: 180,
+                  }}
+                  value={descrição}
+                  onChangeText={(text) => setDescrição(text)}
+                  placeholder="Descrição"
+                  multiline
+                  numberOfLines={4}
+                />
+              </View>
+              <View>
+                <TouchableOpacity
+                  onPress={() => sendEmail()}
+                  style={styles.button}
+                >
+                  <Text style={styles.buttonText}>Enviar</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-
-
-
           </View>
         </View>
       )}
@@ -220,12 +223,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 200,
-    width: '100%',
+    width: "100%",
   },
   buttonText: {
     color: "white",
     fontSize: 16,
-    fontWeight:'700'
+    fontWeight: "700",
   },
   insideContainer: {
     width: "100%",
