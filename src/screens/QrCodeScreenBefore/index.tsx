@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   joinButton: {
     backgroundColor: '#85d151',
     width: '100%',
-    height: 40,
+    height: 50,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
