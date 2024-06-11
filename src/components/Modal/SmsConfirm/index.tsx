@@ -11,9 +11,10 @@ interface ModalSms{
   code?:(code:string,company:string)=>void;
   type:'EMAIL'|'SMS'|'LOGIN',
   phone:string;
-  password?:string
+  password?:string;
+  onClose?:()=>void;
 }
-export const ModalSMSConfirm = ({email,password,code,type,phone}:ModalSms) => {
+export const ModalSMSConfirm = ({email,password,code,type,phone, onClose}:ModalSms) => {
 const { user, login, logout } = useAuth();
 
   const [modalVisible, setModalVisible] = useState(true);
@@ -152,9 +153,15 @@ const { user, login, logout } = useAuth();
 
             width: '100%', marginBottom: 20
           }}>
+            <View style={{width:'100%', flexDirection:'row', justifyContent:'space-between'}} >
             <Text style={{ fontWeight: '700', fontSize: 26, color: 'red' }} >
               Confirmação
             </Text>
+            <TouchableOpacity onPress={onClose}>
+            <Ionicons onPress={onClose} name="close" size={35} color="black" />
+      </TouchableOpacity>
+            
+            </View>
             <Text style={{ fontWeight: '400', fontSize: 17, color: 'black', maxWidth: '90%' }} >
               Digite o código de segurança {type==='SMS'?'enviado via SMS para o número de telefone informado':'enviado para o email informado'} 
             </Text>
@@ -188,8 +195,8 @@ const { user, login, logout } = useAuth();
             </View>
             
             <View style={{
-              borderColor: 'black', borderWidth: 2, width: '80%',
-              height: 60, borderRadius: 50, marginTop: 0, flexDirection: 'row', gap: 10,
+              borderColor: 'black', borderWidth: 2, width: '100%',
+              height: 60, borderRadius: 50, bottom: 50, flexDirection: 'row', gap: 10,
               justifyContent: 'center', alignItems: 'center'
             }} >
               <TextInput
@@ -252,7 +259,7 @@ const { user, login, logout } = useAuth();
                 <MaterialCommunityIcons name="lock" size={24} color="grey" />
               </View>
             </View>
-            <View>
+            <View style={{width:'100%', justifyContent:'center', alignItems:'center'}} >
               <TouchableOpacity
                 style={{ elevation: 2 }}
                 onPress={() =>loading?{}: handleCodeInvite()}
@@ -314,7 +321,7 @@ const styles = StyleSheet.create({
   joinButton: {
     backgroundColor: '#85d151',
     marginTop: 30,
-    width: 150,
+    width: '100%',
     height: 50,
     display: 'flex',
     justifyContent: 'center',

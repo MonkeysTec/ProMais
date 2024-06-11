@@ -5,13 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import api from '../../services/api';
+import { useNavigation } from '@react-navigation/native';
 
-const ChangePassword: React.FC<{ navigation: any }> = ({ navigation }) => {
+const ChangePassword = () => {
   const [step, setStep] = useState(1);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
-
+  const navigation = useNavigation();
 
 
   const handleNext = async () => {
@@ -69,7 +70,7 @@ const ChangePassword: React.FC<{ navigation: any }> = ({ navigation }) => {
   const handleBack = () => {
 
 
-    navigation.replace('ProfileConfig');
+    navigation.navigate('ProfileConfig');
   };
 
   return (
@@ -78,7 +79,7 @@ const ChangePassword: React.FC<{ navigation: any }> = ({ navigation }) => {
       <RainbowLine />
       <View style={styles.insideContainer}>
         <TouchableOpacity onPress={handleBack} style={styles.backContainer}>
-          <Ionicons name={'arrow-back'} size={31} color={'#d9d9d9'} />
+          <Ionicons name={'arrow-back'} size={31} color={'black'} />
         </TouchableOpacity>
         {step === 1 &&
           <>
@@ -111,6 +112,7 @@ const ChangePassword: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
           </>
         }
+        <View style={{flexDirection:'column', justifyContent:'center', alignItems:'center'}} >
         <TouchableOpacity style={styles.contactContainer}>
           <MaterialIcons name={'headset-mic'} size={45} color={'tomato'} />
           <View>
@@ -119,6 +121,8 @@ const ChangePassword: React.FC<{ navigation: any }> = ({ navigation }) => {
           </View>
         </TouchableOpacity>
         <Image source={require('../../assets/© TotalEnergies - 2023.png')} style={styles.image} />
+
+        </View>
       </View>
     </View>
   );
@@ -136,17 +140,19 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 20,
     borderRadius: 25,
-    marginTop: 10
+    
   },
   inputContainer: {
     marginTop: 5
   },
   backContainer: {
-    marginTop: 70
+    marginTop: 50,
+    justifyContent:'space-between',
+    height:'auto'
   },
   insideContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent:'space-between',
     width: '100%',
     paddingHorizontal: 50
   },
@@ -154,7 +160,7 @@ const styles = StyleSheet.create({
     width: 101,
     height: 61,
     resizeMode: 'contain',
-    marginTop: 60
+    
   },
   counter: {
     marginTop: 50,
@@ -193,7 +199,7 @@ const styles = StyleSheet.create({
   joinButton: {
     backgroundColor: '#85d151',
     marginTop: 30,
-    width: 150,
+    width: '100%',
     height: 50,
     display: 'flex',
     justifyContent: 'center',

@@ -119,12 +119,18 @@ const Login: React.FC = () => {
         </View>
       </View>
       {modalCOnfirm && (
-        <ModalSMSConfirm
-          email={email}
-          phone=""
-          type="LOGIN"
-          password={password}
-        />
+        <View style={{justifyContent:'center', alignItems:'center', position:'relative'}} >
+          
+          <ModalSMSConfirm
+          onClose={() => {
+            console.log('teste')
+            setModalConfim(false)}}
+            email={email}
+            phone=""
+            type="LOGIN"
+            password={password}
+          />
+        </View>
       )}
     </View>
   );

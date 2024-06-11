@@ -39,8 +39,7 @@ const StackNavigator: React.FC = () => (
     <Stack.Screen name="Home" component={HomeScreen}  />
     <Stack.Screen name="TotalEnergies" component={News}  />
     <Stack.Screen name="Bipador" component={Bipador}  />
-    <Stack.Screen name="Profile" component={ProfileScreen}  />
-    <Stack.Screen name="ProfileConfig" component={ProfileConfigScreen}  />
+    
     <Stack.Screen name="FAQ" component={FAQScreen}  />
     <Stack.Screen name="ContactUs" component={ContactUsScreen}  />
     <Stack.Screen name="Rules" component={RulesScreen}  />
@@ -53,6 +52,19 @@ const StackNavigator: React.FC = () => (
     <Stack.Screen name="News" component={News}  />
     <Stack.Screen name="ChangePassword" component={ChangePassword}  />
     <Stack.Screen name="HowWorks" component={HowWorks}  />
+  </Stack.Navigator>
+);
+
+const ProfileStackNavigator: React.FC = () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+      cardStyle: { backgroundColor: 'white' },
+    }}
+  >
+    <Stack.Screen name="Profile" component={ProfileScreen} />
+    <Stack.Screen name="ProfileConfig" component={ProfileConfigScreen} />
+    
   </Stack.Navigator>
 );
 
@@ -80,7 +92,7 @@ const TabNavigator: React.FC = () => (
   >
     <Tab.Screen name="Home" component={StackNavigator} options={{ headerShown: false }} />
     <Tab.Screen name="QRCode" component={QrCodeScreenBefore} options={{ headerShown: false }} />
-    <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Profile" component={ProfileStackNavigator} options={{ headerShown: false }} />
   </Tab.Navigator>
 );
 
