@@ -60,8 +60,10 @@ const Login: React.FC = () => {
       <SafeAreaView />
       <RainbowLine />
       <View style={styles.insideContainer}>
-        <Text style={styles.title}>Acesso</Text>
+        <Image source={require('../../assets/splashImg.png')} style={styles.image} />
+
         <View style={styles.inputContainer}>
+          <Text style={styles.title}>Acesso</Text>
           <TextInput
             style={styles.input}
             placeholder="Insira o e-mail cadastrado"
@@ -70,41 +72,53 @@ const Login: React.FC = () => {
             keyboardType="email-address"
             autoCapitalize="none"
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Insira sua senha"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-          />
-          <View style={{ position: "absolute", bottom: 10, right: 10 }}>
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              <Entypo
-                name={showPassword ? "eye" : "eye-with-line"}
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
+          <View style={{
+            borderWidth: 1, borderColor: 'black', height: 50, borderRadius: 50, flexDirection: 'row',
+            justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20
+          }} >
+
+            <TextInput
+              style={{}}
+              placeholder="Insira sua senha"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+            />
+            <View>
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Entypo
+                  name={showPassword ? "eye" : "eye-with-line"}
+                  size={24}
+                  color="black"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
+
         <View>
           <TouchableOpacity onPress={handleLogin} style={styles.joinButton}>
             <Text style={styles.joinText}>Entrar</Text>
             <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginButton}>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('ForgotPassword')
+          }} style={styles.loginButton}>
             <Text style={styles.loginText}>Esqueci minha senha</Text>
           </TouchableOpacity>
         </View>
+
         <View
           style={{
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            marginBottom:40,
+            gap:10
           }}
         >
           <TouchableOpacity style={styles.contactContainer}>
-            <MaterialIcons name={"headset-mic"} size={45} color={"tomato"} />
+            <MaterialIcons name={"headset-mic"} size={33} color={"tomato"} />
             <View>
               <Text style={styles.contactTextBlack}>Não consegue acessar?</Text>
               <Text style={styles.contactTextRed}>
@@ -114,17 +128,18 @@ const Login: React.FC = () => {
           </TouchableOpacity>
           <Image
             source={require("../../assets/© TotalEnergies - 2023.png")}
-            style={styles.image}
+            style={{resizeMode:'contain', width:'100%'}}
           />
         </View>
       </View>
       {modalCOnfirm && (
-        <View style={{justifyContent:'center', alignItems:'center', position:'relative'}} >
-          
+        <View style={{ justifyContent: 'center', alignItems: 'center', position: 'relative' }} >
+
           <ModalSMSConfirm
-          onClose={() => {
-            console.log('teste')
-            setModalConfim(false)}}
+            onClose={() => {
+              
+              setModalConfim(false)
+            }}
             email={email}
             phone=""
             type="LOGIN"
@@ -141,6 +156,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     width: "100%",
+    height: '100%',
+
   },
   input: {
     borderWidth: 1,
@@ -152,7 +169,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   inputContainer: {
-    marginTop: 10,
+    height: 'auto',
+    gap: 10
   },
   backContainer: {
     marginTop: 70,
@@ -162,14 +180,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: 50,
+    height: '100%',
+    gap:20
+
+
   },
   image: {
     width: 101,
     height: 61,
     resizeMode: "contain",
+    marginTop: 30
   },
   title: {
-    marginTop: 50,
+    marginTop: 0,
     fontSize: 28,
     fontWeight: "bold",
     color: "red",
@@ -228,17 +251,17 @@ const styles = StyleSheet.create({
   },
   contactContainer: {
     flexDirection: "row",
-    marginTop: 50,
     alignItems: "center",
     gap: 10,
+
   },
   contactTextBlack: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#000",
     fontWeight: "800",
   },
   contactTextRed: {
-    fontSize: 16,
+    fontSize: 14,
     color: "red",
     fontWeight: "800",
   },

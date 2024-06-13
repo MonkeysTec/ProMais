@@ -2452,6 +2452,7 @@ const TermsScreen: React.FC = () => {
         </View>
 
       </View>
+      <View style={{backgroundColor:'white',padding:10, bottom:30, borderRadius:20, marginHorizontal:20}} >
       <ScrollView >
         <WebView
           style={styles.webview_}
@@ -2463,6 +2464,7 @@ const TermsScreen: React.FC = () => {
           nestedScrollEnabled={true}
         />
       </ScrollView>
+      </View>
     </View>
   );
 };
@@ -2590,10 +2592,10 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   webview_: {
-    marginLeft: -33,
-    marginTop: -20,
-    width: width * 1.1,
-    height: height - (height * 0.25)
+    marginLeft: -30,
+    marginTop:-30,
+    width: width * 1.0,
+    height: height - (height * 0.10)
   }
 });
 

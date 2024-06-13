@@ -6,16 +6,16 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import api from '../../../services/api';
 import { useAuth } from '../../../context/LoginContext';
 
-interface ModalSms{
-  email:string;
-  code?:(code:string,company:string)=>void;
-  type:'EMAIL'|'SMS'|'LOGIN',
-  phone:string;
-  password?:string;
-  onClose?:()=>void;
+interface ModalSms {
+  email: string;
+  code?: (code: string, company: string) => void;
+  type: 'EMAIL' | 'SMS' | 'LOGIN',
+  phone: string;
+  password?: string;
+  onClose?: () => void;
 }
-export const ModalSMSConfirm = ({email,password,code,type,phone, onClose}:ModalSms) => {
-const { user, login, logout } = useAuth();
+export const ModalSMSConfirm = ({ email, password, code, type, phone, onClose }: ModalSms) => {
+  const { user, login, logout } = useAuth();
 
   const [modalVisible, setModalVisible] = useState(true);
 
@@ -30,15 +30,15 @@ const { user, login, logout } = useAuth();
 
 
   const [canSendSmsAgain, setCanSendSmsAgain] = useState(true);
-  const handleCodeInvite = async()=>{
+  const handleCodeInvite = async () => {
     setLoading(true)
-    if(type==='EMAIL'){
+    if (type === 'EMAIL') {
       try {
         const response = await api.get(`/tempcode/v1/toregister/${email}`);
         setCompany(response.data.company)
         setCodeResponse(response.data.b)
-        const {data} = await api.post(`/tempcode/check/email/v1/`,{
-          toEmail:email
+        const { data } = await api.post(`/tempcode/check/email/v1/`, {
+          toEmail: email
         })
         setLoading(false)
 
@@ -48,10 +48,10 @@ const { user, login, logout } = useAuth();
         return console.log(error)
       }
     }
-    if(type==='SMS'){
+    if (type === 'SMS') {
       try {
-        const {data} = await api.post(`/tempcode/check/number/v1/`,{
-          toPhone:phone
+        const { data } = await api.post(`/tempcode/check/number/v1/`, {
+          toPhone: phone
         })
         setLoading(false)
         setModalVisible(false)
@@ -63,66 +63,66 @@ const { user, login, logout } = useAuth();
         return console.log(error)
       }
     }
-    if(type==='LOGIN'){
+    if (type === 'LOGIN') {
       try {
-        const {data} = await api.post('/users/system/login/v1', {
+        const { data } = await api.post('/users/system/login/v1', {
           email: email,
           password: password,
         });
-        
+
         setLoading(false)
 
       } catch (error) {
         console.log(error)
       }
     }
-    
+
   }
   useEffect(() => {
-    
+
     //handleCodeInvite()
   }, []);
 
-  const handleConfirmSms = async ()=>{
-    if(type==='EMAIL'){
+  const handleConfirmSms = async () => {
+    if (type === 'EMAIL') {
       try {
-        const {data} = await api.post(`/tempcode/check/v1/${smscode.join('')}`,{
-          type:'CHECK_EMAIL',
-          email:email
+        const { data } = await api.post(`/tempcode/check/v1/${smscode.join('')}`, {
+          type: 'CHECK_EMAIL',
+          email: email
         })
-        code?.(codeResponse,company);
+        code?.(codeResponse, company);
       } catch (error: any) {
-        if(error.response.data.message==='Código incorreto.'){
+        if (error.response.data.message === 'Código incorreto.') {
           return setWarningType('WrongCode')
         }
-        if(error.response.data.message){
+        if (error.response.data.message) {
           return setWarningType('ManyTries')
-        }else{
+        } else {
           return setWarningType('Block')
         }
       }
-    }else if(type==='SMS'){
-      
+    } else if (type === 'SMS') {
+
       try {
-        
-        const {data} = await api.post(`/tempcode/check/v1/${smscode.join('')}`,{
-          type:'CHECK_NUMBER',
-          phone:phone
-        })    
+
+        const { data } = await api.post(`/tempcode/check/v1/${smscode.join('')}`, {
+          type: 'CHECK_NUMBER',
+          phone: phone
+        })
         setModalVisible(false)
       } catch (error) {
         console.log(error)
       }
-    }else{
+    } else {
       try {
-        const {data} = await api.post(`/users/system/login/validateotp/v1`,{
-          email:email
-        },{
-          headers:{
-             'temp_auth_code':smscode.join('')
+        const { data } = await api.post(`/users/system/login/validateotp/v1`, {
+          email: email
+        }, {
+          headers: {
+            'temp_auth_code': smscode.join('')
 
           }
-        })    
+        })
         const user = await api.get('/users/me/v1');
         login(user.data)
         setModalVisible(false)
@@ -147,25 +147,25 @@ const { user, login, logout } = useAuth();
             flexDirection: 'row',
             width: '100%', justifyContent: 'flex-end'
           }}>
-            
+
           </View>
           <View style={{
 
-            width: '100%', marginBottom: 20
-          }}>
-            <View style={{width:'100%', flexDirection:'row', justifyContent:'space-between'}} >
-            <Text style={{ fontWeight: '700', fontSize: 26, color: 'red' }} >
-              Confirmação
-            </Text>
-            <TouchableOpacity onPress={onClose}>
-            <Ionicons onPress={onClose} name="close" size={35} color="black" />
-      </TouchableOpacity>
-            
+            width: '100%', marginBottom: 20, justifyContent:'space-between', height:'100%'
+           }}>
+            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }} >
+              <Text style={{ fontWeight: '700', fontSize: 26, color: 'red' }} >
+                Confirmação
+              </Text>
+              <TouchableOpacity onPress={onClose}>
+                <Ionicons onPress={onClose} name="close" size={35} color="black" />
+              </TouchableOpacity>
+
             </View>
             <Text style={{ fontWeight: '400', fontSize: 17, color: 'black', maxWidth: '90%' }} >
-              Digite o código de segurança {type==='SMS'?'enviado via SMS para o número de telefone informado':'enviado para o email informado'} 
+              Digite o código de segurança {type === 'SMS' ? 'enviado via SMS para o número de telefone informado' : 'enviado para o email informado'}
             </Text>
-            <View style={{ width: '100%', height: 150, marginTop: 15 }} >
+            <View style={{ width: '100%', height: 'auto', marginTop: 15 }} >
               {warningType === 'ManyTries' ?
                 <View style={{ backgroundColor: 'red', padding: 10, flexDirection: 'row', gap: 10 }} >
                   <FontAwesome6 name="x" size={16} color="white" />
@@ -193,10 +193,10 @@ const { user, login, logout } = useAuth();
                 </View> : null}
 
             </View>
-            
+
             <View style={{
               borderColor: 'black', borderWidth: 2, width: '100%',
-              height: 60, borderRadius: 50, bottom: 50, flexDirection: 'row', gap: 10,
+              height: 60, borderRadius: 50, flexDirection: 'row', gap: 10,
               justifyContent: 'center', alignItems: 'center'
             }} >
               <TextInput
@@ -207,10 +207,10 @@ const { user, login, logout } = useAuth();
                   height: 80,
                   padding: 0,
                   margin: 0,
-                  backgroundColor:'black',
-                  zIndex:3
+                  backgroundColor: 'black',
+                  zIndex: 3
                 }}
-               
+
                 placeholder="CODE"
                 maxLength={4}
                 onChangeText={(text) => {
@@ -259,17 +259,17 @@ const { user, login, logout } = useAuth();
                 <MaterialCommunityIcons name="lock" size={24} color="grey" />
               </View>
             </View>
-            <View style={{width:'100%', justifyContent:'center', alignItems:'center'}} >
+            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} >
               <TouchableOpacity
                 style={{ elevation: 2 }}
-                onPress={() =>loading?{}: handleCodeInvite()}
+                onPress={() => loading ? {} : handleCodeInvite()}
               >
                 <Text style={{
-                  borderBottomColor: 'grey', borderBottomWidth: 2, width: 140,
-                  marginTop: 20, fontSize: 16, color: 'grey', display:canSendSmsAgain ? 'flex' : 'none'
+                  borderBottomColor: 'grey', borderBottomWidth: 2, width: 'auto',
+                  marginTop: 20, fontSize: 16, color: 'grey', display: canSendSmsAgain ? 'flex' : 'none'
                 }} >
                   {
-                    loading?(<ActivityIndicator/>):'Enviar novamente'
+                    loading ? (<ActivityIndicator />) : 'Enviar novamente'
                   }
                 </Text>
               </TouchableOpacity>

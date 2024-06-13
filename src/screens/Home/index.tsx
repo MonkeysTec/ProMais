@@ -358,7 +358,7 @@ const HomeScreen: React.FC = () => {
                               <Text style={styles.modalSmallGreyText} >QR Code: {showPasswordCodesQrCode ? item.qrcode : '******'}</Text>
                             </View>
                             <Text style={styles.modalGreenText}>
-                              {showPasswordCodesQrCode ? '+' + item.totalPoints.toFixed(2) : '***'} pontos</Text>
+                              {showPasswordCodesQrCode ? '+' + item.totalPoints.toFixed(2) : '***'} pts</Text>
                           </View>
                         ))}
                       </ScrollView>

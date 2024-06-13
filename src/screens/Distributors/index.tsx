@@ -8,6 +8,7 @@ import api from '../../services/api';
 import axios from 'axios';
 import FAQScreen from '../FAQ';
 import { useAuth } from '../../context/LoginContext';
+import { stylesDefault } from '../../components/Body';
 
 
 
@@ -49,93 +50,91 @@ const DistributorsScreen: React.FC = () => {
   const getDistributors = async () => {
 
     const { data } = await api.get('/distributor/v1/?status=ACTIVE');
-    
+
     setDistributorsNew(data.results);
   }
   useEffect(() => {
     getDistributors();
-  },[])
+  }, [])
   const distributors = [
     {
-      firstName:'Rodrigo',
-      lastName:'Farias'
+      firstName: 'Rodrigo',
+      lastName: 'Farias'
     },
     {
-      firstName:'Pedro',
-      lastName:'Lima'
+      firstName: 'Pedro',
+      lastName: 'Lima'
     },
     {
-      firstName:'João',
-      lastName:'Farias'
+      firstName: 'João',
+      lastName: 'Farias'
     },
     {
-      firstName:'Mariana',
-      lastName:'Oliveira'
+      firstName: 'Mariana',
+      lastName: 'Oliveira'
     },
     {
-      firstName:'Julia',
-      lastName:'Ferreira'
+      firstName: 'Julia',
+      lastName: 'Ferreira'
     },
     {
-      firstName:'João',
-      lastName:'Farias'
+      firstName: 'João',
+      lastName: 'Farias'
     },
     {
-      firstName:'Mariana',
-      lastName:'Oliveira'
+      firstName: 'Mariana',
+      lastName: 'Oliveira'
     },
     {
-      firstName:'Julia',
-      lastName:'Ferreira'
+      firstName: 'Julia',
+      lastName: 'Ferreira'
     },
     {
-      firstName:'João',
-      lastName:'Farias'
+      firstName: 'João',
+      lastName: 'Farias'
     },
     {
-      firstName:'Mariana',
-      lastName:'Oliveira'
+      firstName: 'Mariana',
+      lastName: 'Oliveira'
     },
     {
-      firstName:'Julia',
-      lastName:'Ferreira'
+      firstName: 'Julia',
+      lastName: 'Ferreira'
     },
   ]
   return (
     <View style={styles.container}>
-      <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
-        <Ionicons name="reload" size={24} color="white" />
+      <View style={stylesDefault.RedViewHeaderContainer}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end' }} >
+          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
+        </View>
+        {/*  <Ionicons name="reload" size={24} color="white" /> */}
       </View>
-      <View style={{ padding: 40 }} >
+      <View style={{ padding: 20, bottom: 50 }} >
 
-
-        <Text style={{ fontWeight: '600', color: 'black', fontSize: 18, marginBottom:15 }} >
-          Distribuidores participantes
-        </Text>
-       
-        <View style={{ backgroundColor: 'white', borderRadius: 15, padding: 25, height:'75%' }} >
-          <Text style={{ color: 'red', fontSize: 20, fontWeight: '600', marginTop: 0 }} >
+        <View style={{ backgroundColor: 'white', borderRadius: 15, padding: 25, height: '100%' }} >
+          <Text style={{ color: 'red', fontSize: 20, fontWeight: '600', marginBottom: 20 }} >
             Distribuidor
           </Text>
           <ScrollView style={{ width: '100%', height: '100%' }} >
             {distributorsNew.map((dist, index) => (
-              <TouchableOpacity key={index} style={{ 
-                flexDirection: 'row', 
-              
-              paddingVertical:15, 
-              borderBottomWidth: 1, borderBottomColor: '#F3F3F3' }} >
+              <TouchableOpacity key={index} style={{
+                flexDirection: 'row',
+                paddingVertical: 15,
+                borderBottomWidth: 1, borderBottomColor: '#F3F3F3'
+              }} >
                 <View style={{ flexDirection: 'row' }} >
                   <View >
-                    <Text style={{ color: 'black', fontSize: 16, fontWeight: '600' }} >
-                      {dist.fantasyName} 
+                    <Text style={{ color: 'black', fontSize: 14, fontWeight: '600' }} >
+                      {dist.fantasyName.toUpperCase()}
                     </Text>
-                   
+
                   </View>
                 </View>
-                
+
               </TouchableOpacity>
-            
+
             ))}
 
 

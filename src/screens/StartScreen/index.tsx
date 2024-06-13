@@ -35,7 +35,7 @@ const StartScreen: React.FC = () => {
           <Ionicons name={'arrow-forward'} size={18} color={'#000'} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.contactContainer}>
-          <MaterialIcons name={'headset-mic'} size={45} color={'tomato'} />
+          <MaterialIcons name={'headset-mic'} size={32} color={'tomato'} />
           <View>
             <Text style={styles.contactTextBlack}>Não consegue acessar?</Text>
             <Text style={styles.contactTextRed}>Entre em contato conosco</Text>
@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
     marginTop: 60
   },
   title: {
-    marginTop: 50,
-    fontSize: 24,
+    marginTop: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     color: 'red',
     textShadowColor: 'black',
-    textShadowOffset: {width: 1, height: 1},
+    textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
   },
   imageBig: {
@@ -83,17 +83,17 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: 30,
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#000000',
     textShadowColor: '#000',
-    textShadowOffset: {width: 1, height: 1},
+    textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
   },
   joinButton: {
     backgroundColor: '#85d151',
-    marginTop: 40,
-    width: 250,
+    marginTop: 100,
+    width: '100%',
     height: 50,
     display: 'flex',
     justifyContent: 'center',
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: 10,
-    width: 150,
+    width: '100%',
     height: 50,
     display: 'flex',
     justifyContent: 'center',
@@ -127,15 +127,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 50,
     alignItems: 'center',
+    justifyContent:'center',
     gap: 10
   },
   contactTextBlack: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#000',
     fontWeight: '800'
   },
   contactTextRed: {
-    fontSize: 16,
+    fontSize: 12,
     color: 'red',
     fontWeight: '800'
   },
