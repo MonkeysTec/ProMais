@@ -6,7 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import FAQScreen from '../FAQ';
 import { WebView } from 'react-native-webview';
 import { useAuth } from '../../context/LoginContext';
-import { stylesDefault } from '../../components/Body';
+import { stylesDefault } from '../../components/Styled';
 
 
 const { height, width } = Dimensions.get('window');

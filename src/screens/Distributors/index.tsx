@@ -8,7 +8,7 @@ import api from '../../services/api';
 import axios from 'axios';
 import FAQScreen from '../FAQ';
 import { useAuth } from '../../context/LoginContext';
-import { stylesDefault } from '../../components/Body';
+import { stylesDefault } from '../../components/Styled';
 
 
 

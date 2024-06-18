@@ -18,9 +18,7 @@ import { HomeNewInfo } from "../../components/Modal/HomeNewInfo";
 import { useAuth } from "../../context/LoginContext";
 import api from "../../services/api";
 import Feather from "@expo/vector-icons/Feather";
-import { stylesDefault } from "../../components/Body";
-
-import { Picker } from "@react-native-picker/picker";
+import { stylesDefault } from "../../components/Styled";
 const menuItems = [
   { title: "Movimentações loja", icon: "filetext1", modal: "PdvNetMovements" },
   { title: "Extrato", icon: "filetext1", modal: "Extract" },
@@ -33,7 +31,13 @@ const menuItems = [
 ];
 
 const HomeScreen: React.FC = () => {
-  const { userName, expoPushToken, sendPushNotification } = useAuth();
+  const {
+    userName,
+    expoPushToken,
+    sendPushNotification,
+    selectPdvStore,
+    pdvSelectedStore,
+  } = useAuth();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState("");
@@ -64,26 +68,6 @@ const HomeScreen: React.FC = () => {
       generatedValue: "325,00",
     },
   ]);
-  /* DEMONSTRATION CHOOSE STORE TO BEEP */
-  const [storesToBeep, setStoresToBeep] = useState([
-    {
-      name: "Loja Um",
-      id: "1",
-    },
-    {
-      name: "Loja Dois",
-      id: "2",
-    },
-    {
-      name: "Loja Três",
-      id: "3",
-    },
-    {
-      name: "Loja Quatro",
-      id: "4",
-    },
-  ]);
-  const [currentStoreBeep, setCurrentStoreBeep] = useState("");
 
   const closeModal = () => {
     setModalVisible(false);
@@ -149,13 +133,17 @@ const HomeScreen: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    getBalance();
-    getExtractGeneral();
-    getExtractRescues();
-
-    /* DEMONSTRATION BELLOW PDF FILHO*/
-    simulateUserBeingPdfFilho();
-  }, []);
+    if (pdvSelectedStore !== "") {
+      getBalance();
+      getExtractGeneral();
+      getExtractRescues();
+      /* DEMONSTRATION BELLOW PDF FILHO*/
+      simulateUserBeingPdfFilho();
+      console.log(pdvSelectedStore);
+    } else {
+      navigation.navigate("SelectPdvStore");
+    }
+  }, [pdvSelectedStore]);
   useEffect(() => {
     if (expoPushToken) {
       handleNewsNotification();
@@ -176,26 +164,15 @@ const HomeScreen: React.FC = () => {
           <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
           <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
         </View>
-        {/*  <Ionicons name="reload" size={24} color="white" /> */}
       </View>
       <View>
         <HomeNewInfo />
       </View>
       <View style={stylesDefault.ViewBody}>
         <View style={styles.cardBalance}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "black", fontWeight: "600", fontSize: 18 }}>
-              Saldo
-            </Text>
+          <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+            <Text style={stylesDefault.SmallText_Black_18_600}>Saldo</Text>
             <TouchableOpacity
-              style={{}}
               onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}
             >
               <Entypo
@@ -207,48 +184,27 @@ const HomeScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
           {showPasswordSaldo && (
-            <Text
-              style={{
-                color: "black",
-                fontWeight: "600",
-                fontSize: 30,
-                alignSelf: "center",
-              }}
-            >
+            <Text style={stylesDefault.SmallText_Black_30_600}>
               R$ {userMonetaryBalance.replace(/\./g, ",")}
             </Text>
           )}
-          {/* <TouchableOpacity onPress={() => {
-            setModalType('Extract');
-            setExtractType('General')
-            setModalVisible(true);
-          }} style={{
-            flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent:'center',
-          
-          }}>
-            <AntDesign name="filetext1" size={24} color="black" />
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>Ver extrato</Text>
-              <View style={styles.underline} />
-            </View>
-          </TouchableOpacity> */}
-          {showPasswordSaldo && !isPdvFilho && (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Redeem")}
-              style={styles.greenButton}
-            >
-              <FontAwesome
-                name="dollar"
-                size={20}
-                color="white"
-                style={styles.icon}
-              />
-              <Text style={styles.greenButtonText}>Resgatar agora</Text>
-            </TouchableOpacity>
-          )}
+          {showPasswordSaldo &&
+            /* Correto para esconder o resgate ao pdv filho: !isPdvFilho */ isPdvFilho && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Redeem")}
+                style={styles.greenButton}
+              >
+                <FontAwesome
+                  name="dollar"
+                  size={20}
+                  color="white"
+                  style={styles.icon}
+                />
+                <Text style={styles.greenButtonText}>Resgatar agora</Text>
+              </TouchableOpacity>
+            )}
         </View>
       </View>
-
       <ScrollView style={styles.menu}>
         {menuItems.map((item, index) => (
           <TouchableOpacity
@@ -279,14 +235,10 @@ const HomeScreen: React.FC = () => {
             }}
           >
             {!item.icon ? (
-              <View style={{ alignItems: "center", width: 24, height: 12 }}>
+              <View style={stylesDefault.View_Row_VCenter_W24_H12}>
                 <Image
                   source={require("../../assets/IconTotalEnergies.png")}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    tintColor: "rgba(255, 0, 0, 0.65)",
-                  }}
+                  style={stylesDefault.Image_W100_H100_Tint_Red}
                 />
               </View>
             ) : (
@@ -294,14 +246,9 @@ const HomeScreen: React.FC = () => {
             )}
             <Text style={styles.menuItemText}>{item.title}</Text>
             <View
-              style={{
-                backgroundColor: "#85d151",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 50,
-                height: 30,
-                width: 30,
-              }}
+              style={
+                stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+              }
             >
               <Ionicons name="chevron-forward" size={24} color="white" />
             </View>
@@ -314,33 +261,31 @@ const HomeScreen: React.FC = () => {
           <Feather name="box" size={24} color="red" />
           <Text style={styles.menuItemText}>Produtos participantes</Text>
           <View
-            style={{
-              backgroundColor: "#85d151",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 50,
-
-              height: 30,
-              width: 30,
-            }}
+            style={
+              stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+            }
           >
             <Ionicons name="chevron-forward" size={24} color="white" />
           </View>
         </TouchableOpacity>
         {/* DEMONSTRATION STORE TO BEEP */}
-        <View style={styles.menuItemChooseStoreBeep}>
-        <Feather name="box" size={24} color="red" />
-          <Picker
-          style={{borderWidth:1, borderColor:'black', width:'100%', height:'auto'}}
-            selectedValue={currentStoreBeep}
-            onValueChange={(itemValue, itemIndex) => setCurrentStoreBeep(itemValue)}
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate("SelectPdvStore")}
+        >
+          <Feather name="box" size={24} color="red" />
+          <Text style={styles.menuItemText}>
+            Loja selecionada:{" "}
+            <Text style={{ fontWeight: "700" }}>{pdvSelectedStore}</Text>
+          </Text>
+          <View
+            style={
+              stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+            }
           >
-            {storesToBeep.map((store) => (
-              <Picker.Item key={store.id} label={store.name} value={store.name} />
-            ))}
-          </Picker>
-         
-        </View>
+            <Ionicons name="chevron-forward" size={24} color="white" />
+          </View>
+        </TouchableOpacity>
         {modalVisible ? (
           <View>
             {modalType === "Extract" ? (
@@ -599,7 +544,6 @@ const HomeScreen: React.FC = () => {
                 </View>
               </Modal>
             ) : null}
-
             {modalType === "PdvNetMovements" ? (
               <Modal
                 animationType="slide"
@@ -783,7 +727,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width:'100%',
+    width: "100%",
     paddingVertical: 5,
     paddingHorizontal: 10,
     backgroundColor: "white",

@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import api from "../../services/api";
 import axios from "axios";
 import { useAuth } from "../../context/LoginContext";
-import { stylesDefault } from "../../components/Body";
+import { stylesDefault } from "../../components/Styled";
 
 export const Redeem: React.FC = () => {
   const { user, userName, login, logout, sendPushNotification } = useAuth();

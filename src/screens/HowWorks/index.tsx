@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useAuth } from "../../context/LoginContext";
-import { stylesDefault } from "../../components/Body";
+import { stylesDefault } from "../../components/Styled";
 import Feather from "@expo/vector-icons/Feather";
 
 const HowWorks: React.FC = () => {

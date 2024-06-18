@@ -13,7 +13,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import api from "../../services/api";
 import { useAuth } from "../../context/LoginContext";
-import { stylesDefault } from "../../components/Body";
+import { stylesDefault } from "../../components/Styled";
 
 const Bipador: React.FC = () => {
   const { user, userName, login, logout } = useAuth();

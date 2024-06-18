@@ -15,7 +15,7 @@ import api from "../../services/api";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../context/LoginContext";
-import { stylesDefault } from "../../components/Body";
+import { stylesDefault } from "../../components/Styled";
 
 const ContactUsScreen: React.FC = () => {
   const { user, userName, login, logout } = useAuth();

@@ -78,6 +78,8 @@ interface AuthContextType {
   login: (userData: User) => void;
   logout: () => void;
   sendPushNotification: (data:any) => void;
+  selectPdvStore:(store:string) => void;
+  pdvSelectedStore:string;
 }
 interface AuthProviderType {
    children :any
@@ -94,6 +96,7 @@ export const AuthProvider =  ({children}:AuthProviderType) => {
   const [user, setUser] = useState<User | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [expoPushToken, setExpoPushToken] = useState('');
+  const [pdvSelectedStore, setPdvSelectedStore] = useState('');
   const [notification, setNotification] = useState<Notifications.Notification | undefined>(
     undefined
   );
@@ -221,9 +224,12 @@ export const AuthProvider =  ({children}:AuthProviderType) => {
       console.error(error);
     }
   };
+  const selectPdvStore = async (store:string) => {
+    setPdvSelectedStore(store)
+  };
 
   return (
-    <AuthContext.Provider value={{ user,userName, expoPushToken, login, logout, sendPushNotification }}>
+    <AuthContext.Provider value={{ user,userName, expoPushToken, selectPdvStore,pdvSelectedStore, login, logout, sendPushNotification }}>
       {children}
     </AuthContext.Provider>
   );
