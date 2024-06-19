@@ -27,10 +27,7 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [typeModal, setTypeModal] = useState<"EMAIL" | "SMS">("EMAIL");
   const [modalSms, setModalSms] = useState(false);
   const [phone, setPhone] = useState("");
-  const [emailCode, setEmailCode] = useState('')
-
-
-  
+  const [emailCode, setEmailCode] = useState("");
 
   const handleSendEmailCode = async () => {
     setStep(step + 1);
@@ -46,26 +43,26 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
     }catch(error){
       console.log(error)
     } */
-   
   };
   const handleCheckEmailCode = async () => {
     setStep(step + 1);
-    try{
+    try {
       const data = {
-        toEmail: email1
+        toEmail: email1,
       };
-        const response = await api.post("/tempcode/send/toresetpassword/v1/", data)
-        if(response){
-          console.log(response.data)
-          setStep(step + 1);
-        }
-    }catch(error){
-      console.log(error)
+      const response = await api.post(
+        "/tempcode/send/toresetpassword/v1/",
+        data,
+      );
+      if (response) {
+        console.log(response.data);
+        setStep(step + 1);
+      }
+    } catch (error) {
+      console.log(error);
     }
-   
   };
   const handleNext = async () => {
-    
     setStep(step + 1);
   };
 
@@ -115,7 +112,10 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
                 placeholder="Insira seu e-mail cadastrado"
               />
             </View>
-            <TouchableOpacity onPress={handleSendEmailCode} style={styles.joinButton}>
+            <TouchableOpacity
+              onPress={handleSendEmailCode}
+              style={styles.joinButton}
+            >
               <Text style={styles.joinText}>Próximo</Text>
               <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
             </TouchableOpacity>
@@ -124,7 +124,9 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
         {step === 2 && (
           <>
             <Text style={styles.title}>Confirmação</Text>
-            <Text >Enviamos uma confirmação de segurança no e-mail {email1}</Text>
+            <Text>
+              Enviamos uma confirmação de segurança no e-mail {email1}
+            </Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -132,9 +134,11 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
                 placeholder="Insira o código aqui"
               />
             </View>
-            
-           
-            <TouchableOpacity onPress={handleCheckEmailCode} style={styles.joinButton}>
+
+            <TouchableOpacity
+              onPress={handleCheckEmailCode}
+              style={styles.joinButton}
+            >
               <Text style={styles.joinText}>Próximo</Text>
               <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
             </TouchableOpacity>

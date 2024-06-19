@@ -232,13 +232,12 @@ const FAQScreen: React.FC = () => {
                   justifyContent: "center",
                   alignItems: "center",
                   borderRadius: 50,
-               
-                  height:30, 
-                  width:30
+
+                  height: 30,
+                  width: 30,
                 }}
               >
                 <AntDesign
-                 
                   name={selectedFAQ !== index ? "right" : "down"}
                   size={20}
                   color="white"

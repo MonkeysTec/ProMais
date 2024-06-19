@@ -72,7 +72,7 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
           headers: {
             temp_auth_code: code,
           },
-        }
+        },
       );
     } catch (error) {
       console.log(error);
@@ -92,10 +92,9 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
   };
 
   const handleBack = () => {
-    if(step !== 1){
-
+    if (step !== 1) {
       setStep(step - 1);
-    }else{
+    } else {
       navigation.goBack();
     }
   };
@@ -111,8 +110,6 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            
-
           }}
         >
           <TouchableOpacity onPress={handleBack} style={styles.backContainer}>
@@ -129,8 +126,7 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             style={{
               flexDirection: "column",
               justifyContent: "space-between",
-              height:'auto'
-
+              height: "auto",
             }}
           >
             <Text style={styles.title}>Faça seu cadastro</Text>
@@ -149,7 +145,6 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
         )}
         {step === 2 && (
           <>
-           
             <Text style={styles.title}>Continue seu cadastro</Text>
             <View style={styles.inputContainer}>
               <TextInput
@@ -187,7 +182,6 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
         )}
         {step === 3 && (
           <>
-           
             <Text style={styles.title}>Finalize seu cadastro</Text>
             <View style={styles.inputContainer}>
               <TextInput
@@ -232,7 +226,6 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-           
           }}
         >
           <TouchableOpacity style={styles.contactContainer}>
@@ -286,8 +279,8 @@ const styles = StyleSheet.create({
   insideContainer: {
     flex: 1,
     width: "100%",
-    height:'100%',
-    justifyContent:'space-between',
+    height: "100%",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
   },
   image: {

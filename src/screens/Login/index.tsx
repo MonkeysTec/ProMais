@@ -40,14 +40,14 @@ const Login: React.FC = () => {
         // Exibir mensagem de erro
         Alert.alert(
           "Erro de Login",
-          "Credenciais inválidas. Por favor, tente novamente."
+          "Credenciais inválidas. Por favor, tente novamente.",
         );
       }
     } catch (error) {
       // Exibir mensagem de erro
       Alert.alert(
         "Erro de Login",
-        "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente."
+        "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.",
       );
       console.error(error);
     }
@@ -60,7 +60,10 @@ const Login: React.FC = () => {
       <SafeAreaView />
       <RainbowLine />
       <View style={styles.insideContainer}>
-        <Image source={require('../../assets/splashImg.png')} style={styles.image} />
+        <Image
+          source={require("../../assets/splashImg.png")}
+          style={styles.image}
+        />
 
         <View style={styles.inputContainer}>
           <Text style={styles.title}>Acesso</Text>
@@ -72,11 +75,18 @@ const Login: React.FC = () => {
             keyboardType="email-address"
             autoCapitalize="none"
           />
-          <View style={{
-            borderWidth: 1, borderColor: 'black', height: 50, borderRadius: 50, flexDirection: 'row',
-            justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20
-          }} >
-
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: "black",
+              height: 50,
+              borderRadius: 50,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 20,
+            }}
+          >
             <TextInput
               style={{}}
               placeholder="Insira sua senha"
@@ -101,9 +111,12 @@ const Login: React.FC = () => {
             <Text style={styles.joinText}>Entrar</Text>
             <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
-            navigation.navigate('ForgotPassword')
-          }} style={styles.loginButton}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ForgotPassword");
+            }}
+            style={styles.loginButton}
+          >
             <Text style={styles.loginText}>Esqueci minha senha</Text>
           </TouchableOpacity>
         </View>
@@ -113,8 +126,8 @@ const Login: React.FC = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            marginBottom:40,
-            gap:10
+            marginBottom: 40,
+            gap: 10,
           }}
         >
           <TouchableOpacity style={styles.contactContainer}>
@@ -128,17 +141,21 @@ const Login: React.FC = () => {
           </TouchableOpacity>
           <Image
             source={require("../../assets/© TotalEnergies - 2023.png")}
-            style={{resizeMode:'contain', width:'100%'}}
+            style={{ resizeMode: "contain", width: "100%" }}
           />
         </View>
       </View>
       {modalCOnfirm && (
-        <View style={{ justifyContent: 'center', alignItems: 'center', position: 'relative' }} >
-
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+          }}
+        >
           <ModalSMSConfirm
             onClose={() => {
-              
-              setModalConfim(false)
+              setModalConfim(false);
             }}
             email={email}
             phone=""
@@ -156,8 +173,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     width: "100%",
-    height: '100%',
-
+    height: "100%",
   },
   input: {
     borderWidth: 1,
@@ -169,8 +185,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   inputContainer: {
-    height: 'auto',
-    gap: 10
+    height: "auto",
+    gap: 10,
   },
   backContainer: {
     marginTop: 70,
@@ -180,16 +196,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: 50,
-    height: '100%',
-    gap:20
-
-
+    height: "100%",
+    gap: 20,
   },
   image: {
     width: 101,
     height: 61,
     resizeMode: "contain",
-    marginTop: 30
+    marginTop: 30,
   },
   title: {
     marginTop: 0,
@@ -253,7 +267,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-
   },
   contactTextBlack: {
     fontSize: 14,

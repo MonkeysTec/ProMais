@@ -23,7 +23,7 @@ const Bipador: React.FC = () => {
 
   const getBipadores = async () => {
     const { data } = await api.get(
-      "/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER"
+      "/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER",
     );
     if (data) {
       setBipadoresSample(data.results);
@@ -38,16 +38,16 @@ const Bipador: React.FC = () => {
         const jweToken = data.jwe;
         try {
           const { data } = await api.get(
-            "/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER"
+            "/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER",
           );
           if (data) {
             console.log(
-              "Url to invitation found!, trying to prepare invite url"
+              "Url to invitation found!, trying to prepare invite url",
             );
             let urlInvite = data.urlToInvite;
             urlInvite += jweToken;
             Linking.openURL(urlInvite).catch((err) =>
-              console.error("Couldn't load page", err)
+              console.error("Couldn't load page", err),
             );
             console.log("Invite created! Opening browser");
           }
@@ -67,7 +67,7 @@ const Bipador: React.FC = () => {
   const handleBipChange = async (
     index: number,
     newStatus: string,
-    bipId: string
+    bipId: string,
   ) => {
     let bipadoresNew = [...bipadoresSample];
     if (newStatus === "NOT_ACTIVE") {

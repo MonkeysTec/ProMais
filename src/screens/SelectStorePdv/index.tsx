@@ -63,35 +63,39 @@ const SelectStorePdv: React.FC = () => {
             height: "auto",
             borderRadius: 10,
             padding: 20,
-            justifyContent: 'center',
-            alignItems: 'center'
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <ScrollView style={{ width: '100%', height: 'auto' }} >
+          <ScrollView style={{ width: "100%", height: "auto" }}>
             <Text
               style={{
-                alignSelf: 'center',
+                alignSelf: "center",
                 fontSize: 24,
                 color: "red",
                 fontWeight: "600",
-                marginBottom: 30
+                marginBottom: 30,
               }}
             >
               Escolha seu PDV
             </Text>
 
             {storesToBeep.map((store, index) => (
-              <TouchableOpacity onPress={() => {
-                selectPdvStore(store.name)
-                navigation.navigate("Home");
-              }} activeOpacity={1}>
-                <View style={styles.menuItem}  >
-                  <Text style={{ fontWeight: '600', fontSize: 20 }}>{store.name}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  selectPdvStore(store.name);
+                  navigation.navigate("Home");
+                }}
+                activeOpacity={1}
+              >
+                <View style={styles.menuItem}>
+                  <Text style={{ fontWeight: "600", fontSize: 20 }}>
+                    {store.name}
+                  </Text>
                 </View>
               </TouchableOpacity>
             ))}
           </ScrollView>
-
         </View>
       </View>
     </View>

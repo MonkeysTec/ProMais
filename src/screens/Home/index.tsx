@@ -75,7 +75,7 @@ const HomeScreen: React.FC = () => {
 
   const loadInBrowser = (url: any) => {
     Linking.openURL(url).catch((err) =>
-      console.error("Couldn't load page", err)
+      console.error("Couldn't load page", err),
     );
   };
 
@@ -220,7 +220,7 @@ const HomeScreen: React.FC = () => {
               }
               if (item.path === "lubconsult") {
                 loadInBrowser(
-                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult"
+                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
                 );
               }
               if (item.modal) {
@@ -229,7 +229,7 @@ const HomeScreen: React.FC = () => {
               }
               if (item.path === "browserTotalEnergies") {
                 loadInBrowser(
-                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult"
+                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
                 );
               }
             }}
@@ -309,7 +309,7 @@ const HomeScreen: React.FC = () => {
                           <TouchableOpacity
                             onPress={() =>
                               setShowPasswordExtratoQrCode(
-                                !showPasswordExtratoQrCode
+                                !showPasswordExtratoQrCode,
                               )
                             }
                           >

@@ -30,7 +30,7 @@ const ChangePassword = () => {
         };
         const { data } = await api.post(
           "/users/system/check/password/v1",
-          dataPassword
+          dataPassword,
         );
 
         if (data) {
@@ -42,7 +42,7 @@ const ChangePassword = () => {
 
             const { data } = await api.post(
               "/users/system/password/change/online/v1",
-              newDataPassword
+              newDataPassword,
             );
 
             if (data) {

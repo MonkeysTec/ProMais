@@ -46,7 +46,7 @@ const HowWorks: React.FC = () => {
               width: "100%",
             }}
           />
-          <View  >
+          <View>
             <Text
               style={{
                 fontWeight: "700",
@@ -68,8 +68,7 @@ const HowWorks: React.FC = () => {
           width: "100%",
           height: "100%",
           paddingHorizontal: 20,
-          marginTop:-10
-         
+          marginTop: -10,
         }}
       >
         <View
@@ -82,7 +81,7 @@ const HowWorks: React.FC = () => {
             gap: 10,
             backgroundColor: "white",
             padding: 10,
-            borderRadius: 20
+            borderRadius: 20,
           }}
         >
           <View
@@ -130,7 +129,7 @@ const HowWorks: React.FC = () => {
             backgroundColor: "white",
             padding: 10,
             borderRadius: 20,
-            marginTop:5
+            marginTop: 5,
           }}
         >
           <View
@@ -177,7 +176,7 @@ const HowWorks: React.FC = () => {
             backgroundColor: "white",
             padding: 10,
             borderRadius: 20,
-            marginTop:5
+            marginTop: 5,
           }}
         >
           <View

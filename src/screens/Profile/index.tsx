@@ -29,7 +29,7 @@ const ProfileScreen: React.FC = () => {
   const navigation = useNavigation();
   const loadInBrowser = (url: any) => {
     Linking.openURL(url).catch((err) =>
-      console.error("Couldn't load page", err)
+      console.error("Couldn't load page", err),
     );
   };
 
@@ -98,7 +98,7 @@ const ProfileScreen: React.FC = () => {
             style={styles.touchableBody}
             onPress={() => {
               loadInBrowser(
-                "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult"
+                "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
               );
             }}
           >
@@ -111,7 +111,7 @@ const ProfileScreen: React.FC = () => {
             style={styles.touchableBody}
             onPress={() => {
               loadInBrowser(
-                "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult"
+                "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
               );
             }}
           >
