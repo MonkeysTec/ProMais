@@ -1,30 +1,40 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
   SafeAreaView,
-  Image,
-  TouchableOpacity,
-  TextInput,
   Alert,
+  View,
+  TouchableOpacity,
 } from "react-native";
 import { RainbowLine } from "../../components/RainbowLine";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import api from "../../services/api";
-import { useAuth } from "../../context/LoginContext";
-import axios from "axios";
 import { ModalSMSConfirm } from "../../components/Modal/SmsConfirm";
 import Entypo from "@expo/vector-icons/Entypo";
-import { stylesDefault } from "../../components/Styled";
+import {
+  Container,
+  InsideContainer,
+  ImageSmall,
+  InputContainer,
+  Title,
+  Input,
+  CodeInputContainer,
+  JoinButton,
+  JoinText,
+  LoginButton,
+  LoginText,
+  ContactContainer,
+  ContactTextBlack,
+  ContactTextRed,
+  BottomContainer,
+  CenteredView,
+  ImageTotalEnergies,
+} from './styles';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [modalCOnfirm, setModalConfim] = useState(false);
-
+  const [modalConfirm, setModalConfirm] = useState(false);
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
@@ -36,20 +46,12 @@ const Login: React.FC = () => {
       });
 
       if (data.status === 200) {
-        setModalConfim(true);
+        setModalConfirm(true);
       } else {
-        // Exibir mensagem de erro
-        Alert.alert(
-          "Erro de Login",
-          "Credenciais inválidas. Por favor, tente novamente.",
-        );
+        Alert.alert("Erro de Login", "Credenciais inválidas. Por favor, tente novamente.");
       }
     } catch (error) {
-      // Exibir mensagem de erro
-      Alert.alert(
-        "Erro de Login",
-        "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.",
-      );
+      Alert.alert("Erro de Login", "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.");
       console.error(error);
     }
   };
@@ -57,88 +59,65 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View style={stylesDefault.container}>
+    <Container>
       <SafeAreaView />
       <RainbowLine />
-      <View style={stylesDefault.insideContainer}>
-        <Image
-          source={require("../../assets/splashImg.png")}
-          style={stylesDefault.image}
-        />
-
-        <View style={stylesDefault.inputContainer}>
-          <Text style={stylesDefault.title}>Acesso</Text>
-          <TextInput
-            style={stylesDefault.input}
+      <InsideContainer>
+        <ImageSmall source={require("../../assets/splashImg.png")} />
+        <InputContainer>
+          <Title>Acesso</Title>
+          <Input
             placeholder="Insira o e-mail cadastrado"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
           />
-          <View style={stylesDefault.codeInputContainer}>
-            <TextInput
-              style={stylesDefault.input}
+          <CodeInputContainer>
+            <Input
+              style={{ borderWidth: 0 }}
               placeholder="Insira sua senha"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
             />
-            <TouchableOpacity
-              onPress={() => setShowPassword(!showPassword)}
-            >
-              <Entypo
-                name={showPassword ? "eye" : "eye-with-line"}
-                size={24}
-                color="black"
-              />
+            <TouchableOpacity style={{ position: 'relative', right: '50%' }} onPress={() => setShowPassword(!showPassword)}>
+              <Entypo name={showPassword ? "eye" : "eye-with-line"} size={24} color="black" />
             </TouchableOpacity>
-          </View>
-        </View>
+          </CodeInputContainer>
+        </InputContainer>
 
-        <View>
-          <TouchableOpacity onPress={handleLogin} style={stylesDefault.joinButton}>
-            <Text style={stylesDefault.joinText}>Entrar</Text>
-            <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("ForgotPassword");
-            }}
-            style={stylesDefault.loginButton}
-          >
-            <Text style={stylesDefault.loginText}>Esqueci minha senha</Text>
-          </TouchableOpacity>
-        </View>
+        <JoinButton onPress={handleLogin}>
+          <JoinText>Entrar</JoinText>
+          <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
+        </JoinButton>
+        <LoginButton onPress={() => navigation.navigate("ForgotPassword")}>
+          <LoginText>Esqueci minha senha</LoginText>
+        </LoginButton>
 
-        <View style={stylesDefault.bottomContainer}>
-          <TouchableOpacity style={stylesDefault.contactContainer}>
+        <BottomContainer>
+          <ContactContainer>
             <MaterialIcons name={"headset-mic"} size={33} color={"tomato"} />
             <View>
-              <Text style={stylesDefault.contactTextBlack}>Não consegue acessar?</Text>
-              <Text style={stylesDefault.contactTextRed}>
-                Entre em contato conosco
-              </Text>
+              <ContactTextBlack>Não consegue acessar?</ContactTextBlack>
+              <ContactTextRed>Entre em contato conosco</ContactTextRed>
             </View>
-          </TouchableOpacity>
-          <Image
-            source={require("../../assets/© TotalEnergies - 2023.png")}
-            style={{ resizeMode: "contain", width: "100%" }}
-          />
-        </View>
-      </View>
-      {modalCOnfirm && (
-        <View style={stylesDefault.centeredView}>
+          </ContactContainer>
+          <ImageTotalEnergies source={require("../../assets/© TotalEnergies - 2023.png")} />
+        </BottomContainer>
+      </InsideContainer>
+      {modalConfirm && (
+        <CenteredView>
           <ModalSMSConfirm
-            onClose={() => setModalConfim(false)}
+            onClose={() => setModalConfirm(false)}
             email={email}
             phone=""
             type="LOGIN"
             password={password}
           />
-        </View>
+        </CenteredView>
       )}
-    </View>
+    </Container>
   );
 };
 
