@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import CardNews from "../../components/CardNews";
-import api from "../../services/api";
-import axios from "axios";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
 
@@ -192,51 +186,27 @@ const dataFAQ = [
   },
 ];
 const FAQScreen: React.FC = () => {
-  const [showDetails, setShowDetails] = useState(false);
   const [selectedFAQ, setSelectedFAQ] = useState(null);
-  const { user, userName, login, logout } = useAuth();
-  const [name, setName] = useState("");
-
+  const { userName } = useAuth();
   return (
-    <View style={styles.container}>
-      <View style={styles.containerRed}>
+    <View style={stylesDefault.container}>
+      <View style={stylesDefault.containerRed}>
         <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-          <Text style={{ color: "white", fontWeight: "800", fontSize: 18 }}>
-            Olá
-          </Text>
-          <Text
-            style={{
-              color: "white",
-              fontWeight: "800",
-              marginLeft: 5,
-              fontSize: 18,
-            }}
-          >
-            {userName}
-          </Text>
+          <Text style={stylesDefault.whiteText}>Olá</Text>
+          <Text style={stylesDefault.whiteText}>{userName}</Text>
         </View>
       </View>
-      <ScrollView style={stylesDefault.ViewBody}>
+      <ScrollView style={stylesDefault.body}>
         {dataFAQ.map((faq, index) => (
-          <View style={styles.menu} key={index}>
+          <View style={stylesDefault.menu} key={index}>
             <TouchableOpacity
-              style={styles.menuItem}
+              style={stylesDefault.menuItem}
               onPress={() =>
                 setSelectedFAQ(selectedFAQ === index ? null : index)
               }
             >
-              <Text style={styles.menuItemText}>{faq.title}</Text>
-              <View
-                style={{
-                  backgroundColor: "#85d151",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: 50,
-
-                  height: 30,
-                  width: 30,
-                }}
-              >
+              <Text style={stylesDefault.menuItemText}>{faq.title}</Text>
+              <View style={stylesDefault.iconContainer}>
                 <AntDesign
                   name={selectedFAQ !== index ? "right" : "down"}
                   size={20}
@@ -245,8 +215,8 @@ const FAQScreen: React.FC = () => {
               </View>
             </TouchableOpacity>
             {selectedFAQ === index && (
-              <View style={styles.answerContainer}>
-                <Text style={styles.answer}>{faq.details}</Text>
+              <View style={stylesDefault.answerContainer}>
+                <Text style={stylesDefault.answer}>{faq.details}</Text>
               </View>
             )}
           </View>

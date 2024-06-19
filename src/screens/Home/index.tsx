@@ -139,7 +139,7 @@ const HomeScreen: React.FC = () => {
       getExtractRescues();
       /* DEMONSTRATION BELLOW PDF FILHO*/
       simulateUserBeingPdfFilho();
-      console.log(pdvSelectedStore);
+      
     } else {
       navigation.navigate("SelectPdvStore");
     }
@@ -158,467 +158,453 @@ const HomeScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={stylesDefault.RedViewHeaderContainer}>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
-          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
-        </View>
+    <View style={stylesDefault.container}>
+  <View style={stylesDefault.RedViewHeaderContainer}>
+    <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+      <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+      <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
+    </View>
+  </View>
+  <View>
+    <HomeNewInfo />
+  </View>
+  <View style={stylesDefault.ViewBody}>
+    <View style={styles.cardBalance}>
+      <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+        <Text style={stylesDefault.SmallText_Black_18_600}>Saldo</Text>
+        <TouchableOpacity onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}>
+          <Entypo
+            style={{ padding: 5 }}
+            name={showPasswordSaldo ? "eye" : "eye-with-line"}
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
       </View>
+      {showPasswordSaldo && (
+        <Text style={stylesDefault.SmallText_Black_30_600}>
+          R$ {userMonetaryBalance.replace(/\./g, ",")}
+        </Text>
+      )}
+      {showPasswordSaldo && !isPdvFilho && (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Redeem")}
+          style={styles.greenButton}
+        >
+          <FontAwesome
+            name="dollar"
+            size={20}
+            color="white"
+            style={styles.icon}
+          />
+          <Text style={styles.greenButtonText}>Resgatar agora</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  </View>
+  <ScrollView style={styles.menu}>
+    {menuItems.map((item, index) => (
+      <TouchableOpacity
+        key={index}
+        style={styles.menuItem}
+        onPress={() => {
+          if (item.path && item.path !== "lubconsult" && item.path !== "browserTotalEnergies") {
+            navigation.navigate(item.path);
+          }
+          if (item.path === "lubconsult") {
+            loadInBrowser("https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult");
+          }
+          if (item.modal) {
+            setModalType(item.modal);
+            setModalVisible(true);
+          }
+          if (item.path === "browserTotalEnergies") {
+            loadInBrowser("https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult");
+          }
+        }}
+      >
+        {!item.icon ? (
+          <View style={stylesDefault.View_Row_VCenter_W24_H12}>
+            <Image
+              source={require("../../assets/IconTotalEnergies.png")}
+              style={stylesDefault.Image_W100_H100_Tint_Red}
+            />
+          </View>
+        ) : (
+          <AntDesign name={item.icon} size={24} color="red" />
+        )}
+        <Text style={styles.menuItemText}>{item.title}</Text>
+        <View
+          style={
+            stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+          }
+        >
+          <Ionicons name="chevron-forward" size={24} color="white" />
+        </View>
+      </TouchableOpacity>
+    ))}
+    <TouchableOpacity
+      style={styles.menuItem}
+      onPress={() => navigation.navigate("Products")}
+    >
+      <Feather name="box" size={24} color="red" />
+      <Text style={styles.menuItemText}>Produtos participantes</Text>
+      <View
+        style={
+          stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+        }
+      >
+        <Ionicons name="chevron-forward" size={24} color="white" />
+      </View>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.menuItem}
+      onPress={() => navigation.navigate("SelectPdvStore")}
+    >
+      <Feather name="box" size={24} color="red" />
+      <Text style={styles.menuItemText}>
+        Loja selecionada:{" "}
+        <Text style={{ fontWeight: "700" }}>{pdvSelectedStore}</Text>
+      </Text>
+      <View
+        style={
+          stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+        }
+      >
+        <Ionicons name="chevron-forward" size={24} color="white" />
+      </View>
+    </TouchableOpacity>
+    {modalVisible ? (
       <View>
-        <HomeNewInfo />
-      </View>
-      <View style={stylesDefault.ViewBody}>
-        <View style={styles.cardBalance}>
-          <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
-            <Text style={stylesDefault.SmallText_Black_18_600}>Saldo</Text>
-            <TouchableOpacity
-              onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}
-            >
-              <Entypo
-                style={{ padding: 5 }}
-                name={showPasswordSaldo ? "eye" : "eye-with-line"}
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </View>
-          {showPasswordSaldo && (
-            <Text style={stylesDefault.SmallText_Black_30_600}>
-              R$ {userMonetaryBalance.replace(/\./g, ",")}
-            </Text>
-          )}
-          {showPasswordSaldo &&
-            /* Correto para esconder o resgate ao pdv filho: !isPdvFilho */ isPdvFilho && (
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Redeem")}
-                style={styles.greenButton}
-              >
-                <FontAwesome
-                  name="dollar"
-                  size={20}
-                  color="white"
-                  style={styles.icon}
-                />
-                <Text style={styles.greenButtonText}>Resgatar agora</Text>
-              </TouchableOpacity>
-            )}
-        </View>
-      </View>
-      <ScrollView style={styles.menu}>
-        {menuItems.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.menuItem}
-            onPress={() => {
-              if (
-                item.path &&
-                item.path !== "lubconsult" &&
-                item.path !== "browserTotalEnergies"
-              ) {
-                navigation.navigate(item.path);
-              }
-              if (item.path === "lubconsult") {
-                loadInBrowser(
-                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
-                );
-              }
-              if (item.modal) {
-                setModalType(item.modal);
-                setModalVisible(true);
-              }
-              if (item.path === "browserTotalEnergies") {
-                loadInBrowser(
-                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
-                );
-              }
-            }}
+        {modalType === "Extract" ? (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={closeModal}
           >
-            {!item.icon ? (
-              <View style={stylesDefault.View_Row_VCenter_W24_H12}>
-                <Image
-                  source={require("../../assets/IconTotalEnergies.png")}
-                  style={stylesDefault.Image_W100_H100_Tint_Red}
-                />
-              </View>
-            ) : (
-              <AntDesign name={item.icon} size={24} color="red" />
-            )}
-            <Text style={styles.menuItemText}>{item.title}</Text>
-            <View
-              style={
-                stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
-              }
-            >
-              <Ionicons name="chevron-forward" size={24} color="white" />
-            </View>
-          </TouchableOpacity>
-        ))}
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={() => navigation.navigate("Products")}
-        >
-          <Feather name="box" size={24} color="red" />
-          <Text style={styles.menuItemText}>Produtos participantes</Text>
-          <View
-            style={
-              stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
-            }
-          >
-            <Ionicons name="chevron-forward" size={24} color="white" />
-          </View>
-        </TouchableOpacity>
-        {/* DEMONSTRATION STORE TO BEEP */}
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={() => navigation.navigate("SelectPdvStore")}
-        >
-          <Feather name="box" size={24} color="red" />
-          <Text style={styles.menuItemText}>
-            Loja selecionada:{" "}
-            <Text style={{ fontWeight: "700" }}>{pdvSelectedStore}</Text>
-          </Text>
-          <View
-            style={
-              stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
-            }
-          >
-            <Ionicons name="chevron-forward" size={24} color="white" />
-          </View>
-        </TouchableOpacity>
-        {modalVisible ? (
-          <View>
-            {modalType === "Extract" ? (
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={closeModal}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <View style={styles.modalExtractView}>
+            <View style={stylesDefault.centeredView}>
+              <View style={stylesDefault.modalView}>
+                <View style={styles.modalExtractView}>
+                  <TouchableOpacity
+                    style={{ elevation: 2 }}
+                    onPress={closeModal}
+                  >
+                    <Ionicons name="close" size={24} color="black" />
+                  </TouchableOpacity>
+                  {extractType === "General" ? (
+                    <View style={styles.eyeViewStyles}>
                       <TouchableOpacity
-                        style={{ elevation: 2 }}
-                        onPress={closeModal}
-                      >
-                        <Ionicons name="close" size={24} color="black" />
-                      </TouchableOpacity>
-                      {extractType === "General" ? (
-                        <View style={styles.eyeViewStyles}>
-                          <TouchableOpacity
-                            onPress={() =>
-                              setShowPasswordExtratoQrCode(
-                                !showPasswordExtratoQrCode,
-                              )
-                            }
-                          >
-                            <Entypo
-                              name={
-                                showPasswordExtratoQrCode
-                                  ? "eye"
-                                  : "eye-with-line"
-                              }
-                              size={24}
-                              color="black"
-                            />
-                          </TouchableOpacity>
-                        </View>
-                      ) : null}
-                      {extractType === "Reclaim" ? (
-                        <View style={styles.eyeViewStyles}>
-                          <TouchableOpacity
-                            onPress={() =>
-                              setShowPasswordExtratoPix(!showPasswordExtratoPix)
-                            }
-                          >
-                            <Entypo
-                              name={
-                                showPasswordExtratoQrCode
-                                  ? "eye"
-                                  : "eye-with-line"
-                              }
-                              size={24}
-                              color="black"
-                            />
-                          </TouchableOpacity>
-                        </View>
-                      ) : null}
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        borderBottomColor: "grey",
-                        borderBottomWidth: 1,
-                        width: "100%",
-                        justifyContent: "center",
-                        gap: 30,
-                      }}
-                    >
-                      <TouchableOpacity
-                        style={
-                          extractType !== "General"
-                            ? styles.notselectedExtractButton
-                            : styles.selectedExtractButton
+                        onPress={() =>
+                          setShowPasswordExtratoQrCode(!showPasswordExtratoQrCode)
                         }
-                        onPress={() => setExtractType("General")}
                       >
-                        <Text
-                          style={
-                            extractType !== "General"
-                              ? styles.notselectedExtractButtonText
-                              : styles.selectedExtractButtonText
+                        <Entypo
+                          name={
+                            showPasswordExtratoQrCode
+                              ? "eye"
+                              : "eye-with-line"
                           }
-                        >
-                          Geral
-                        </Text>
+                          size={24}
+                          color="black"
+                        />
                       </TouchableOpacity>
+                    </View>
+                  ) : null}
+                  {extractType === "Reclaim" ? (
+                    <View style={styles.eyeViewStyles}>
                       <TouchableOpacity
-                        style={
-                          extractType !== "Reclaim"
-                            ? styles.notselectedExtractButton
-                            : styles.selectedExtractButton
+                        onPress={() =>
+                          setShowPasswordExtratoPix(!showPasswordExtratoPix)
                         }
-                        onPress={() => setExtractType("Reclaim")}
                       >
-                        <Text
-                          style={
-                            extractType !== "Reclaim"
-                              ? styles.notselectedExtractButtonText
-                              : styles.selectedExtractButtonText
+                        <Entypo
+                          name={
+                            showPasswordExtratoQrCode
+                              ? "eye"
+                              : "eye-with-line"
                           }
-                        >
-                          Resgate
-                        </Text>
+                          size={24}
+                          color="black"
+                        />
                       </TouchableOpacity>
                     </View>
-                    <View style={styles.modalViewContainer}>
-                      {extractType === "General" ? (
-                        <ScrollView style={styles.scrollViewContainer}>
-                          {ExtractGeneralData.map((item, index) => (
-                            <View
-                              key={index}
-                              style={styles.modalViewColumnContainer}
-                            >
-                              <View style={{ flexDirection: "column" }}>
-                                <Text style={styles.modalDarkMainText}>
-                                  {formatDate(item.created_at)}
-                                </Text>
-                                <Text style={styles.modalSmallGreyText}>
-                                  QR Code:{" "}
-                                  {showPasswordExtratoQrCode
-                                    ? item.qrcode
-                                    : "**************"}
-                                </Text>
-                              </View>
-                              <Text style={styles.modalGreenText}>
-                                R${" "}
-                                {showPasswordExtratoQrCode
-                                  ? item.totalMonetaryValue.toFixed(2)
-                                  : "*********"}
-                              </Text>
-                            </View>
-                          ))}
-                        </ScrollView>
-                      ) : null}
-                      {extractType === "Reclaim" ? (
-                        <ScrollView style={styles.scrollViewContainer}>
-                          {ExtractRescuesData.map((item, index) => (
-                            <View
-                              key={index}
-                              style={styles.modalViewColumnContainer}
-                            >
-                              <View style={{ flexDirection: "column" }}>
-                                <Text style={styles.modalSmallGreyText}>
-                                  {formatDate(item.created_at)}
-                                </Text>
-                                <Text style={styles.modalDarkMainText}>
-                                  Transferência
-                                </Text>
-                                <Text style={styles.modalSmallGreyText}>
-                                  Chave Pix:{" "}
-                                  {showPasswordExtratoPix
-                                    ? item.pixKey
-                                    : "*********"}
-                                </Text>
-                                <Text style={styles.modalSmallGreyText}>
-                                  Status: {item.paymentStatusName}
-                                </Text>
-                              </View>
-                              <Text style={styles.modalGreenText}>
-                                R${" "}
-                                {showPasswordExtratoPix
-                                  ? item.totalMonetaryValue.toFixed(2)
-                                  : "*********"}
-                              </Text>
-                            </View>
-                          ))}
-                        </ScrollView>
-                      ) : null}
-                    </View>
-                  </View>
+                  ) : null}
                 </View>
-              </Modal>
-            ) : null}
-            {modalType === "ScannedCodes" ? (
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={closeModal}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        width: "100%",
-                        justifyContent: "flex-end",
-                      }}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    borderBottomColor: "grey",
+                    borderBottomWidth: 1,
+                    width: "100%",
+                    justifyContent: "center",
+                    gap: 30,
+                  }}
+                >
+                  <TouchableOpacity
+                    style={
+                      extractType !== "General"
+                        ? styles.notselectedExtractButton
+                        : styles.selectedExtractButton
+                    }
+                    onPress={() => setExtractType("General")}
+                  >
+                    <Text
+                      style={
+                        extractType !== "General"
+                          ? styles.notselectedExtractButtonText
+                          : styles.selectedExtractButtonText
+                      }
                     >
-                      <TouchableOpacity
-                        style={{ elevation: 2 }}
-                        onPress={closeModal}
-                      >
-                        <Ionicons name="close" size={24} color="black" />
-                      </TouchableOpacity>
-                      <View style={styles.eyeViewStyles}>
-                        <TouchableOpacity
-                          onPress={() =>
-                            setShowPasswordCodesQrCode(!showPasswordCodesQrCode)
-                          }
+                      Geral
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={
+                      extractType !== "Reclaim"
+                        ? styles.notselectedExtractButton
+                        : styles.selectedExtractButton
+                    }
+                    onPress={() => setExtractType("Reclaim")}
+                  >
+                    <Text
+                      style={
+                        extractType !== "Reclaim"
+                          ? styles.notselectedExtractButtonText
+                          : styles.selectedExtractButtonText
+                      }
+                    >
+                      Resgate
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.modalViewContainer}>
+                  {extractType === "General" ? (
+                    <ScrollView style={styles.scrollViewContainer}>
+                      {ExtractGeneralData.map((item, index) => (
+                        <View
+                          key={index}
+                          style={styles.modalViewColumnContainer}
                         >
-                          <Entypo
-                            name={
-                              showPasswordCodesQrCode ? "eye" : "eye-with-line"
-                            }
-                            size={24}
-                            color="black"
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        width: "100%",
-                        marginBottom: 20,
-                      }}
-                    >
-                      <Text style={{ fontWeight: "400", fontSize: 16 }}>
-                        Códigos escaneados
-                      </Text>
-                    </View>
-                    <View style={styles.modalViewContainer}>
-                      <ScrollView style={styles.scrollViewContainer}>
-                        {ExtractGeneralData.map((item, index) => (
-                          <View
-                            key={index}
-                            style={styles.modalViewColumnContainer}
-                          >
-                            <View style={{ flexDirection: "column" }}>
-                              <Text style={styles.modalSmallGreyText}>
-                                Escaneado em: {formatDate(item.created_at)}
-                              </Text>
-                              <Text style={styles.modalDarkMainText}>
-                                {item.productaName}
-                              </Text>
-                              <Text style={styles.modalSmallGreyText}>
-                                QR Code:{" "}
-                                {showPasswordCodesQrCode
-                                  ? item.qrcode
-                                  : "******"}
-                              </Text>
-                            </View>
-                            <Text style={styles.modalGreenText}>
-                              {showPasswordCodesQrCode
-                                ? "+" + item.totalPoints.toFixed(2)
-                                : "***"}{" "}
-                              pts
+                          <View style={{ flexDirection: "column" }}>
+                            <Text style={styles.modalDarkMainText}>
+                              {formatDate(item.created_at)}
+                            </Text>
+                            <Text style={styles.modalSmallGreyText}>
+                              QR Code:{" "}
+                              {showPasswordExtratoQrCode
+                                ? item.qrcode
+                                : "**************"}
                             </Text>
                           </View>
-                        ))}
-                      </ScrollView>
-                    </View>
-                  </View>
-                </View>
-              </Modal>
-            ) : null}
-            {modalType === "PdvNetMovements" ? (
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={closeModal}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        width: "100%",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      <TouchableOpacity
-                        style={{ elevation: 2 }}
-                        onPress={closeModal}
-                      >
-                        <Ionicons name="close" size={24} color="black" />
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        width: "100%",
-                        marginBottom: 20,
-                      }}
-                    >
-                      <Text style={{ fontWeight: "400", fontSize: 16 }}>
-                        Movimentações por PDV
-                      </Text>
-                    </View>
-                    <View style={styles.modalViewContainer}>
-                      <View
-                        style={{
-                          width: "100%",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Text>CNPJ</Text>
-                        <Text>NOME PDV</Text>
-                        <Text>VALOR GERADO</Text>
-                      </View>
-                      <ScrollView style={styles.scrollViewContainerPdvNet}>
-                        {PdvNetMovementData.map((item, index) => (
-                          <View
-                            key={index}
-                            style={styles.modalViewColumnContainerPdvNet}
-                          >
-                            <View
-                              style={{
-                                width: "100%",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Text style={{}}>{item.cnpj}</Text>
-                              <Text style={{}}>{item.pdvName}</Text>
-                              <Text style={{}}>{item.generatedValue}</Text>
-                            </View>
+                          <Text style={styles.modalGreenText}>
+                            R${" "}
+                            {showPasswordExtratoQrCode
+                              ? item.totalMonetaryValue.toFixed(2)
+                              : "*********"}
+                          </Text>
+                        </View>
+                      ))}
+                    </ScrollView>
+                  ) : null}
+                  {extractType === "Reclaim" ? (
+                    <ScrollView style={styles.scrollViewContainer}>
+                      {ExtractRescuesData.map((item, index) => (
+                        <View
+                          key={index}
+                          style={styles.modalViewColumnContainer}
+                        >
+                          <View style={{ flexDirection: "column" }}>
+                            <Text style={styles.modalSmallGreyText}>
+                              {formatDate(item.created_at)}
+                            </Text>
+                            <Text style={styles.modalDarkMainText}>
+                              Transferência
+                            </Text>
+                            <Text style={styles.modalSmallGreyText}>
+                              Chave Pix:{" "}
+                              {showPasswordExtratoPix
+                                ? item.pixKey
+                                : "*********"}
+                            </Text>
+                            <Text style={styles.modalSmallGreyText}>
+                              Status: {item.paymentStatusName}
+                            </Text>
                           </View>
-                        ))}
-                      </ScrollView>
-                    </View>
+                          <Text style={styles.modalGreenText}>
+                            R${" "}
+                            {showPasswordExtratoPix
+                              ? item.totalMonetaryValue.toFixed(2)
+                              : "*********"}
+                          </Text>
+                        </View>
+                      ))}
+                    </ScrollView>
+                  ) : null}
+                </View>
+              </View>
+            </View>
+          </Modal>
+        ) : null}
+        {modalType === "ScannedCodes" ? (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={closeModal}
+          >
+            <View style={stylesDefault.centeredView}>
+              <View style={stylesDefault.modalView}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{ elevation: 2 }}
+                    onPress={closeModal}
+                  >
+                    <Ionicons name="close" size={24} color="black" />
+                  </TouchableOpacity>
+                  <View style={styles.eyeViewStyles}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        setShowPasswordCodesQrCode(!showPasswordCodesQrCode)
+                      }
+                    >
+                      <Entypo
+                        name={
+                          showPasswordCodesQrCode ? "eye" : "eye-with-line"
+                        }
+                        size={24}
+                        color="black"
+                      />
+                    </TouchableOpacity>
                   </View>
                 </View>
-              </Modal>
-            ) : null}
-          </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    marginBottom: 20,
+                  }}
+                >
+                  <Text style={{ fontWeight: "400", fontSize: 16 }}>
+                    Códigos escaneados
+                  </Text>
+                </View>
+                <View style={styles.modalViewContainer}>
+                  <ScrollView style={styles.scrollViewContainer}>
+                    {ExtractGeneralData.map((item, index) => (
+                      <View
+                        key={index}
+                        style={styles.modalViewColumnContainer}
+                      >
+                        <View style={{ flexDirection: "column" }}>
+                          <Text style={styles.modalSmallGreyText}>
+                            Escaneado em: {formatDate(item.created_at)}
+                          </Text>
+                          <Text style={styles.modalDarkMainText}>
+                            {item.productaName}
+                          </Text>
+                          <Text style={styles.modalSmallGreyText}>
+                            QR Code:{" "}
+                            {showPasswordCodesQrCode
+                              ? item.qrcode
+                              : "******"}
+                          </Text>
+                        </View>
+                        <Text style={styles.modalGreenText}>
+                          {showPasswordCodesQrCode
+                            ? "+" + item.totalPoints.toFixed(2)
+                            : "***"}{" "}
+                          pts
+                        </Text>
+                      </View>
+                    ))}
+                  </ScrollView>
+                </View>
+              </View>
+            </View>
+          </Modal>
         ) : null}
-      </ScrollView>
-    </View>
+        {modalType === "PdvNetMovements" ? (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={closeModal}
+          >
+            <View style={stylesDefault.centeredView}>
+              <View style={stylesDefault.modalView}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{ elevation: 2 }}
+                    onPress={closeModal}
+                  >
+                    <Ionicons name="close" size={24} color="black" />
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    marginBottom: 20,
+                  }}
+                >
+                  <Text style={{ fontWeight: "400", fontSize: 16 }}>
+                    Movimentações por PDV
+                  </Text>
+                </View>
+                <View style={styles.modalViewContainer}>
+                  <View
+                    style={{
+                      width: "100%",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text>CNPJ</Text>
+                    <Text>NOME PDV</Text>
+                    <Text>VALOR GERADO</Text>
+                  </View>
+                  <ScrollView style={styles.scrollViewContainerPdvNet}>
+                    {PdvNetMovementData.map((item, index) => (
+                      <View
+                        key={index}
+                        style={styles.modalViewColumnContainerPdvNet}
+                      >
+                        <View
+                          style={{
+                            width: "100%",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Text style={{}}>{item.cnpj}</Text>
+                          <Text style={{}}>{item.pdvName}</Text>
+                          <Text style={{}}>{item.generatedValue}</Text>
+                        </View>
+                      </View>
+                    ))}
+                  </ScrollView>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        ) : null}
+      </View>
+    ) : null}
+  </ScrollView>
+</View>
   );
 };
 

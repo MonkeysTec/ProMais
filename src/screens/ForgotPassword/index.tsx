@@ -18,6 +18,7 @@ import api from "../../services/api";
 import { ModalSMSConfirm } from "../../components/Modal/SmsConfirm";
 import Moment from "moment";
 import SignUp from "../SignUp";
+import stylesDefault from "../../components/Styled";
 
 const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [step, setStep] = useState(1);
@@ -28,21 +29,10 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [modalSms, setModalSms] = useState(false);
   const [phone, setPhone] = useState("");
   const [emailCode, setEmailCode] = useState("");
-
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const handleSendEmailCode = async () => {
     setStep(step + 1);
-    /* try{
-      const data = {
-        toEmail: email1
-      };
-        const response = await api.post("/tempcode/send/toresetpassword/v1/", data)
-        if(response){
-          console.log(response.data);
-        
-        }
-    }catch(error){
-      console.log(error)
-    } */
   };
   const handleCheckEmailCode = async () => {
     setStep(step + 1);
@@ -73,149 +63,122 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
       navigation.goBack();
     }
   };
+  const handleFinalRegister = () => {
+    
+  };
+  const handleCodeSms = (code:string, company:string) => {
+    
+  };
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView />
-      <RainbowLine />
-      <View style={styles.insideContainer}>
-        <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity onPress={handleBack} style={styles.backContainer}>
-            {step === 4 ? (
-              <AntDesign name={"checkcircle"} size={50} color={"#85d151"} />
-            ) : (
-              <Ionicons name={"arrow-back"} size={31} color={"black"} />
-            )}
-          </TouchableOpacity>
-          <Text style={styles.counter}>{step}/3</Text>
-        </View>
-        {step === 1 && (
-          <View
-            style={{
-              flexDirection: "column",
-              justifyContent: "space-between",
-              height: "auto",
-            }}
-          >
-            <Text style={styles.title}>Esqueci minha senha</Text>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                onChangeText={(e) => setEmail1(e)}
-                placeholder="Insira seu e-mail cadastrado"
-              />
-            </View>
-            <TouchableOpacity
-              onPress={handleSendEmailCode}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>Próximo</Text>
-              <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
-            </TouchableOpacity>
-          </View>
-        )}
-        {step === 2 && (
-          <>
-            <Text style={styles.title}>Confirmação</Text>
-            <Text>
-              Enviamos uma confirmação de segurança no e-mail {email1}
-            </Text>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                onChangeText={(e) => setName(e)}
-                placeholder="Insira o código aqui"
-              />
-            </View>
-
-            <TouchableOpacity
-              onPress={handleCheckEmailCode}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>Próximo</Text>
-              <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
-            </TouchableOpacity>
-          </>
-        )}
-        {step === 3 && (
-          <>
-            <Text style={styles.title}>Finalize seu cadastro</Text>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                onChangeText={(e) => setPassword(e)}
-                placeholder="Insira uma senha"
-              />
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                onChangeText={(e) => setPassword2(e)}
-                placeholder="Confirme sua senha"
-              />
-            </View>
-            <TouchableOpacity
-              onPress={handleFinalRegister}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>Finalizar</Text>
-              <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
-            </TouchableOpacity>
-          </>
-        )}
-        {step === 4 && (
-          <>
-            <View>
-              <Text style={styles.finishTitle}>Eba!</Text>
-              <Text style={styles.contactTextBlack}>
-                Sua conta foi criado com sucesso!
-              </Text>
-              <Text style={styles.contactTextBlack}>Acesse agora mesmo...</Text>
-              <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
-                <Text style={styles.joinText}>Entrar</Text>
-                <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-        <View
-          style={{
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity style={styles.contactContainer}>
-            <MaterialIcons name={"headset-mic"} size={45} color={"tomato"} />
-            <View>
-              <Text style={styles.contactTextBlack}>Não consegue acessar?</Text>
-              <Text style={styles.contactTextRed}>
-                Entre em contato conosco
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <Image
-            source={require("../../assets/© TotalEnergies - 2023.png")}
-            style={styles.image}
-          />
-        </View>
+    <View style={stylesDefault.container}>
+    <SafeAreaView />
+    <RainbowLine />
+    <View style={stylesDefault.insideContainer}>
+      <View style={stylesDefault.header}>
+        <TouchableOpacity onPress={handleBack} style={stylesDefault.backContainer}>
+          {step === 4 ? (
+            <AntDesign name={"checkcircle"} size={50} color={"#85d151"} />
+          ) : (
+            <Ionicons name={"arrow-back"} size={31} color={"black"} />
+          )}
+        </TouchableOpacity>
+        <Text style={stylesDefault.counter}>{step}/3</Text>
       </View>
-      {modalSms && (
-        <ModalSMSConfirm
-          phone={phone}
-          type={typeModal}
-          email={email1}
-          code={(code, company) => handleCodeSms(code, company)}
-        />
+      {step === 1 && (
+        <View style={stylesDefault.stepContainer}>
+          <Text style={stylesDefault.title}>Esqueci minha senha</Text>
+          <View style={stylesDefault.inputContainer}>
+            <TextInput
+              style={stylesDefault.input}
+              onChangeText={(e) => setEmail1(e)}
+              placeholder="Insira seu e-mail cadastrado"
+            />
+          </View>
+          <TouchableOpacity onPress={handleSendEmailCode} style={stylesDefault.joinButton}>
+            <Text style={stylesDefault.joinText}>Próximo</Text>
+            <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
+          </TouchableOpacity>
+        </View>
       )}
+      {step === 2 && (
+        <View style={stylesDefault.stepContainer}>
+          <Text style={stylesDefault.title}>Confirmação</Text>
+          <Text>
+            Enviamos uma confirmação de segurança no e-mail {email1}
+          </Text>
+          <View style={stylesDefault.inputContainer}>
+            <TextInput
+              style={stylesDefault.input}
+              onChangeText={(e) => setName(e)}
+              placeholder="Insira o código aqui"
+            />
+          </View>
+          <TouchableOpacity onPress={handleCheckEmailCode} style={stylesDefault.joinButton}>
+            <Text style={stylesDefault.joinText}>Próximo</Text>
+            <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
+          </TouchableOpacity>
+        </View>
+      )}
+      {step === 3 && (
+        <View style={stylesDefault.stepContainer}>
+          <Text style={stylesDefault.title}>Finalize seu cadastro</Text>
+          <View style={stylesDefault.inputContainer}>
+            <TextInput
+              style={stylesDefault.input}
+              onChangeText={(e) => setPassword(e)}
+              placeholder="Insira uma senha"
+            />
+          </View>
+          <View style={stylesDefault.inputContainer}>
+            <TextInput
+              style={stylesDefault.input}
+              onChangeText={(e) => setPassword2(e)}
+              placeholder="Confirme sua senha"
+            />
+          </View>
+          <TouchableOpacity onPress={handleFinalRegister} style={stylesDefault.joinButton}>
+            <Text style={stylesDefault.joinText}>Finalizar</Text>
+            <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
+          </TouchableOpacity>
+        </View>
+      )}
+      {step === 4 && (
+        <View style={stylesDefault.stepContainer}>
+          <Text style={stylesDefault.finishTitle}>Eba!</Text>
+          <Text style={stylesDefault.contactTextBlack}>
+            Sua conta foi criada com sucesso!
+          </Text>
+          <Text style={stylesDefault.contactTextBlack}>Acesse agora mesmo...</Text>
+          <TouchableOpacity onPress={handleNext} style={stylesDefault.joinButton}>
+            <Text style={stylesDefault.joinText}>Entrar</Text>
+            <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
+          </TouchableOpacity>
+        </View>
+      )}
+      <View style={stylesDefault.bottomContainer}>
+        <TouchableOpacity style={stylesDefault.contactContainer}>
+          <MaterialIcons name={"headset-mic"} size={45} color={"tomato"} />
+          <View>
+            <Text style={stylesDefault.contactTextBlack}>Não consegue acessar?</Text>
+            <Text style={stylesDefault.contactTextRed}>Entre em contato conosco</Text>
+          </View>
+        </TouchableOpacity>
+        <Image
+          source={require("../../assets/© TotalEnergies - 2023.png")}
+          style={stylesDefault.image}
+        />
+      </View>
     </View>
+    {modalSms && (
+      <ModalSMSConfirm
+        phone={phone}
+        type={typeModal}
+        email={email1}
+        code={(code, company) => handleCodeSms(code, company)}
+      />
+    )}
+  </View>
   );
 };
 

@@ -12,6 +12,7 @@ import {
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { ScrollView } from "react-native-gesture-handler";
 import api from "../../../services/api";
+import { stylesDefault } from "../../Styled";
 
 interface NewInfoModel {
   id: string;
@@ -63,13 +64,7 @@ export const HomeNewInfo = () => {
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              justifyContent: "flex-end",
-            }}
-          >
+          <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
             <TouchableOpacity style={{ elevation: 2 }} onPress={closeModal}>
               <AntDesign name="close" size={24} color="black" />
             </TouchableOpacity>
@@ -79,28 +74,13 @@ export const HomeNewInfo = () => {
               {newsData.map((item, index) => {
                 return (
                   <View style={{ width: "100%", marginBottom: 20 }} key={index}>
-                    <Text
-                      style={{ fontSize: 24, fontWeight: "bold", color: "red" }}
-                    >
+                    <Text style={stylesDefault.RedViewFirstText}>
                       {item.title}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: "bold",
-                        color: "grey",
-                      }}
-                    >
+                    <Text style={stylesDefault.SmallText_Black_18_600}>
                       {item.shortDescription}
                     </Text>
-                    {/*  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.Others}</Text> */}
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: "bold",
-                        color: "grey",
-                      }}
-                    >
+                    <Text style={stylesDefault.SmallText_Black_18_600}>
                       {formatDate(item.created_at)}
                     </Text>
                   </View>

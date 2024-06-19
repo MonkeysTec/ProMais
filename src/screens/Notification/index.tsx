@@ -14,7 +14,7 @@ Notifications.setNotificationHandler({
 });
 
 async function sendPushNotification(expoPushToken: any, dataPush: any) {
-  console.log(dataPush);
+  
   for (let i = 0; dataPush.length > i; i++) {
     const message = {
       to: expoPushToken,
@@ -77,7 +77,7 @@ async function registerForPushNotificationsAsync() {
           projectId,
         })
       ).data;
-      console.log(pushTokenString);
+      
       return pushTokenString;
     } catch (e) {
       handleRegistrationError(`${e}`);
@@ -92,7 +92,7 @@ function useNotifications(pushData: any) {
     registerForPushNotificationsAsync()
       .then((token) => {
         if (token) {
-          console.log("Expo Push Token: j", token);
+       
           sendPushNotification(token, pushData);
           AsyncStorage.setItem("PushToken", token);
         }

@@ -45,7 +45,7 @@ export const Redeem: React.FC = () => {
       if (response) {
         try {
           const { data } = await api.get("/rescues/v1/");
-          console.log(data);
+        
           if (data.results[0]) {
             if (
               data.results[0].paymentStatusName === "Cancelado" ||
@@ -117,402 +117,339 @@ export const Redeem: React.FC = () => {
     getUserName();
   }, []);
   return (
-    <View style={styles.container}>
-      <View style={stylesDefault.RedViewHeaderContainer}>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
-          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
-        </View>
-        {/*  <Ionicons name="reload" size={24} color="white" /> */}
-      </View>
-      <View
-        style={{ width: "100%", height: "auto", padding: 20, marginTop: -50 }}
-      >
-        {step === 1 && (
-          <View style={styles.cardBalance}>
-            <Ionicons
-              onPress={() => navigation.navigate("Home")}
-              name={"arrow-back"}
-              size={31}
-              color={"#374649"}
-            />
-            <Text style={styles.text}>Como deseja transferir?</Text>
-            <TouchableOpacity
-              onPress={() => {
-                setStep(2);
-                setPixTransferType("cpf");
-              }}
-              style={styles.loginButton}
-            >
-              <Text style={styles.loginText}>CPF</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setStep(2);
-                setPixTransferType("cnpj");
-              }}
-              style={styles.loginButton}
-            >
-              <Text style={styles.loginText}>CNPJ</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setStep(2);
-                setPixTransferType("phone");
-              }}
-              style={styles.loginButton}
-            >
-              <Text style={styles.loginText}>Celular</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setStep(2);
-                setPixTransferType("email");
-              }}
-              style={styles.loginButton}
-            >
-              <Text style={styles.loginText}>E-mail</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setStep(2);
-                setPixTransferType("key");
-              }}
-              style={styles.loginButton}
-            >
-              <Text style={styles.loginText}>Chave aleatória</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {step === 2 && (
-          <View style={styles.cardBalance}>
-            <Ionicons
-              onPress={() => setStep(1)}
-              name={"arrow-back"}
-              size={31}
-              color={"#374649"}
-            />
-            <Text style={styles.text}>
-              Informe os dados da chave de transferência para
-              {pixTransferType === "cpf" && " CPF: "}
-              {pixTransferType === "cnpj" && " CPNJ: "}
-              {pixTransferType === "phone" && " Celular: "}
-              {pixTransferType === "key" && " Chave Aleatória: "}
-              {pixTransferType === "email" && " Email: "}
-            </Text>
-            {pixTransferType === "cpf" ? (
-              <TextInput
-                style={styles.input}
-                placeholder={`Insira ${pixTransferType}`}
-                onChangeText={(value) => {
-                  setPixKey(value);
-                }}
-                value={pixKey}
-                maxLength={11}
-              />
-            ) : null}
-            {pixTransferType === "cnpj" ? (
-              <TextInput
-                style={styles.input}
-                placeholder={`Insira ${pixTransferType}`}
-                onChangeText={(value) => {
-                  setPixKey(value);
-                }}
-                maxLength={14}
-                value={pixKey}
-              />
-            ) : null}
-            {pixTransferType === "phone" ? (
-              <TextInput
-                style={styles.input}
-                placeholder={`Insira ${pixTransferType}`}
-                onChangeText={(value) => {
-                  setPixKey(value);
-                }}
-                maxLength={12}
-                value={pixKey}
-              />
-            ) : null}
-            {pixTransferType === "key" ? (
-              <TextInput
-                style={styles.input}
-                placeholder={`Insira ${pixTransferType}`}
-                onChangeText={(value) => {
-                  setPixKey(value);
-                }}
-                maxLength={32}
-                value={pixKey}
-              />
-            ) : null}
-            {pixTransferType === "email" ? (
-              <TextInput
-                style={styles.input}
-                placeholder={`Insira ${pixTransferType}`}
-                onChangeText={(value) => {
-                  setPixKey(value);
-                }}
-                maxLength={40}
-                value={pixKey}
-              />
-            ) : null}
-
-            <TouchableOpacity
-              onPress={() => {
-                if (pixKey.length > 5) {
-                  setStep(3);
-                }
-              }}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>Continuar</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {step === 3 && (
-          <View style={styles.cardBalance}>
-            <Ionicons
-              onPress={() => setStep(2)}
-              name={"arrow-back"}
-              size={31}
-              color={"#374649"}
-            />
-            <Text style={styles.text}>Qual o valor do resgate?</Text>
-            <Text style={{ fontSize: 18, fontWeight: 400 }}>
-              Saldo disponível par resgate em conta:{" "}
-              <Text
-                style={{
-                  fontSize: 22,
-                  fontWeight: 600,
-                  marginTop: -20,
-                }}
-              >
-                R$ {totalBalanceAmount}
-              </Text>
-            </Text>
-
-            <View
-              style={{
-                borderWidth: 1,
-                borderColor: "black",
-                flexDirection: "row",
-                height: 50,
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                gap: 10,
-                borderRadius: 30,
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "700" }}>R$</Text>
-
-              <TextInput
-                style={{ width: "100%", flex: 1, height: 50, fontSize: 20 }}
-                placeholder="0,00"
-                onChangeText={(value) => {
-                  const decimalValue =
-                    Number(value.replace(/[^0-9]/g, "")) / 100;
-                  setAmountToReclaim(decimalValue.toFixed(2));
-                }}
-                value={amountToReclaim?.toString()}
-              />
-            </View>
-
-            <TouchableOpacity
-              onPress={() => {
-                setStep(4);
-              }}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>Continuar</Text>
-            </TouchableOpacity>
-            {/* NAO BOTE VALOR ACIMA OU IGUAL A 100 REAIS, A transação vai ser efetuada(Provavelmente?) */}
-            <Text style={{ fontSize: 14, fontWeight: 400 }}>
-              Mínimo: 100,00 reais
-            </Text>
-          </View>
-        )}
-        {step === 4 && (
-          <View style={styles.cardBalance}>
-            <Ionicons
-              onPress={() => setStep(3)}
-              name={"arrow-back"}
-              size={31}
-              color={"#374649"}
-            />
-            <Text style={styles.text}>Você está transferindo para:</Text>
-            <View
-              style={{
-                borderWidth: 1,
-                borderColor: "black",
-                height: 200,
-                width: "95%",
-                borderRadius: 12,
-                padding: 20,
-              }}
-            >
-              <Text style={{ fontSize: 22, fontWeight: 600, marginTop: 10 }}>
-                Chave pix
-              </Text>
-              <Text style={{ fontSize: 14, color: "#a9a9a9", fontWeight: 600 }}>
-                {pixTransferType === "cpf" ? "CPF: " : null}
-                {pixTransferType === "cnpj" ? "CPNJ: " : null}
-                {pixTransferType === "phone" ? "Celular: " : null}
-                {pixTransferType === "key" ? "Chave Aleatória: " : null}
-                {pixTransferType === "email" ? "Email: " : null}
-                {pixKey}
-              </Text>
-              <Text style={{ fontSize: 20, fontWeight: 600, marginTop: 10 }}>
-                Valor a ser transferido
-              </Text>
-              <Text style={{ fontSize: 14, color: "#a9a9a9", fontWeight: 600 }}>
-                R$ {amountToReclaim}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                tryTransferReclaim();
-                setStep(7);
-              }}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>Continuar</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {step === 5 && (
-          <View style={styles.cardBalance}>
-            <Ionicons
-              name={"arrow-back"}
-              onPress={() => setStep(4)}
-              size={31}
-              color={"#374649"}
-            />
-            <View style={{ flexDirection: "row", gap: 14 }}>
-              <TouchableOpacity
-                style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-                onPress={() => {}}
-              >
-                <AntDesign name="checkcircle" size={55} color="#85D151" />
-              </TouchableOpacity>
-              <Text style={styles.text}>Resgate realizado com sucesso</Text>
-            </View>
-            <ScrollView
-              style={{
-                borderWidth: 1,
-                borderColor: "#a9a9a9",
-                height: 200,
-                width: "95%",
-                borderRadius: 12,
-                padding: 20,
-              }}
-            >
-              <Text
-                style={{ fontSize: 14, color: "#a9a9a9", fontWeight: 600 }}
-              ></Text>
-            </ScrollView>
-            <View style={{ flexDirection: "row", gap: 10 }}>
-              <Feather name="send" size={18} color="red" />
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  color: "red",
-                  textDecorationColor: "red",
-                  textDecorationLine: "underline",
-                }}
-              >
-                Compartilhar comprovante
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Home")}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>
-                {step !== 5 ? "Continuar" : "Tela inicial"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {step === 6 && (
-          <View style={styles.cardBalance}>
-            <View
-              style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
-            >
-              <TouchableOpacity
-                style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-                onPress={() => {}}
-              >
-                <AntDesign name="closecircle" size={55} color="red" />
-              </TouchableOpacity>
-              <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                Houve um erro no resgate
-              </Text>
-            </View>
-            <Text style={{ fontWeight: "600", fontSize: 20 }}>
-              Verifique as regras a seguir
-            </Text>
-            <Text style={{}}>-Resgate minimo: 100,00 reais</Text>
-            <Text style={{}}>
-              -Se a chave pix é um CPF, escolha o CPF na primeira pagina(o mesmo
-              para as outras opções)
-            </Text>
-            <Text style={{}}>
-              Caso tenha verificado as regras acima, e ainda sim deu erro, por
-              gentileza, contate o suporte.
-            </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Home")}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>Voltar a Home</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {step === 7 && (
-          <View style={styles.cardBalance}>
-            <View style={{ flexDirection: "row", gap: 14 }}>
-              <TouchableOpacity
-                style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-                onPress={() => {}}
-              >
-                <AntDesign name="exclamationcircle" size={24} color="orange" />
-              </TouchableOpacity>
-              <Text style={styles.text}>Em processamento...</Text>
-            </View>
-            <Text style={{ fontWeight: "600", fontSize: 20 }}>
-              Por favor aguarde nesta página!
-            </Text>
-            <Text style={{}}>
-              -Esse processamento pode durar até 30 segundos
-            </Text>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Home")}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>Voltar a Home</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {step === 8 && (
-          <View style={styles.cardWarning}>
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-            >
-              <AntDesign name="exclamationcircle" size={20} color={"red"} />
-              <Text style={{ color: "red", fontWeight: 700 }}>Atenção:</Text>
-            </View>
-            <Text style={{ paddingRight: 10 }}>
-              Você só pode realizar transferências via PIX para sua conta
-              pessoal. Não é permitido a transferência para terceiros pelo
-              aplicativo do Clube Pro+.
-            </Text>
-          </View>
-        )}
-      </View>
+    <View style={stylesDefault.container}>
+  <View style={stylesDefault.RedViewHeaderContainer}>
+    <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+      <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+      <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
     </View>
+    {/*  <Ionicons name="reload" size={24} color="white" /> */}
+  </View>
+  <View style={stylesDefault.ViewBody}>
+    {step === 1 && (
+      <View style={styles.cardBalance}>
+        <Ionicons
+          onPress={() => navigation.navigate("Home")}
+          name={"arrow-back"}
+          size={31}
+          color={"#374649"}
+        />
+        <Text style={styles.text}>Como deseja transferir?</Text>
+        <TouchableOpacity
+          onPress={() => {
+            setStep(2);
+            setPixTransferType("cpf");
+          }}
+          style={stylesDefault.loginButton}
+        >
+          <Text style={stylesDefault.loginText}>CPF</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setStep(2);
+            setPixTransferType("cnpj");
+          }}
+          style={stylesDefault.loginButton}
+        >
+          <Text style={stylesDefault.loginText}>CNPJ</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setStep(2);
+            setPixTransferType("phone");
+          }}
+          style={stylesDefault.loginButton}
+        >
+          <Text style={stylesDefault.loginText}>Celular</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setStep(2);
+            setPixTransferType("email");
+          }}
+          style={stylesDefault.loginButton}
+        >
+          <Text style={stylesDefault.loginText}>E-mail</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setStep(2);
+            setPixTransferType("key");
+          }}
+          style={stylesDefault.loginButton}
+        >
+          <Text style={stylesDefault.loginText}>Chave aleatória</Text>
+        </TouchableOpacity>
+      </View>
+    )}
+    {step === 2 && (
+      <View style={styles.cardBalance}>
+        <Ionicons
+          onPress={() => setStep(1)}
+          name={"arrow-back"}
+          size={31}
+          color={"#374649"}
+        />
+        <Text style={styles.text}>
+          Informe os dados da chave de transferência para
+          {pixTransferType === "cpf" && " CPF: "}
+          {pixTransferType === "cnpj" && " CPNJ: "}
+          {pixTransferType === "phone" && " Celular: "}
+          {pixTransferType === "key" && " Chave Aleatória: "}
+          {pixTransferType === "email" && " Email: "}
+        </Text>
+        {pixTransferType === "cpf" ? (
+          <TextInput
+            style={stylesDefault.input}
+            placeholder={`Insira ${pixTransferType}`}
+            onChangeText={(value) => {
+              setPixKey(value);
+            }}
+            value={pixKey}
+            maxLength={11}
+          />
+        ) : null}
+        {pixTransferType === "cnpj" ? (
+          <TextInput
+            style={stylesDefault.input}
+            placeholder={`Insira ${pixTransferType}`}
+            onChangeText={(value) => {
+              setPixKey(value);
+            }}
+            maxLength={14}
+            value={pixKey}
+          />
+        ) : null}
+        {pixTransferType === "phone" ? (
+          <TextInput
+            style={stylesDefault.input}
+            placeholder={`Insira ${pixTransferType}`}
+            onChangeText={(value) => {
+              setPixKey(value);
+            }}
+            maxLength={12}
+            value={pixKey}
+          />
+        ) : null}
+        {pixTransferType === "key" ? (
+          <TextInput
+            style={stylesDefault.input}
+            placeholder={`Insira ${pixTransferType}`}
+            onChangeText={(value) => {
+              setPixKey(value);
+            }}
+            maxLength={32}
+            value={pixKey}
+          />
+        ) : null}
+        {pixTransferType === "email" ? (
+          <TextInput
+            style={stylesDefault.input}
+            placeholder={`Insira ${pixTransferType}`}
+            onChangeText={(value) => {
+              setPixKey(value);
+            }}
+            maxLength={40}
+            value={pixKey}
+          />
+        ) : null}
+
+        <TouchableOpacity
+          onPress={() => {
+            if (pixKey.length > 5) {
+              setStep(3);
+            }
+          }}
+          style={stylesDefault.joinButton}
+        >
+          <Text style={stylesDefault.joinText}>Continuar</Text>
+        </TouchableOpacity>
+      </View>
+    )}
+    {step === 3 && (
+      <View style={styles.cardBalance}>
+        <Ionicons
+          onPress={() => setStep(2)}
+          name={"arrow-back"}
+          size={31}
+          color={"#374649"}
+        />
+        <Text style={styles.text}>Qual o valor do resgate?</Text>
+        <Text style={stylesDefault.SmallText_Black_18_600}>
+          Saldo disponível par resgate em conta:{" "}
+          <Text style={stylesDefault.SmallText_Black_30_600}>
+            R$ {totalBalanceAmount}
+          </Text>
+        </Text>
+
+        <View style={stylesDefault.inputContainer}>
+          <Text style={stylesDefault.currencySymbol}>R$</Text>
+          <TextInput
+            style={stylesDefault.inputAmount}
+            placeholder="0,00"
+            onChangeText={(value) => {
+              const decimalValue =
+                Number(value.replace(/[^0-9]/g, "")) / 100;
+              setAmountToReclaim(decimalValue.toFixed(2));
+            }}
+            value={amountToReclaim?.toString()}
+          />
+        </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            setStep(4);
+          }}
+          style={stylesDefault.joinButton}
+        >
+          <Text style={stylesDefault.joinText}>Continuar</Text>
+        </TouchableOpacity>
+        <Text style={stylesDefault.minValueText}>
+          Mínimo: 100,00 reais
+        </Text>
+      </View>
+    )}
+    {step === 4 && (
+      <View style={styles.cardBalance}>
+        <Ionicons
+          onPress={() => setStep(3)}
+          name={"arrow-back"}
+          size={31}
+          color={"#374649"}
+        />
+        <Text style={styles.text}>Você está transferindo para:</Text>
+        <View style={stylesDefault.transferInfoContainer}>
+          <Text style={stylesDefault.transferInfoTitle}>Chave pix</Text>
+          <Text style={stylesDefault.transferInfoSubtitle}>
+            {pixTransferType === "cpf" ? "CPF: " : null}
+            {pixTransferType === "cnpj" ? "CPNJ: " : null}
+            {pixTransferType === "phone" ? "Celular: " : null}
+            {pixTransferType === "key" ? "Chave Aleatória: " : null}
+            {pixTransferType === "email" ? "Email: " : null}
+            {pixKey}
+          </Text>
+          <Text style={stylesDefault.transferInfoTitle}>
+            Valor a ser transferido
+          </Text>
+          <Text style={stylesDefault.transferInfoSubtitle}>
+            R$ {amountToReclaim}
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            tryTransferReclaim();
+            setStep(7);
+          }}
+          style={stylesDefault.joinButton}
+        >
+          <Text style={stylesDefault.joinText}>Continuar</Text>
+        </TouchableOpacity>
+      </View>
+    )}
+    {step === 5 && (
+      <View style={styles.cardBalance}>
+        <Ionicons
+          name={"arrow-back"}
+          onPress={() => setStep(4)}
+          size={31}
+          color={"#374649"}
+        />
+        <View style={stylesDefault.successContainer}>
+          <TouchableOpacity
+            style={stylesDefault.successButton}
+            onPress={() => {}}
+          >
+            <AntDesign name="checkcircle" size={55} color="#85D151" />
+          </TouchableOpacity>
+          <Text style={styles.text}>Resgate realizado com sucesso</Text>
+        </View>
+        <ScrollView style={stylesDefault.receiptContainer}>
+          <Text style={stylesDefault.receiptText}></Text>
+        </ScrollView>
+        <View style={stylesDefault.shareContainer}>
+          <Feather name="send" size={18} color="red" />
+          <Text style={stylesDefault.shareText}>Compartilhar comprovante</Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Home")}
+          style={stylesDefault.joinButton}
+        >
+          <Text style={stylesDefault.joinText}>
+            {step !== 5 ? "Continuar" : "Tela inicial"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )}
+    {step === 6 && (
+      <View style={styles.cardBalance}>
+        <View style={stylesDefault.errorContainer}>
+          <TouchableOpacity
+            style={stylesDefault.errorButton}
+            onPress={() => {}}
+          >
+            <AntDesign name="closecircle" size={55} color="red" />
+          </TouchableOpacity>
+          <Text style={stylesDefault.errorText}>Houve um erro no resgate</Text>
+        </View>
+        <Text style={stylesDefault.errorTitle}>Verifique as regras a seguir</Text>
+        <Text style={stylesDefault.errorRule}>-Resgate minimo: 100,00 reais</Text>
+        <Text style={stylesDefault.errorRule}>
+          -Se a chave pix é um CPF, escolha o CPF na primeira pagina(o mesmo
+          para as outras opções)
+        </Text>
+        <Text style={stylesDefault.errorRule}>
+          Caso tenha verificado as regras acima, e ainda sim deu erro, por
+          gentileza, contate o suporte.
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Home")}
+          style={stylesDefault.joinButton}
+        >
+          <Text style={stylesDefault.joinText}>Voltar a Home</Text>
+        </TouchableOpacity>
+      </View>
+    )}
+    {step === 7 && (
+      <View style={styles.cardBalance}>
+        <View style={stylesDefault.processingContainer}>
+          <TouchableOpacity
+            style={stylesDefault.processingButton}
+            onPress={() => {}}
+          >
+            <AntDesign name="exclamationcircle" size={24} color="orange" />
+          </TouchableOpacity>
+          <Text style={styles.text}>Em processamento...</Text>
+        </View>
+        <Text style={stylesDefault.processingText}>
+          Por favor aguarde nesta página!
+        </Text>
+        <Text style={stylesDefault.processingDetail}>
+          -Esse processamento pode durar até 30 segundos
+        </Text>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Home")}
+          style={stylesDefault.joinButton}
+        >
+          <Text style={stylesDefault.joinText}>Voltar a Home</Text>
+        </TouchableOpacity>
+      </View>
+    )}
+    {step === 8 && (
+      <View style={styles.cardWarning}>
+        <View style={stylesDefault.warningHeader}>
+          <AntDesign name="exclamationcircle" size={20} color={"red"} />
+          <Text style={stylesDefault.warningText}>Atenção:</Text>
+        </View>
+        <Text style={stylesDefault.warningMessage}>
+          Você só pode realizar transferências via PIX para sua conta
+          pessoal. Não é permitido a transferência para terceiros pelo
+          aplicativo do Clube Pro+.
+        </Text>
+      </View>
+    )}
+  </View>
+</View>
   );
 };
 

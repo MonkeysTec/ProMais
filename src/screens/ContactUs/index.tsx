@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
-  Image,
   TextInput,
   SafeAreaView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import api from "../../services/api";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -18,7 +15,7 @@ import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
 
 const ContactUsScreen: React.FC = () => {
-  const { user, userName, login, logout } = useAuth();
+  const { userName} = useAuth();
   const [name, setName] = useState("");
   const [assunto, setAssunto] = useState("");
   const [descrição, setDescrição] = useState("");
@@ -42,7 +39,7 @@ const ContactUsScreen: React.FC = () => {
       };
 
       const response = await api.post("/email/contactus/v1/", data);
-      console.log(response);
+      
       if (response) {
         setShowConfirmModal(true);
       }
@@ -54,24 +51,23 @@ const ContactUsScreen: React.FC = () => {
   return (
     <>
       {showConfirmModal ? (
-        <View style={styles.container}>
+        <View style={stylesDefault.container}>
           <SafeAreaView />
-
-          <View style={styles.insideContainer}>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
+          <View style={stylesDefault.insideContainer}>
+            <View style={stylesDefault.row}>
               <TouchableOpacity
-                style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+                style={stylesDefault.row}
                 onPress={() => {}}
               >
                 <AntDesign name="checkcircle" size={55} color="#85D151" />
               </TouchableOpacity>
             </View>
-            <Text style={{ fontWeight: "800", fontSize: 30, color: "#85D151" }}>
-              Boa!{"\n"}Sua mensagem foi enviada
+            <Text style={stylesDefault.confirmTitle}>
+              Boa!
+              {"\n"}
+              Sua mensagem foi enviada
             </Text>
-            <Text style={{ fontWeight: "500", fontSize: 20, color: "black" }}>
+            <Text style={stylesDefault.confirmText}>
               Recebemos seu recado e em breve, nossa equipe Pro+ entrará em
               contato com você!
             </Text>
@@ -79,66 +75,34 @@ const ContactUsScreen: React.FC = () => {
               onPress={() => {
                 navigation.navigate("Home");
               }}
-              style={styles.joinButton}
+              style={stylesDefault.confirmButton}
             >
-              <Text style={styles.joinText}>Voltar para a home</Text>
+              <Text style={stylesDefault.confirmButtonText}>
+                Voltar para a home
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
       ) : (
-        <View style={styles.container}>
+        <View style={stylesDefault.container}>
           <View style={stylesDefault.RedViewHeaderContainer}>
-            <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+            <View style={stylesDefault.row}>
               <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
               <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
             </View>
-            {/*  <Ionicons name="reload" size={24} color="white" /> */}
           </View>
-          <View style={{ padding: 20, top: -50 }}>
-            <View
-              style={{
-                width: "100%",
-                height: "auto",
-                padding: 30,
-                backgroundColor: "white",
-                borderRadius: 20,
-              }}
-            >
-              <View style={{ marginBottom: 20 }}>
-                <Text style={{ color: "red", fontWeight: "800", fontSize: 29 }}>
-                  Fale conosco
-                </Text>
-              </View>
-              <View>
-                <TextInput
-                  value={name}
-                  onChangeText={(text) => setName(text)}
-                  placeholder="Email para contato"
-                  style={{
-                    borderRadius: 50,
-                    marginBottom: 20,
-                    borderWidth: 2,
-                    borderColor: "grey",
-                    padding: 5,
-                    paddingLeft: 30,
-                    width: "100%",
-                    height: 50,
-                  }}
-                />
-              </View>
-              <View
-                style={{
-                  borderRadius: 50,
-                  marginBottom: 20,
-                  borderWidth: 2,
-                  borderColor: "grey",
-                  padding: 5,
-                  width: "100%",
-                  height: 50,
-                }}
-              >
+          <View style={stylesDefault.contentContainer}>
+            <View style={stylesDefault.formContainer}>
+              <Text style={stylesDefault.formTitle}>Fale conosco</Text>
+              <TextInput
+                value={name}
+                onChangeText={(text) => setName(text)}
+                placeholder="Email para contato"
+                style={stylesDefault.input}
+              />
+              <View style={stylesDefault.pickerContainer}>
                 <Picker
-                  style={{ bottom: 10 }}
+                  style={stylesDefault.picker}
                   selectedValue={assunto}
                   onValueChange={(itemValue) => setAssunto(itemValue)}
                 >
@@ -147,42 +111,20 @@ const ContactUsScreen: React.FC = () => {
                   ))}
                 </Picker>
               </View>
-              <View
-                style={{
-                  borderTopStartRadius: 20,
-                  borderTopEndRadius: 20,
-                  borderBottomStartRadius: 20,
-                  borderBottomEndRadius: 20,
-                  marginBottom: 20,
-                  borderWidth: 2,
-                  borderColor: "grey",
-                  width: "100%",
-                  height: 180,
-                }}
+              <TextInput
+                style={stylesDefault.textArea}
+                value={descrição}
+                onChangeText={(text) => setDescrição(text)}
+                placeholder="Descrição"
+                multiline
+                numberOfLines={4}
+              />
+              <TouchableOpacity
+                onPress={() => sendEmail()}
+                style={stylesDefault.button}
               >
-                <TextInput
-                  style={{
-                    marginBottom: 20,
-                    padding: 5,
-                    paddingLeft: 8,
-                    width: "100%",
-                    height: 180,
-                  }}
-                  value={descrição}
-                  onChangeText={(text) => setDescrição(text)}
-                  placeholder="Descrição"
-                  multiline
-                  numberOfLines={4}
-                />
-              </View>
-              <View>
-                <TouchableOpacity
-                  onPress={() => sendEmail()}
-                  style={styles.button}
-                >
-                  <Text style={styles.buttonText}>Enviar</Text>
-                </TouchableOpacity>
-              </View>
+                <Text style={stylesDefault.buttonText}>Enviar</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

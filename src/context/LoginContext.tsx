@@ -62,7 +62,7 @@ async function registerForPushNotificationsAsync() {
           projectId,
         })
       ).data;
-      console.log(pushTokenString);
+      
       return pushTokenString;
     } catch (e: unknown) {
       handleRegistrationError(`${e}`);
@@ -168,7 +168,7 @@ export const AuthProvider = ({ children }: AuthProviderType) => {
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+        
       });
 
     return () => {
@@ -191,7 +191,7 @@ export const AuthProvider = ({ children }: AuthProviderType) => {
       nameUser += data.token.user.lastName;
       setUserName(nameUser);
       AsyncStorage.setItem("userName", JSON.stringify(nameUser));
-      console.log("userName, retrieved");
+      
     }
   };
 

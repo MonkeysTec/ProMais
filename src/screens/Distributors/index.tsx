@@ -5,15 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import CardNews from "../../components/CardNews";
 import api from "../../services/api";
-import axios from "axios";
-import FAQScreen from "../FAQ";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
 
@@ -110,62 +103,48 @@ const DistributorsScreen: React.FC = () => {
   ];
   return (
     <View style={styles.container}>
-      <View style={stylesDefault.RedViewHeaderContainer}>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
-          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
-        </View>
-        {/*  <Ionicons name="reload" size={24} color="white" /> */}
+    <View style={stylesDefault.RedViewHeaderContainer}>
+      <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+        <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+        <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
       </View>
-      <View style={{ padding: 20, bottom: 50 }}>
-        <View
-          style={{
-            backgroundColor: "white",
-            borderRadius: 15,
-            padding: 25,
-            height: "100%",
-          }}
-        >
-          <Text
-            style={{
-              color: "red",
-              fontSize: 20,
-              fontWeight: "600",
-              marginBottom: 20,
-            }}
-          >
-            Distribuidor
-          </Text>
-          <ScrollView style={{ width: "100%", height: "100%" }}>
-            {distributorsNew.map((dist, index) => (
-              <TouchableOpacity
-                key={index}
-                style={{
-                  flexDirection: "row",
+      {/* <Ionicons name="reload" size={24} color="white" /> */}
+    </View>
+    <View style={stylesDefault.contentContainer}>
+      <View style={stylesDefault.formContainer}>
+        <Text style={stylesDefault.formTitle}>Distribuidor</Text>
+        <ScrollView style={{ width: "100%", height: "100%" }}>
+          {distributorsNew.map((dist, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                stylesDefault.row,
+                {
                   paddingVertical: 15,
                   borderBottomWidth: 1,
                   borderBottomColor: "#F3F3F3",
-                }}
-              >
-                <View style={{ flexDirection: "row" }}>
-                  <View>
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 14,
-                        fontWeight: "600",
-                      }}
-                    >
-                      {dist.fantasyName.toUpperCase()}
-                    </Text>
-                  </View>
+                },
+              ]}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <View>
+                  <Text
+                    style={{
+                      color: "black",
+                      fontSize: 14,
+                      fontWeight: "600",
+                    }}
+                  >
+                    {dist.fantasyName.toUpperCase()}
+                  </Text>
                 </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
     </View>
+  </View>
   );
 };
 

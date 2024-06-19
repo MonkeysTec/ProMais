@@ -10,205 +10,78 @@ const HowWorks: React.FC = () => {
   const { userName } = useAuth();
 
   return (
-    <View style={styles.container}>
-      <View style={stylesDefault.RedViewHeaderContainer}>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
-          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
-        </View>
+    <View style={stylesDefault.container}>
+    <View style={stylesDefault.RedViewHeaderContainer}>
+      <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+        <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+        <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
       </View>
-      <View style={stylesDefault.ViewBody}>
-        <View
-          style={{
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "auto",
-            padding: 20,
-            backgroundColor: "white",
-            borderRadius: 20,
-            bottom: 30,
-          }}
-        >
-          <Text
-            style={{ fontWeight: "600", fontSize: 20, alignSelf: "flex-start" }}
-          >
-            Como funciona?
+    </View>
+    <View style={stylesDefault.ViewBody}>
+      <View style={stylesDefault.infoContainer}>
+        <Text style={stylesDefault.SmallText_Black_600}>Como funciona?</Text>
+        <Image
+          source={require("../../assets/home-img.png")}
+          style={stylesDefault.Image_W100_H100_Tint_Red}
+        />
+        <View>
+          <Text style={stylesDefault.SmallText_Black_30_600}>Muito + Simples</Text>
+          <Text style={stylesDefault.SmallText_Black_30_600}>
+            Muito + Fácil de ganhar!
           </Text>
-          <Image
-            source={require("../../assets/home-img.png")}
-            style={{
-              borderWidth: 2,
-              borderColor: "white",
-              borderRadius: 10,
-              marginTop: 10,
-              width: "100%",
-            }}
-          />
-          <View>
-            <Text
-              style={{
-                fontWeight: "700",
-                fontSize: 20,
-                color: "red",
-                marginTop: 10,
-              }}
-            >
-              Muito + Simples
-            </Text>
-            <Text style={{ fontWeight: "700", fontSize: 20, color: "red" }}>
-              Muito + Facil de ganhar!
-            </Text>
-          </View>
         </View>
       </View>
-      <ScrollView
-        style={{
-          width: "100%",
-          height: "100%",
-          paddingHorizontal: 20,
-          marginTop: -10,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "auto",
-            gap: 10,
-            backgroundColor: "white",
-            padding: 10,
-            borderRadius: 20,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "red",
-              justifyContent: "center",
-              alignItems: "center",
-              width: 60,
-              height: 60,
-              borderRadius: 50,
-            }}
-          >
-            <MaterialCommunityIcons name="cellphone" size={40} color="white" />
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "flex-start",
-              height: "auto",
-            }}
-          >
-            <Text
-              style={{
-                fontWeight: "700",
-                fontSize: 16,
-                color: "red",
-              }}
-            >
-              Cadastre-se no programa
-            </Text>
-            <Text style={{ fontWeight: "500", fontSize: 14 }}>
-              Faça parte do nosso clube de fidelidade e tenha muitos benefícios.
-            </Text>
+      <ScrollView style={stylesDefault.scrollView}>
+        <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+          <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+            <View style={stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151}>
+              <MaterialCommunityIcons name="cellphone" size={40} color="white" />
+            </View>
+            <View style={stylesDefault.View_Row_VCenter_W24_H12} />
+            <View>
+              <Text style={stylesDefault.SmallText_Black_30_600}>Cadastre-se no programa</Text>
+              <Text style={stylesDefault.SmallText_Black_18_600}>
+                Faça parte do nosso clube de fidelidade e tenha muitos benefícios.
+              </Text>
+            </View>
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "auto",
-            gap: 10,
-            backgroundColor: "white",
-            padding: 10,
-            borderRadius: 20,
-            marginTop: 5,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "red",
-              justifyContent: "center",
-              alignItems: "center",
-              width: 60,
-              height: 60,
-              borderRadius: 50,
-            }}
-          >
-            <Feather
-              style={{ right: 1, top: 2 }}
-              name="shopping-cart"
-              size={36}
-              color="white"
-            />
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{
-                fontWeight: "700",
-                fontSize: 16,
-                color: "red",
-              }}
-            >
-              Compre produtos TE
-            </Text>
-            <Text style={{ fontWeight: "500", fontSize: 14 }}>
-              Escaneie os códigos das caixas e aumente suas recompensas. {"\n"}+
-              Compras {"\n"}+ Recompensas.
-            </Text>
+        <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+          <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+            <View style={stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151}>
+              <Feather name="shopping-cart" size={36} color="white" />
+            </View>
+            <View style={stylesDefault.View_Row_VCenter_W24_H12} />
+            <View>
+              <Text style={stylesDefault.SmallText_Black_30_600}>Compre produtos TE</Text>
+              <Text style={stylesDefault.SmallText_Black_18_600}>
+                Escaneie os códigos das caixas e aumente suas recompensas. {"\n"}
+                + Compras {"\n"}
+                + Recompensas.
+              </Text>
+            </View>
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "auto",
-            gap: 10,
-            backgroundColor: "white",
-            padding: 10,
-            borderRadius: 20,
-            marginTop: 5,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "red",
-              justifyContent: "center",
-              alignItems: "center",
-              width: 60,
-              height: 60,
-              borderRadius: 50,
-            }}
-          >
-            <AntDesign name="Trophy" size={40} color="white" />
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{
-                fontWeight: "700",
-                fontSize: 16,
-                color: "red",
-              }}
-            >
-              Resgate seus prêmios{"\n"}+ SIMPLES{"\n"}+ PRÁTICO
-            </Text>
-            <Text style={{ fontWeight: "500", fontSize: 14 }}>
-              Recompensas = PIX. É isso mesmo. Seus benefícios a um clique de
-              resgate. Basta informar sua chave PIX e aproveitar.
-            </Text>
+        <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+          <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+            <View style={stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151}>
+              <AntDesign name="Trophy" size={40} color="white" />
+            </View>
+            <View style={stylesDefault.View_Row_VCenter_W24_H12} />
+            <View>
+              <Text style={stylesDefault.SmallText_Black_30_600}>
+                Resgate seus prêmios {"\n"}+ SIMPLES {"\n"}+ PRÁTICO
+              </Text>
+              <Text style={stylesDefault.SmallText_Black_18_600}>
+                Recompensas = PIX. É isso mesmo. Seus benefícios a um clique de
+                resgate. Basta informar sua chave PIX e aproveitar.
+              </Text>
+            </View>
           </View>
         </View>
       </ScrollView>
     </View>
+  </View>
   );
 };
 

@@ -101,41 +101,25 @@ const ProductsScreen: React.FC = () => {
     },
   ];
   return (
-    <View style={styles.container}>
+    <View style={stylesDefault.container}>
       <View style={stylesDefault.RedViewHeaderContainer}>
         <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
           <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
           <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
         </View>
       </View>
-      <View
-        style={{
-          padding: 20,
-          marginTop: -30,
-          marginHorizontal: 20,
-          gap: 20,
-          backgroundColor: "white",
-          borderRadius: 20,
-        }}
-      >
-        <Text style={{ fontWeight: "700", color: "red", fontSize: 22 }}>
+      <View style={stylesDefault.contentContainer}>
+        <Text style={{ ...stylesDefault.confirmTitle, marginBottom: 0 }}>
           Produtos participantes
         </Text>
 
-        <View
-          style={{
-            backgroundColor: "white",
-            borderRadius: 15,
-
-            height: "100%",
-          }}
-        >
+        <View style={stylesDefault.formContainer}>
           <ScrollView style={{ width: "100%", height: "100%" }}>
             {productsNew.map((prod, index) => (
               <TouchableOpacity
                 key={index}
                 style={{
-                  flexDirection: "row",
+                  ...stylesDefault.menuItem,
                   paddingVertical: 15,
                   borderBottomWidth: 1,
                   borderBottomColor: "#F3F3F3",
@@ -148,35 +132,33 @@ const ProductsScreen: React.FC = () => {
                       height: 80,
                       borderWidth: 1,
                       borderColor: "grey",
+                      borderRadius: 10,
+                      overflow: "hidden", // Ensure image stays within border radius
                     }}
                   >
                     {prod.photoURL ? (
                       <Image
                         source={{ uri: prod.photoURL }}
                         style={{ width: "100%", height: "100%" }}
+                        resizeMode="cover"
                       />
                     ) : null}
                   </View>
                   <View style={{ marginLeft: 20 }}>
                     <Text
                       style={{
-                        color: "black",
+                        ...stylesDefault.menuItemText,
                         fontSize: 12,
                         fontWeight: "400",
                       }}
                     >
                       {prod.gamma}
                     </Text>
-                    <Text
-                      style={{ color: "red", fontSize: 16, fontWeight: "700" }}
-                    >
-                      {prod.name}
-                    </Text>
+                    <Text style={stylesDefault.confirmText}>{prod.name}</Text>
                     <Text
                       style={{
-                        color: "black",
+                        ...stylesDefault.SmallText_Black_30_600,
                         fontSize: 20,
-                        fontWeight: "600",
                         marginTop: 5,
                       }}
                     >
@@ -192,33 +174,5 @@ const ProductsScreen: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
-    backgroundColor: "#F3F3F3",
-  },
-  text: {
-    marginTop: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000000",
-    textShadowColor: "#000",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
-    width: "80%",
-  },
-  containerRed: {
-    backgroundColor: "red",
-    height: 150,
-    width: "100%",
-    paddingHorizontal: 30,
-    justifyContent: "space-between",
-    borderBottomLeftRadius: 40,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-});
 
 export default ProductsScreen;

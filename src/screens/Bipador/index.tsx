@@ -6,8 +6,6 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
@@ -34,16 +32,13 @@ const Bipador: React.FC = () => {
     try {
       const { data } = await api.get("/users/gen/jwe/v1");
       if (data) {
-        console.log("JWE token found, can invite a beeper!");
+        
         const jweToken = data.jwe;
         try {
           const { data } = await api.get(
             "/tempcode/register/status/v1/?subtypeUser=PDV_BEEPER",
           );
           if (data) {
-            console.log(
-              "Url to invitation found!, trying to prepare invite url",
-            );
             let urlInvite = data.urlToInvite;
             urlInvite += jweToken;
             Linking.openURL(urlInvite).catch((err) =>
@@ -106,219 +101,116 @@ const Bipador: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={stylesDefault.RedViewHeaderContainer}>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
-          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
-        </View>
+    <View style={stylesDefault.RedViewHeaderContainer}>
+      <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+        <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+        <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
       </View>
+    </View>
 
-      {/* <TouchableOpacity style={{
-        flexDirection: 'row', alignItems: 'center',
-        gap: 10, width: '100%',
-        marginLeft: 80, marginTop:-40
-      }} onPress={() => navigation.navigate('Home')} >
-
-        <Feather style={{ top: 10 }} name="arrow-left" size={24} color="black" />
-        <Text style={styles.homeText}>Home</Text>
-      </TouchableOpacity> */}
-
+    <View
+      style={stylesDefault.BipView}
+    >
       <View
-        style={{
-          marginTop: -50,
-          flexDirection: "column",
-          padding: 20,
-          width: "100%",
-          height: "100%",
-        }}
+        style={stylesDefault.innerBipView}
       >
-        <View
-          style={{
-            flexDirection: "column",
-            backgroundColor: "white",
-            width: "100%",
-            height: "auto",
-            borderRadius: 10,
-            padding: 20,
-          }}
-        >
-          <TouchableOpacity onPress={() => inviteNewBeeper()}>
-            <View
-              style={{
-                backgroundColor: "red",
-                borderRadius: 40,
-                width: "100%",
-                justifyContent: "center",
-                height: 50,
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <AntDesign name="adduser" size={24} color="white" />
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "white",
-                  fontWeight: "700",
-                  marginLeft: 10,
-                }}
-              >
-                Indique um bipador
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: "column",
-              marginTop: 20,
-            }}
-          >
-            <Text style={{ fontSize: 16, color: "red", fontWeight: "700" }}>
-              Cadastrados
-            </Text>
-            <Text style={{ fontSize: 16, color: "grey", fontWeight: "700" }}>
-              Gerencie os bipadores indicados
+        <TouchableOpacity onPress={() => inviteNewBeeper()}>
+          <View style={stylesDefault.InviteBeeperButton}>
+            <AntDesign name="adduser" size={24} color="white" />
+            <Text style={stylesDefault.InviteBeeperButtonText}>
+              Indique um bipador
             </Text>
           </View>
+        </TouchableOpacity>
+        <View style={{ marginTop: 20, flexDirection: "column" }}>
+          <Text style={stylesDefault.BipadoresTitle}>Cadastrados</Text>
+          <Text style={stylesDefault.BipadoresSubtitle}>
+            Gerencie os bipadores indicados
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, flexDirection: "column" }}>
           <View
             style={{
-              flexDirection: "column",
-              marginTop: 20,
-              height: "auto",
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text
-                style={{
-                  marginRight: 70,
-                  fontSize: 16,
-                  color: "red",
-                  fontWeight: "600",
-                }}
-              >
-                Nome
-              </Text>
-              <Text style={{ fontSize: 16, color: "red", fontWeight: "600" }}>
-                Status
-              </Text>
-              <Text style={{ fontSize: 16, color: "red", fontWeight: "600" }}>
-                Excluir
-              </Text>
-            </View>
+            <Text style={stylesDefault.BipNameHeader}>Nome</Text>
+            <Text style={stylesDefault.BipStatusHeader}>Status</Text>
+            <Text style={stylesDefault.BipDeleteHeader}>Excluir</Text>
+          </View>
 
-            {bipadoresSample.length > 0 ? (
-              bipadoresSample.map((bip, index) => (
-                <View
-                  key={index}
-                  style={{
-                    flexDirection: "row",
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    marginTop: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      marginRight: 70,
-                      fontSize: 16,
-                      color: "grey",
-                      fontWeight: "600",
-                      width: 100,
-                    }}
-                  >
-                    {bip.nameUser}
-                  </Text>
-                  <View style={{ width: 80 }}>
-                    {bip.registrationStatus === "ACTIVE" ? (
-                      <TouchableOpacity
-                        onPress={() =>
-                          handleBipChange(index, "NOT_ACTIVE", bip.systemUserID)
-                        }
-                      >
-                        <MaterialIcons
-                          style={{ margin: -15 }}
-                          name="toggle-on"
-                          size={60}
-                          color="#85D151"
-                        />
-                      </TouchableOpacity>
-                    ) : null}
-                    {bip.registrationStatus !== "INVITE_NOT_ACCEPT" &&
-                    bip.registrationStatus !== "ACTIVE" ? (
-                      <TouchableOpacity
-                        onPress={() =>
-                          handleBipChange(index, "ACTIVE", bip.systemUserID)
-                        }
-                      >
-                        <MaterialIcons
-                          style={{ margin: -15 }}
-                          name="toggle-off"
-                          size={60}
-                          color="grey"
-                        />
-                      </TouchableOpacity>
-                    ) : null}
-                    {bip.registrationStatus === "INVITE_NOT_ACCEPT" ? (
-                      <View style={{ flexDirection: "row", marginLeft: -25 }}>
-                        <AntDesign
-                          style={{ top: 2 }}
-                          name="exclamationcircle"
-                          size={16}
-                          color="#D7D711"
-                        />
-                        <Text style={{ color: "#D7D711" }}> Pendente</Text>
-                      </View>
-                    ) : null}
-                  </View>
-                  <View
-                    style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: 50,
-                      backgroundColor: "red",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <TouchableOpacity onPress={() => handleDelete(index)}>
-                      <View
-                        style={{
-                          width: 28,
-                          height: 28,
-                          borderRadius: 50,
-                          backgroundColor: "red",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <AntDesign name="delete" size={20} color="white" />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              ))
-            ) : (
-              <Text
+          {bipadoresSample.length > 0 ? (
+            bipadoresSample.map((bip, index) => (
+              <View
+                key={index}
                 style={{
-                  fontSize: 16,
-                  fontWeight: "700",
-                  alignSelf: "flex-start",
-                  color: "grey",
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "flex-start",
+                  marginTop: 10,
                 }}
               >
-                Você ainda não indicou nenhum bipador
-              </Text>
-            )}
-          </View>
+                <Text style={stylesDefault.BipName}>{bip.nameUser}</Text>
+                <View style={{ width: 80 }}>
+                  {bip.registrationStatus === "ACTIVE" ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        handleBipChange(index, "NOT_ACTIVE", bip.systemUserID)
+                      }
+                    >
+                      <MaterialIcons
+                        style={stylesDefault.ToggleIcon}
+                        name="toggle-on"
+                        size={60}
+                        color="#85D151"
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                  {bip.registrationStatus !== "INVITE_NOT_ACCEPT" &&
+                  bip.registrationStatus !== "ACTIVE" ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        handleBipChange(index, "ACTIVE", bip.systemUserID)
+                      }
+                    >
+                      <MaterialIcons
+                        style={stylesDefault.ToggleIcon}
+                        name="toggle-off"
+                        size={60}
+                        color="grey"
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                  {bip.registrationStatus === "INVITE_NOT_ACCEPT" ? (
+                    <View style={stylesDefault.PendingContainer}>
+                      <AntDesign
+                        style={stylesDefault.PendingIcon}
+                        name="exclamationcircle"
+                        size={16}
+                        color="#D7D711"
+                      />
+                      <Text style={stylesDefault.PendingText}>Pendente</Text>
+                    </View>
+                  ) : null}
+                </View>
+                <TouchableOpacity onPress={() => handleDelete(index)}>
+                  <View style={stylesDefault.DeleteButton}>
+                    <AntDesign name="delete" size={20} color="white" />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ))
+          ) : (
+            <Text style={stylesDefault.NoBipadoresText}>
+              Você ainda não indicou nenhum bipador
+            </Text>
+          )}
         </View>
       </View>
     </View>
+  </View>
   );
 };
 

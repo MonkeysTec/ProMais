@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  Image,
   Dimensions,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import FAQScreen from "../FAQ";
 import { WebView } from "react-native-webview";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
