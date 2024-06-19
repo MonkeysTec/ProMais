@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Axios } from "axios";
 import api from "../services/api";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
@@ -196,24 +195,19 @@ export const AuthProvider = ({ children }: AuthProviderType) => {
   };
 
   const login = (userData: User) => {
-    // Lógica para autenticar o usuário (por exemplo, fazer uma chamada à API)
     setUser(userData);
-    // Armazena o usuário no localStorage
     AsyncStorage.setItem("user", JSON.stringify(userData));
 
     getNameUser();
   };
 
   const logout = async () => {
-    // Lógica para fazer logout (por exemplo, limpar o usuário da sessão)
     setUser(null);
-    // Remove o usuário do localStorage
     AsyncStorage.removeItem("user");
     AsyncStorage.removeItem("userName");
     try {
       const { data } = await api.post("/users/system/logout/v1");
     } catch (error) {
-      // Exibir mensagem de erro
 
       console.error(error);
     }
