@@ -9,7 +9,7 @@ import AuthRoutes from "./AuthRoute";
 const Routes = () => {
   const { user } = useAuth();
 
-  return <>{user ? <AuthRoutes /> : <NotAuthRoutes />}</>;
+  return <>{!user ? <AuthRoutes /> : <NotAuthRoutes />}</>;
 };
 
 export default Routes;

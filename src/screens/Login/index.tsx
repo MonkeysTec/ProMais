@@ -1,29 +1,15 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-} from "react-native";
+import { SafeAreaView, Alert, View, TouchableOpacity } from "react-native";
 import { RainbowLine } from "../../components/RainbowLine";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import api from "../../services/api";
-import { useAuth } from "../../context/LoginContext";
-import axios from "axios";
 import { ModalSMSConfirm } from "../../components/Modal/SmsConfirm";
-import Entypo from "@expo/vector-icons/Entypo";
+import * as S from './styles';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [modalCOnfirm, setModalConfim] = useState(false);
-
+  const [modalConfirm, setModalConfirm] = useState(false);
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
@@ -35,7 +21,7 @@ const Login: React.FC = () => {
       });
 
       if (data.status === 200) {
-        setModalConfim(true);
+        setModalConfirm(true);
       } else {
         // Exibir mensagem de erro
         Alert.alert(
@@ -56,19 +42,17 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <S.Container>
       <SafeAreaView />
       <RainbowLine />
-      <View style={styles.insideContainer}>
-        <Image
+      <S.InsideContainer>
+        <S.StyledImage
           source={require("../../assets/splashImg.png")}
-          style={styles.image}
         />
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.title}>Acesso</Text>
-          <TextInput
-            style={styles.input}
+        <S.InputContainer>
+          <S.Title>Acesso</S.Title>
+          <S.Input
             placeholder="Insira o e-mail cadastrado"
             value={email}
             onChangeText={setEmail}
@@ -87,8 +71,7 @@ const Login: React.FC = () => {
               paddingHorizontal: 20,
             }}
           >
-            <TextInput
-              style={{}}
+            <S.InputPass
               placeholder="Insira sua senha"
               value={password}
               onChangeText={setPassword}
@@ -104,21 +87,20 @@ const Login: React.FC = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </S.InputContainer>
 
         <View>
-          <TouchableOpacity onPress={handleLogin} style={styles.joinButton}>
-            <Text style={styles.joinText}>Entrar</Text>
+          <S.JoinButton onPress={handleLogin}>
+            <S.JoinText>Entrar</S.JoinText>
             <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
-          </TouchableOpacity>
-          <TouchableOpacity
+          </S.JoinButton>
+          <S.LoginButton
             onPress={() => {
               navigation.navigate("ForgotPassword");
             }}
-            style={styles.loginButton}
           >
-            <Text style={styles.loginText}>Esqueci minha senha</Text>
-          </TouchableOpacity>
+            <S.LoginText>Esqueci minha senha</S.LoginText>
+          </S.LoginButton>
         </View>
 
         <View
@@ -129,23 +111,22 @@ const Login: React.FC = () => {
             marginBottom: 40,
             gap: 10,
           }}
-        >
-        </View>
-          <TouchableOpacity style={styles.contactContainer}>
-            <MaterialIcons name={"headset-mic"} size={33} color={"tomato"} />
-            <View>
-              <Text style={styles.contactTextBlack}>Não consegue acessar?</Text>
-              <Text style={styles.contactTextRed}>
-                Entre em contato conosco
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <Image
-            source={require("../../assets/© TotalEnergies - 2023.png")}
-            style={{ resizeMode: "contain", width: "100%" }}
-          />
-      </View>
-      {modalCOnfirm && (
+        />
+        <S.ContactContainer>
+          <MaterialIcons name={"headset-mic"} size={33} color={"tomato"} />
+          <View>
+            <S.ContactTextBlack>Não consegue acessar?</S.ContactTextBlack>
+            <S.ContactTextRed>
+              Entre em contato conosco
+            </S.ContactTextRed>
+          </View>
+        </S.ContactContainer>
+        <S.TotalEnergies
+          source={require("../../assets/© TotalEnergies - 2023.png")}
+          style={{ resizeMode: "contain", width: "100%" }}
+        />
+      </S.InsideContainer>
+      {modalConfirm && (
         <View
           style={{
             justifyContent: "center",
@@ -155,7 +136,7 @@ const Login: React.FC = () => {
         >
           <ModalSMSConfirm
             onClose={() => {
-              setModalConfim(false);
+              setModalConfirm(false);
             }}
             email={email}
             phone=""
@@ -164,132 +145,8 @@ const Login: React.FC = () => {
           />
         </View>
       )}
-    </View>
+    </S.Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    width: "100%",
-    height: "100%",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#000",
-    height: 50,
-    paddingHorizontal: 20,
-    paddingRight: 40,
-    borderRadius: 25,
-    marginTop: 10,
-  },
-  inputContainer: {
-    height: "auto",
-    gap: 10,
-  },
-  backContainer: {
-    marginTop: 70,
-  },
-  insideContainer: {
-    flex: 1,
-    justifyContent: "space-between",
-    width: "100%",
-    paddingHorizontal: 50,
-    height: "100%",
-    gap: 20,
-  },
-  image: {
-    width: 101,
-    height: 61,
-    resizeMode: "contain",
-    marginTop: 30,
-  },
-  title: {
-    marginTop: 0,
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "red",
-  },
-  imageBig: {
-    width: "100%",
-    resizeMode: "cover",
-    marginTop: 30,
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-  text: {
-    marginTop: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000000",
-    textShadowColor: "#000",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
-  },
-  joinButton: {
-    backgroundColor: "#85d151",
-    marginTop: 40,
-    width: "100%",
-    height: 50,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 25,
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#85d151",
-    gap: 10,
-  },
-  joinText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  loginButton: {
-    marginTop: 10,
-    width: "100%",
-    height: 50,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 25,
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#000",
-  },
-  loginText: {
-    fontSize: 18,
-    color: "#000",
-    fontWeight: "bold",
-  },
-  contactContainer: {
-    flexDirection: "row",
-    marginTop: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
-    height:50,
-    borderColor:'black',
-    borderWidth:1,
-    borderRadius:25
-  },
-  contactTextBlack: {
-    fontSize: 14,
-    color: "#000",
-    fontWeight: "800",
-  },
-  contactTextRed: {
-    fontSize: 14,
-    color: "red",
-    fontWeight: "800",
-  },
-  totalEnergies: {
-    width: 210,
-    height: 30,
-    resizeMode: "contain",
-  },
-  outline1: { color: "#000000", left: -1, top: -1 },
-});
 
 export default Login;
