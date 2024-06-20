@@ -1,113 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput, Alert, Linking } from 'react-native';
-import { RainbowLine } from '../../components/RainbowLine';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import Fontisto from '@expo/vector-icons/Fontisto';
-
+import React, { useState } from "react";
+import { Text, Image } from "react-native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { Fontisto } from "@expo/vector-icons";
+import { RainbowLine } from "../../components/RainbowLine";
+import * as S from './styles';
 
 const QrCodeScreenBefore: React.FC = () => {
-
   const navigation = useNavigation();
-
   const [dontShowAgain, setDontShowAgain] = useState(false);
   const [canSkip, setCanSkip] = useState(false);
+
   useFocusEffect(
     React.useCallback(() => {
-      // This code runs when the screen comes into focus
-      console.log('Navigated to QrCodeScreenBefore');
       if (dontShowAgain === true && canSkip === true) {
-        navigation.navigate('QRCodeRead');
+        navigation.navigate("QRCodeRead");
       }
-      return () => {
-        // This code runs when the screen goes out of focus
-        console.log('Navigated away from QrCodeScreenBefore');
-      };
-    }, [dontShowAgain, canSkip])
+      return () => {};
+    }, [dontShowAgain, canSkip]),
   );
 
   return (
     <>
-    {dontShowAgain === false || canSkip === false ?
-     <View style={styles.container}>
-      <SafeAreaView />
       <RainbowLine />
-      <View style={styles.insideContainer}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
-
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 10 }}
-            onPress={() => navigation.navigate('Home')}
-          >
-            <Ionicons name={'arrow-back'} size={30} color={'#374649'} />
-            <Text style={{ fontWeight: '700', color: 'black', fontSize: 20 }} >Home</Text>
-          </TouchableOpacity>
-
-
-        </View>
-        <View style={{ width: '100%', height: '100%', marginTop: 50, alignItems: 'center', gap: 20 }} >
-          <Image source={require('../../assets/QrCodeTutorial.png')}
-            style={{ width: 230, height: 230 }} />
-          <Text style={{ fontSize: 16 }} >Use a câmera do seu smartphone para escanear o QR Code presente na embalagem.</Text>
-          <TouchableOpacity onPress={() => {
-            setDontShowAgain(!dontShowAgain);
-          }} >
-          <View style={{flexDirection:'row', gap:10}} >
-            {dontShowAgain ?
-              <Fontisto name="checkbox-active" size={24} color="black" /> :
-              <Fontisto name="checkbox-passive" size={24} color="black" />}
-            <Text>Não mostrar isso novamente</Text>
-          </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
-            setCanSkip(true);
-            navigation.navigate('QRCodeRead');
-          }} style={styles.joinButton}>
-            <Text style={styles.joinText}>Escanear QR Code!</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>:null}
+      {dontShowAgain === false || canSkip === false ? (
+        <S.Container>
+          <S.InsideContainer>
+            <S.FlexRow>
+              <S.HomeButtonContainer onPress={() => navigation.navigate("Home")}>
+                <Ionicons name={"arrow-back"} size={30} color={"#374649"} />
+                <S.HomeButtonText>Home</S.HomeButtonText>
+              </S.HomeButtonContainer>
+            </S.FlexRow>
+            <S.TutorialContainer>
+              <Image source={require("../../assets/QrCodeTutorial.png")} style={{ width: 230, height: 230 }} />
+              <S.TutorialText>
+                Use a câmera do seu smartphone para escanear o QR Code presente
+                na embalagem.
+              </S.TutorialText>
+              <S.CheckboxContainer onPress={() => setDontShowAgain(!dontShowAgain)}>
+                {dontShowAgain ? (
+                  <Fontisto name="checkbox-active" size={24} color="black" />
+                ) : (
+                  <Fontisto name="checkbox-passive" size={24} color="black" />
+                )}
+                <Text>Não mostrar isso novamente</Text>
+              </S.CheckboxContainer>
+              <S.JoinButton onPress={() => {
+                setCanSkip(true);
+                navigation.navigate("QRCodeRead");
+              }}>
+                <S.JoinText>Escanear QR Code!</S.JoinText>
+              </S.JoinButton>
+            </S.TutorialContainer>
+          </S.InsideContainer>
+        </S.Container>
+      ) : null}
     </>
-    
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    top: 28,
-    
-  },
-
-
-  insideContainer: {
-
-    width: '100%',
-    padding: 50
-  },
-  joinButton: {
-    backgroundColor: '#85d151',
-    width: '100%',
-    height: 40,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 25,
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: '#85d151',
-    marginTop: 20,
-  },
-  joinText: {
-    fontSize: 18,
-    color: '#fff',
-    fontWeight: 'bold'
-  },
-
-
-
-});
 
 export default QrCodeScreenBefore;

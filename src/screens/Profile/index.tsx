@@ -1,179 +1,98 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, SafeAreaView, Image, TouchableOpacity, TextInput, Alert, Linking } from 'react-native';
-import { RainbowLine } from '../../components/RainbowLine';
-import { MaterialIcons } from '@expo/vector-icons';
-import EvilIcons from '@expo/vector-icons/EvilIcons';
-import Octicons from '@expo/vector-icons/Octicons';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Feather from '@expo/vector-icons/Feather';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { useAuth } from '../../context/LoginContext';
-import api from '../../services/api';
+import React from "react";
+import { SafeAreaView, Linking, View, Image } from "react-native";
+import { RainbowLine } from "../../components/RainbowLine";
+import { MaterialIcons, Octicons, Ionicons, FontAwesome5, Feather, AntDesign, FontAwesome6 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../context/LoginContext";
+import * as S from './styles';
 
 const ProfileScreen: React.FC = () => {
-  const { user,userName, login, logout, sendPushNotification } = useAuth();
-  const [name, setName] = useState('');
+  const { userName, logout } = useAuth();
   const navigation = useNavigation();
   const loadInBrowser = (url: any) => {
-    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+    Linking.openURL(url).catch((err) =>
+      console.error("Couldn't load page", err),
+    );
   };
 
-  const handleCallNotification = async () => {
-    sendPushNotification({title:'Esse é o perfil!', body:'Isso é um teste do botao perfil'})
-  
-  }
   return (
-    <View style={styles.container}>
+    <S.Container>
       <SafeAreaView />
       <RainbowLine />
-      <View style={styles.insideContainer}>
-        <View style={styles.touchableBody} >
-          <View>
-            <Text style={{ color: 'black', fontSize: 24 }} >
-              {userName}
-            </Text>
-            <Text style={{ color: 'grey', fontSize: 14 }}>
-              Nome do Cargo
-            </Text>
-            <Button onPress={handleCallNotification} title='chamar notificacao' />
-          </View>
-          <View>
-            <TouchableOpacity
-              style={styles.touchableBody}
-              onPress={() => { }} >
-              <View style={{
-                backgroundColor: '#D8D8D8', width: 66, height: 66,
-                alignItems: 'center',
-                justifyContent: 'center', borderRadius: 50
-              }}>
-                <Ionicons name="person-outline" size={35} color="black" />
+      <S.InsideContainer>
+        <S.HeaderProfile>
+          <S.UserNameText>{userName}</S.UserNameText>
+          <S.AvatarButton onPress={() => {}}>
+            <Ionicons name="person-outline" size={35} color="white" />
+          </S.AvatarButton>
+        </S.HeaderProfile>
+      </S.InsideContainer>
+      <View style={{ flexDirection: "column" }}>
+        <View style={{ paddingHorizontal: 40, gap: 15, marginBottom: 20 }}>
+          <S.SectionTitle>Ajuda</S.SectionTitle>
+          <S.TouchableBody onPress={() => navigation.navigate("ProfileConfig")}>
+            <S.IconView>
+              <Octicons name="gear" size={20} color="white" />
+            </S.IconView>
+            <S.OptionText>Configurações</S.OptionText>
+          </S.TouchableBody>
+          <S.TouchableBody onPress={() => navigation.navigate("FAQ")}>
+            <S.IconView>
+              <Ionicons name="chatbox-outline" size={20} color="white" />
+            </S.IconView>
+            <S.OptionText>FAQ</S.OptionText>
+          </S.TouchableBody>
+          <S.TouchableBody onPress={() => navigation.navigate("ContactUs")}>
+            <S.IconView>
+              <FontAwesome5 name="headset" size={20} color="white" />
+            </S.IconView>
+            <S.OptionText>Fale conosco</S.OptionText>
+          </S.TouchableBody>
+          <S.TouchableBody onPress={() => loadInBrowser("https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult")}>
+            <S.IconView>
+              <Feather name="droplet" size={24} color="white" />
+            </S.IconView>
+            <S.OptionText>LubConsult</S.OptionText>
+          </S.TouchableBody>
+          <S.TouchableBody onPress={() => loadInBrowser("https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult")}>
+            <S.IconView>
+              <View style={{ alignItems: "center", width: 24, height: 12 }}>
+                <Image
+                  source={require("../../assets/IconTotalEnergies.png")}
+                  style={{ width: "100%", height: "100%", filter: "invert(1)", tintColor: "rgba(255, 255, 255, 1)" }}
+                />
               </View>
-            </TouchableOpacity>
-          </View>
+            </S.IconView>
+            <S.OptionText>Conheça Total Energies</S.OptionText>
+          </S.TouchableBody>
+          <S.TouchableBody onPress={() => navigation.navigate("Distributors")}>
+            <S.IconView>
+              <FontAwesome6 name="users" size={20} color="white" />
+            </S.IconView>
+            <S.OptionText>Distribuidores participantes</S.OptionText>
+          </S.TouchableBody>
+        </View>
+        <View style={{ paddingHorizontal: 40, gap: 15 }}>
+          <S.SectionTitle>Termos de uso</S.SectionTitle>
+          <S.TouchableBody onPress={() => navigation.navigate("Rules")}>
+            <S.IconView>
+              <Feather name="book" size={20} color="white" />
+            </S.IconView>
+            <S.OptionText>Regras</S.OptionText>
+          </S.TouchableBody>
+          <S.TouchableBody onPress={() => navigation.navigate("Terms")}>
+            <S.IconView>
+              <AntDesign name="bars" size={20} color="white" />
+            </S.IconView>
+            <S.OptionText>Políticas</S.OptionText>
+          </S.TouchableBody>
+          <S.LogoutButton onPress={logout}>
+            <S.LogoutButtonText>Sair dessa conta</S.LogoutButtonText>
+          </S.LogoutButton>
         </View>
       </View>
-      <View style={{ flexDirection: 'column' }}>
-        <View style={{ paddingHorizontal: 40, gap: 15, marginBottom: 20 }} >
-          <Text style={{ color: 'grey' }}  >
-            Ajuda
-          </Text>
-          <TouchableOpacity
-            style={styles.touchableBody}
-            onPress={() => { navigation.navigate('ProfileConfig') }}>
-            <View style={styles.iconView}>
-              <Octicons name="gear" size={20} color="black" />
-            </View>
-            <Text>Configurações</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.touchableBody}
-            onPress={() => navigation.navigate('FAQ')} >
-            <View style={styles.iconView}>
-              <Ionicons name="chatbox-outline" size={20} color="black" />
-            </View>
-            <Text>FAQ</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.touchableBody}
-            onPress={() => navigation.navigate('ContactUs')}>
-            <View style={styles.iconView}>
-              <FontAwesome5 name="headset" size={20} color="black" />
-            </View>
-            <Text>Fale conosco</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.touchableBody}
-            onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}>
-            <View style={styles.iconView}>
-              <Feather name="droplet" size={24} color="black" />
-            </View>
-            <Text>LubConsult</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.touchableBody}
-            onPress={() => { loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult') }}>
-            <View style={styles.iconView}>
-              <View style={{ alignItems: 'center', width: 24, height: 12 }} >
-                <Image source={require('../../assets/IconTotalEnergies.png')}
-                  style={{ width: '100%', height: '100%' }} />
-              </View>
-            </View>
-            <Text>Conheça Total Energies</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.touchableBody}
-            onPress={() => navigation.navigate('Distributors')}  >
-            <View style={styles.iconView}>
-              <FontAwesome6 name="users" size={20} color="black" />
-            </View>
-            <Text>Distribuidores participantes</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: '#D8D8D8', width: 140, padding: 10, borderRadius: 10 }} 
-          onPress={logout}>
-            <Text style={{ fontWeight: '700' }} >Sair dessa conta</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ paddingHorizontal: 40, gap: 15 }} >
-          <Text style={{ color: 'grey' }}  >
-            Termos de uso
-          </Text>
-          <TouchableOpacity
-            style={styles.touchableBody}
-            onPress={() => navigation.navigate('Rules')}
-          >
-            <View style={styles.iconView}>
-
-              <Feather name="book" size={20} color="black" />
-            </View>
-            <Text>Regras</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.touchableBody}
-            onPress={() => navigation.navigate('Terms')}>
-            <View style={styles.iconView}>
-              <AntDesign name="bars" size={20} color="black" />
-            </View>
-            <Text>Políticas</Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-        </View>
-      </View>
-    </View>
+    </S.Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    width: '100%',
-  },
-
-
-  insideContainer: {
-
-    width: '100%',
-    padding: 50
-  },
-  touchableBody: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    gap: 10
-  },
-  iconView:{
-    backgroundColor: '#D8D8D8', 
-    width: 32, 
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center', 
-    borderRadius: 50
-  },
-
-
-});
 
 export default ProfileScreen;
