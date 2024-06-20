@@ -147,6 +147,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
+    height:50,
+    borderColor:'black',
+    borderWidth:1,
+    borderRadius:25
   },
   contactTextBlack: {
     fontSize: 12,
