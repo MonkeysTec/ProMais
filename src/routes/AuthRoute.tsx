@@ -15,7 +15,6 @@ import ProfileConfigScreen from "../screens/ProfileConfig";
 
 import QRCodeScreen from "../screens/QRCodeScreen";
 
-const Stack = createStackNavigator();
 
 import DistributorsScreen from "../screens/Distributors";
 import ProductsScreen from "../screens/Products";
@@ -25,7 +24,9 @@ import QrCodeScreenBefore from "../screens/QrCodeScreenBefore";
 import ChangePassword from "../screens/ChangePassword";
 import HowWorks from "../screens/HowWorks";
 import SelectStorePdv from "../screens/SelectStorePdv";
+import SelectTypeAccount from "../screens/SelectTypeAccount";
 
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 // Stack Navigator for other screens
@@ -39,7 +40,6 @@ const StackNavigator: React.FC = () => (
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="TotalEnergies" component={News} />
     <Stack.Screen name="Bipador" component={Bipador} />
-
     <Stack.Screen name="FAQ" component={FAQScreen} />
     <Stack.Screen name="ContactUs" component={ContactUsScreen} />
     <Stack.Screen name="Rules" component={RulesScreen} />
@@ -57,6 +57,7 @@ const StackNavigator: React.FC = () => (
     <Stack.Screen name="ChangePassword" component={ChangePassword} />
     <Stack.Screen name="HowWorks" component={HowWorks} />
     <Stack.Screen name="SelectPdvStore" component={SelectStorePdv} />
+    <Stack.Screen name="SelectTypeAccount" component={SelectTypeAccount} />
   </Stack.Navigator>
 );
 

@@ -5,6 +5,7 @@ import Login from "../screens/Login";
 import SignUp from "../screens/SignUp";
 import StartScreen from "../screens/StartScreen";
 import ForgotPassword from "../screens/ForgotPassword";
+import ContactUsScreen from "../screens/ContactUs";
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,7 @@ const NotAuthRoutes = () => {
         component={ForgotPassword}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="ContactUs" component={ContactUsScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

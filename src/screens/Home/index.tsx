@@ -34,9 +34,10 @@ const HomeScreen: React.FC = () => {
   const {
     userName,
     expoPushToken,
+    pdvSelectedStore,
+    typeAccountSelected,
     sendPushNotification,
     selectPdvStore,
-    pdvSelectedStore,
   } = useAuth();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
@@ -50,7 +51,6 @@ const HomeScreen: React.FC = () => {
   const [ExtractRescuesData, setExtractRescuesData] = useState([]);
   const [ExtractGeneralData, setExtractGeneralData] = useState([]);
   const [userMonetaryBalance, setUserMonetaryBalance] = useState("");
-  const [isPdvFilho, setIsPdvFilho] = useState(false);
   const [PdvNetMovementData, setPdvNetMovementData] = useState([
     {
       cnpj: "1231231231",
@@ -118,9 +118,7 @@ const HomeScreen: React.FC = () => {
   };
 
   /* DEMONSTRATION BELOW PDF FILHO */
-  const simulateUserBeingPdfFilho = () => {
-    setIsPdvFilho(true);
-  };
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -135,22 +133,22 @@ const HomeScreen: React.FC = () => {
   
   useEffect(() => {
     const interval = setInterval(() => {
-      if (pdvSelectedStore === "") {
-        navigation.navigate("SelectPdvStore");
+      if(typeAccountSelected === ""){
+        navigation.navigate("SelectTypeAccount");
+      }else{
+        if (pdvSelectedStore === "") {
+          navigation.navigate("SelectPdvStore");
+        }
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [pdvSelectedStore]);
+  }, [pdvSelectedStore,typeAccountSelected]);
 
   useEffect(() => {
-    
       getBalance();
       getExtractGeneral();
       getExtractRescues();
-      /* DEMONSTRATION BELLOW PDF FILHO*/
-      simulateUserBeingPdfFilho();
-      console.log(pdvSelectedStore);
     
   }, []);
   useEffect(() => {
@@ -172,6 +170,7 @@ const HomeScreen: React.FC = () => {
         <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
           <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
           <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
+          <Text style={stylesDefault.RedViewSecondText}>({typeAccountSelected})</Text>
         </View>
       </View>
       <View>
@@ -198,7 +197,7 @@ const HomeScreen: React.FC = () => {
             </Text>
           )}
           {showPasswordSaldo &&
-            /* Correto para esconder o resgate ao pdv filho: !isPdvFilho */ isPdvFilho && (
+           typeAccountSelected === "Rede" && (
               <TouchableOpacity
                 onPress={() => navigation.navigate("Redeem")}
                 style={styles.greenButton}
@@ -277,7 +276,7 @@ const HomeScreen: React.FC = () => {
             <Ionicons name="chevron-forward" size={24} color="white" />
           </View>
         </TouchableOpacity>
-        {/* DEMONSTRATION STORE TO BEEP */}
+        {typeAccountSelected === "Rede" &&
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => navigation.navigate("SelectPdvStore")}
@@ -295,6 +294,7 @@ const HomeScreen: React.FC = () => {
             <Ionicons name="chevron-forward" size={24} color="white" />
           </View>
         </TouchableOpacity>
+        }
         {modalVisible ? (
           <View>
             {modalType === "Extract" ? (

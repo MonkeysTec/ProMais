@@ -11,28 +11,10 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
 
-const SelectStorePdv: React.FC = () => {
-  const { user, userName, selectPdvStore, pdvSelectedStore } = useAuth();
+const SelectTypeAccount: React.FC = () => {
+  const { userName, selectTypeAccount, selectPdvStore } = useAuth();
   const navigation = useNavigation();
-  const [storesToBeep, setStoresToBeep] = useState([
-    {
-      name: "Loja Um",
-      id: "1",
-      
-    },
-    {
-      name: "Loja Dois",
-      id: "2",
-    },
-    {
-      name: "Loja Três",
-      id: "3",
-    },
-    {
-      name: "Loja Quatro",
-      id: "4",
-    },
-  ]);
+
 
   return (
     <View style={styles.container}>
@@ -73,32 +55,52 @@ const SelectStorePdv: React.FC = () => {
                 marginBottom: 30,
               }}
             >
-              Escolha seu PDV
+              Escolha seu tipo de conta
             </Text>
+            <TouchableOpacity
+              onPress={() => {
+                selectTypeAccount("Rede");
+                navigation.navigate("SelectPdvStore");
+              }}
+              activeOpacity={1}
 
-            {storesToBeep.map((store, index) => (
-              <TouchableOpacity
-                onPress={() => {
-                  selectPdvStore(store.name);
-                  navigation.navigate("Home");
-                }}
-                activeOpacity={1}
-                key={index}
-              >
-                <View style={styles.menuItem}>
-                  <Text style={{ fontWeight: "600", fontSize: 20 }}>
-                    {store.name}
-                  </Text>
-                  <View
-              style={
-                stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
-              }
             >
-              <Ionicons name="chevron-forward" size={24} color="white" />
-            </View>
+              <View style={styles.menuItem}>
+                <Text style={{ fontWeight: "600", fontSize: 20 }}>
+                  Rede
+                </Text>
+                <View
+                  style={
+                    stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                  }
+                >
+                  <Ionicons name="chevron-forward" size={24} color="white" />
                 </View>
-              </TouchableOpacity>
-            ))}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                selectTypeAccount("Filho");
+                selectPdvStore("FilhoAccount");
+                navigation.navigate("Home");
+              }}
+              activeOpacity={1}
+
+            >
+              <View style={styles.menuItem}>
+                <Text style={{ fontWeight: "600", fontSize: 20 }}>
+                  Filho
+                </Text>
+                <View
+                  style={
+                    stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                  }
+                >
+                  <Ionicons name="chevron-forward" size={24} color="white" />
+                </View>
+              </View>
+            </TouchableOpacity>
+
           </ScrollView>
         </View>
       </View>
@@ -136,4 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SelectStorePdv;
+export default SelectTypeAccount;

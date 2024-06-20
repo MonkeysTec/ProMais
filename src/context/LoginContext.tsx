@@ -86,7 +86,9 @@ interface AuthContextType {
   logout: () => void;
   sendPushNotification: (data: any) => void;
   selectPdvStore: (store: string) => void;
+  selectTypeAccount: (account: string) => void;
   pdvSelectedStore: string;
+  typeAccountSelected:string;
 }
 interface AuthProviderType {
   children: any;
@@ -102,6 +104,7 @@ export const AuthProvider = ({ children }: AuthProviderType) => {
   const [userName, setUserName] = useState<string | null>(null);
   const [expoPushToken, setExpoPushToken] = useState("");
   const [pdvSelectedStore, setPdvSelectedStore] = useState("");
+  const [typeAccountSelected, setTypeAccountSelected] = useState("");
   const [notification, setNotification] = useState<
     Notifications.Notification | undefined
   >(undefined);
@@ -221,6 +224,9 @@ export const AuthProvider = ({ children }: AuthProviderType) => {
   const selectPdvStore = async (store: string) => {
     setPdvSelectedStore(store);
   };
+  const selectTypeAccount = async (account: string) => {
+    setTypeAccountSelected(account);
+  };
 
   return (
     <AuthContext.Provider
@@ -228,8 +234,10 @@ export const AuthProvider = ({ children }: AuthProviderType) => {
         user,
         userName,
         expoPushToken,
-        selectPdvStore,
         pdvSelectedStore,
+        typeAccountSelected,
+        selectPdvStore,
+        selectTypeAccount,
         login,
         logout,
         sendPushNotification,
