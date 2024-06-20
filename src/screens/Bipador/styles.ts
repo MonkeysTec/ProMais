@@ -34,8 +34,11 @@ export const ContentContainer = styled.View`
   margin-top: -50px;
   flex-direction: column;
   padding: 20px;
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: auto;
+  background-color: white;
+  border-radius: 20px;
+  align-items: center;
 `;
 
 export const InviteButton = styled.TouchableOpacity`

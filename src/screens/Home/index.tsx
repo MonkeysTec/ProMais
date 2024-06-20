@@ -181,7 +181,7 @@ const HomeScreen: React.FC = () => {
             </Text>
           )}
           {showPasswordSaldo &&
-           typeAccountSelected === "Rede" && (
+            typeAccountSelected === "Rede" && (
               <S.GreenButton
                 onPress={() => navigation.navigate("Redeem")}
               >
@@ -258,22 +258,22 @@ const HomeScreen: React.FC = () => {
           </View>
         </S.MenuItem>
         {typeAccountSelected === "Rede" &&
-        <S.MenuItem
-          onPress={() => navigation.navigate("SelectPdvStore")}
-        >
-          <Feather name="box" size={24} color="red" />
-          <S.MenuItemText>
-            Loja selecionada:{" "}
-            <Text style={{ fontWeight: "700" }}>{pdvSelectedStore}</Text>
-          </S.MenuItemText>
-          <View
-            style={
-              stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
-            }
+          <S.MenuItem
+            onPress={() => navigation.navigate("SelectPdvStore")}
           >
-            <Ionicons name="chevron-forward" size={24} color="white" />
-          </View>
-        </S.MenuItem>
+            <Feather name="box" size={24} color="red" />
+            <S.MenuItemText>
+              Loja selecionada:{" "}
+              <Text style={{ fontWeight: "700" }}>{pdvSelectedStore}</Text>
+            </S.MenuItemText>
+            <View
+              style={
+                stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+              }
+            >
+              <Ionicons name="chevron-forward" size={24} color="white" />
+            </View>
+          </S.MenuItem>
         }
         {modalVisible ? (
           <View>
@@ -344,23 +344,20 @@ const HomeScreen: React.FC = () => {
                         gap: 30,
                       }}
                     >
+
                       <TouchableOpacity
-                        style={
-                          extractType !== "General"
-                            ? S.NotSelectedExtractButton
-                            : S.SelectedExtractButton
-                        }
                         onPress={() => setExtractType("General")}
                       >
-                        <Text
-                          style={
-                            extractType !== "General"
-                              ? S.NotSelectedExtractButtonText
-                              : S.SelectedExtractButtonText
-                          }
-                        >
-                          Geral
-                        </Text>
+                        {extractType !== "General" ?
+                          <S.NotSelectedExtractButtonText>
+                            Geral
+                          </S.NotSelectedExtractButtonText>
+                          :
+                          <S.SelectedExtractButtonText>
+                            Geral
+                          </S.SelectedExtractButtonText>
+                        }
+
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={
@@ -370,15 +367,15 @@ const HomeScreen: React.FC = () => {
                         }
                         onPress={() => setExtractType("Reclaim")}
                       >
-                        <Text
-                          style={
-                            extractType !== "Reclaim"
-                              ? S.NotSelectedExtractButtonText
-                              : S.SelectedExtractButtonText
-                          }
-                        >
-                          Resgate
-                        </Text>
+                        {extractType !== "Reclaim" ?
+                          <S.NotSelectedExtractButtonText>
+                            Resgate
+                          </S.NotSelectedExtractButtonText>
+                          :
+                          <S.SelectedExtractButtonText>
+                            Resgate
+                          </S.SelectedExtractButtonText>
+                        }
                       </TouchableOpacity>
                     </View>
                     <S.ModalViewContainer>

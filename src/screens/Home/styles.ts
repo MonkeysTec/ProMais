@@ -155,12 +155,24 @@ export const SelectedExtractButtonText = styled.Text`
   color: red;
   font-weight: bold;
   text-align: center;
+  border-bottom-color: white;
+  border-bottom-width: 3px;
+  border-top-color: black;
+  border-top-width: 1px;
+  border-left-color: black;
+  border-left-width: 1px;
+  border-right-color: black;
+  border-right-width: 1px;
+  margin-bottom: -2px;
+  padding:5px;
 `;
 
 export const NotSelectedExtractButtonText = styled.Text`
   color: grey;
   font-weight: bold;
   text-align: center;
+   margin-bottom: -2px;
+   padding:5px;
 `;
 
 export const NotSelectedExtractButton = styled.TouchableOpacity`
@@ -182,6 +194,10 @@ export const ModalGreenText = styled.Text`
   color: #85D151;
   font-size: 16px;
   font-weight: 800;
+  right: 15%;
+  text-align: left;
+  width: 100%;
+  
 `;
 
 export const ModalViewColumnContainer = styled.View`

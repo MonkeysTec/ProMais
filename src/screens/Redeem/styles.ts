@@ -22,7 +22,7 @@ export const CardBalance = styled.View`
 export const CardWarning = styled.View`
   width: 100%;
   background-color: white;
-  height: 120px;
+  height: auto;
   border-radius: 8px;
   shadow-color: #000;
   shadow-offset: 0px 2px;
@@ -32,7 +32,7 @@ export const CardWarning = styled.View`
   padding-top: 20px;
   padding-left: 20px;
   gap: 20px;
-  margin-top: 40px;
+  margin-top:10px;
 `;
 
 export const Input = styled.TextInput`
