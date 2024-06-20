@@ -656,8 +656,8 @@ const styles = StyleSheet.create({
   webview_: {
     marginTop: 10,
 
-    width: width * 1.05,
-    height: height - height * 0.25,
+    width: width * 1,
+    height: height - height * 0.24,
   },
 });
 

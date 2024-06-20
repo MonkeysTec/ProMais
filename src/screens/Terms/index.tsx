@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  Image,
   Dimensions,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import FAQScreen from "../FAQ";
 import { WebView } from "react-native-webview";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
@@ -2448,9 +2442,8 @@ class=MsoHyperlink><span lang=PT><span style='text-decoration:none'>&nbsp;</span
 };
 
 const TermsScreen: React.FC = () => {
-  const { user, userName, login, logout } = useAuth();
-  const [showDetails, setShowDetails] = useState(false);
-  const [selectedFAQ, setSelectedFAQ] = useState(null);
+  const { userName } = useAuth();
+
   return (
     <View style={styles.container}>
       <View style={stylesDefault.RedViewHeaderContainer}>

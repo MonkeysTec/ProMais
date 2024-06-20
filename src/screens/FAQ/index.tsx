@@ -1,20 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { View, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import CardNews from "../../components/CardNews";
-import api from "../../services/api";
-import axios from "axios";
 import { useAuth } from "../../context/LoginContext";
-import { stylesDefault } from "../../components/Styled";
+import * as S from './styles';
 
 const dataFAQ = [
   {
@@ -191,15 +179,14 @@ const dataFAQ = [
       "Após a leitura do Qrcode das embalagens, os pontos são creditados instantaneamente. Pedimos que verifique se a leitura do código QRcode foi feita corretamente. Em caso positivo, solicitamos entre em contato com nossos canais de atendimento: por e-mail: contato@clubepromais.com.br para que possamos tratar o caso.",
   },
 ];
+
 const FAQScreen: React.FC = () => {
-  const [showDetails, setShowDetails] = useState(false);
-  const [selectedFAQ, setSelectedFAQ] = useState(null);
-  const { user, userName, login, logout } = useAuth();
-  const [name, setName] = useState("");
+  const [selectedFAQ, setSelectedFAQ] = useState<number | null>(null);
+  const { userName } = useAuth();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.containerRed}>
+    <S.Container>
+      <S.ContainerRed>
         <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
           <Text style={{ color: "white", fontWeight: "800", fontSize: 18 }}>
             Olá
@@ -215,24 +202,20 @@ const FAQScreen: React.FC = () => {
             {userName}
           </Text>
         </View>
-      </View>
-      <ScrollView style={stylesDefault.ViewBody}>
+      </S.ContainerRed>
+      <S.ViewBody>
         {dataFAQ.map((faq, index) => (
-          <View style={styles.menu} key={index}>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() =>
-                setSelectedFAQ(selectedFAQ === index ? null : index)
-              }
+          <S.Menu key={index}>
+            <S.MenuItem
+              onPress={() => setSelectedFAQ(selectedFAQ === index ? null : index)}
             >
-              <Text style={styles.menuItemText}>{faq.title}</Text>
+              <S.MenuItemText>{faq.title}</S.MenuItemText>
               <View
                 style={{
                   backgroundColor: "#85d151",
                   justifyContent: "center",
                   alignItems: "center",
                   borderRadius: 50,
-
                   height: 30,
                   width: 30,
                 }}
@@ -243,129 +226,17 @@ const FAQScreen: React.FC = () => {
                   color="white"
                 />
               </View>
-            </TouchableOpacity>
+            </S.MenuItem>
             {selectedFAQ === index && (
-              <View style={styles.answerContainer}>
-                <Text style={styles.answer}>{faq.details}</Text>
-              </View>
+              <S.AnswerContainer>
+                <S.Answer>{faq.details}</S.Answer>
+              </S.AnswerContainer>
             )}
-          </View>
+          </S.Menu>
         ))}
-      </ScrollView>
-    </View>
+      </S.ViewBody>
+    </S.Container>
   );
 };
-
-const styles = StyleSheet.create({
-  answerContainer: {
-    padding: 10,
-    backgroundColor: "#f5f5f5",
-    height: "auto", // Increase the height here
-  },
-  answer: {
-    fontSize: 16,
-    color: "#333",
-  },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#F3F3F3",
-  },
-  text: {
-    marginTop: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000000",
-    textShadowColor: "#000",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
-    width: "80%",
-  },
-  containerRed: {
-    backgroundColor: "red",
-    height: 120,
-    width: "100%",
-    paddingHorizontal: 30,
-    marginBottom: -50,
-    justifyContent: "space-between",
-    borderBottomLeftRadius: 40,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  text_subTitleSize: {
-    fontSize: 14,
-  },
-  text_subTitle: {
-    marginTop: 10,
-    fontWeight: "bold",
-  },
-  button: {
-    alignItems: "center",
-    paddingLeft: 10,
-  },
-  buttonText: {
-    color: "#A6A6A6",
-    fontSize: 16,
-  },
-  underline: {
-    height: 1,
-    backgroundColor: "#A6A6A6",
-    width: "100%",
-    marginTop: 4,
-  },
-  greenButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#85D151",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 200,
-    width: 200,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  greenButtonText: {
-    color: "white",
-    fontSize: 16,
-  },
-  menu: {
-    width: "100%",
-    marginTop: 20,
-    justifyContent: "space-between",
-  },
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    backgroundColor: "white",
-    borderRadius: 8,
-
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 2,
-  },
-  menuItemIcon: {
-    marginRight: 10,
-  },
-  menuItemText: {
-    flex: 1,
-    marginLeft: 10,
-    fontSize: 16,
-  },
-  outline1: { color: "#000000", left: -1, top: -1 },
-  imageBig: {
-    width: "80%",
-    resizeMode: "cover",
-    marginTop: 30,
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-});
 
 export default FAQScreen;
