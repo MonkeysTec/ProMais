@@ -146,8 +146,7 @@ const ProductsScreen: React.FC = () => {
                     style={{
                       width: 80,
                       height: 80,
-                      borderWidth: 1,
-                      borderColor: "grey",
+                      
                     }}
                   >
                     {prod.photoURL ? (
@@ -168,16 +167,16 @@ const ProductsScreen: React.FC = () => {
                       {prod.gamma}
                     </Text>
                     <Text
-                      style={{ color: "red", fontSize: 16, fontWeight: "700" }}
+                      style={{ color: "red", fontSize: 16, fontWeight: "700", maxWidth:'80%' }}
                     >
                       {prod.name}
                     </Text>
                     <Text
                       style={{
                         color: "black",
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: "600",
-                        marginTop: 5,
+                        
                       }}
                     >
                       {prod.points} Pontos

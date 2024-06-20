@@ -18,6 +18,7 @@ import { HomeNewInfo } from "../../components/Modal/HomeNewInfo";
 import { useAuth } from "../../context/LoginContext";
 import api from "../../services/api";
 import Feather from "@expo/vector-icons/Feather";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { stylesDefault } from "../../components/Styled";
 const menuItems = [
   { title: "Movimentações loja", icon: "filetext1", modal: "PdvNetMovements" },
@@ -75,7 +76,7 @@ const HomeScreen: React.FC = () => {
 
   const loadInBrowser = (url: any) => {
     Linking.openURL(url).catch((err) =>
-      console.error("Couldn't load page", err),
+      console.error("Couldn't load page", err)
     );
   };
 
@@ -131,19 +132,24 @@ const HomeScreen: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (pdvSelectedStore === "") {
+        navigation.navigate("SelectPdvStore");
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [pdvSelectedStore]);
 
   useEffect(() => {
-    if (pdvSelectedStore !== "") {
-      getBalance();
-      getExtractGeneral();
-      getExtractRescues();
-      /* DEMONSTRATION BELLOW PDF FILHO*/
-      simulateUserBeingPdfFilho();
-      console.log(pdvSelectedStore);
-    } else {
-      navigation.navigate("SelectPdvStore");
-    }
-  }, [pdvSelectedStore]);
+    getBalance();
+    getExtractGeneral();
+    getExtractRescues();
+    /* DEMONSTRATION BELLOW PDF FILHO*/
+    simulateUserBeingPdfFilho();
+  }, []);
+
   useEffect(() => {
     if (expoPushToken) {
       handleNewsNotification();
@@ -220,7 +226,7 @@ const HomeScreen: React.FC = () => {
               }
               if (item.path === "lubconsult") {
                 loadInBrowser(
-                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
+                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult"
                 );
               }
               if (item.modal) {
@@ -229,7 +235,7 @@ const HomeScreen: React.FC = () => {
               }
               if (item.path === "browserTotalEnergies") {
                 loadInBrowser(
-                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
+                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult"
                 );
               }
             }}
@@ -273,7 +279,7 @@ const HomeScreen: React.FC = () => {
           style={styles.menuItem}
           onPress={() => navigation.navigate("SelectPdvStore")}
         >
-          <Feather name="box" size={24} color="red" />
+         <MaterialIcons name="device-unknown" size={24} color="red" />
           <Text style={styles.menuItemText}>
             Loja selecionada:{" "}
             <Text style={{ fontWeight: "700" }}>{pdvSelectedStore}</Text>
@@ -309,7 +315,7 @@ const HomeScreen: React.FC = () => {
                           <TouchableOpacity
                             onPress={() =>
                               setShowPasswordExtratoQrCode(
-                                !showPasswordExtratoQrCode,
+                                !showPasswordExtratoQrCode
                               )
                             }
                           >

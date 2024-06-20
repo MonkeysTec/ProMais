@@ -49,7 +49,7 @@ const StartScreen: React.FC = () => {
           <Text style={styles.loginText}>Entrar</Text>
           <Ionicons name={"arrow-forward"} size={18} color={"#000"} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.contactContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate("ContactUs")} style={styles.contactContainer}>
           <MaterialIcons name={"headset-mic"} size={32} color={"tomato"} />
           <View>
             <Text style={styles.contactTextBlack}>Não consegue acessar?</Text>
@@ -147,6 +147,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
+    borderRadius:25,
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#000",
   },
   contactTextBlack: {
     fontSize: 12,

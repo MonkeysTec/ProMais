@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 const Routes = () => {
   const { user, login, logout } = useAuth();
 
-  return <>{!user ? <AuthRoutes /> : <NotAuthRoutes />}</>;
+  return <>{user ? <AuthRoutes /> : <NotAuthRoutes />}</>;
 };
 
 export default Routes;

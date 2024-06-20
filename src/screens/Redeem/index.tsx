@@ -15,6 +15,7 @@ import api from "../../services/api";
 import axios from "axios";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 export const Redeem: React.FC = () => {
   const { user, userName, login, logout, sendPushNotification } = useAuth();
@@ -135,6 +136,7 @@ export const Redeem: React.FC = () => {
               name={"arrow-back"}
               size={31}
               color={"#374649"}
+              style={{ alignSelf: "flex-start" }}
             />
             <Text style={styles.text}>Como deseja transferir?</Text>
             <TouchableOpacity
@@ -144,7 +146,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
+              <View style={{flexDirection:'row', gap:10}} >
+
+              <FontAwesome6 name="pix" size={24} color="red" />
+
               <Text style={styles.loginText}>CPF</Text>
+              </View>
+              <View
+                style={
+                  stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                }
+              >
+                <Ionicons name="chevron-forward" size={24} color="white" />
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -153,7 +167,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
+              <View style={{flexDirection:'row', gap:10}} >
+
+              <FontAwesome6 name="pix" size={24} color="red" />
+
               <Text style={styles.loginText}>CNPJ</Text>
+              </View>
+              <View
+                style={
+                  stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                }
+              >
+                <Ionicons name="chevron-forward" size={24} color="white" />
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -162,7 +188,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
+              <View style={{flexDirection:'row', gap:10}} >
+
+              <FontAwesome6 name="pix" size={24} color="red" />
+
               <Text style={styles.loginText}>Celular</Text>
+              </View>
+              <View
+                style={
+                  stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                }
+              >
+                <Ionicons name="chevron-forward" size={24} color="white" />
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -171,7 +209,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
+              <View style={{flexDirection:'row', gap:10}} >
+
+              <FontAwesome6 name="pix" size={24} color="red" />
+
               <Text style={styles.loginText}>E-mail</Text>
+              </View>
+              <View
+                style={
+                  stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                }
+              >
+                <Ionicons name="chevron-forward" size={24} color="white" />
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -180,7 +230,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
+              <View style={{flexDirection:'row', gap:10}} >
+
+              <FontAwesome6 name="pix" size={24} color="red" />
+
               <Text style={styles.loginText}>Chave aleatória</Text>
+              </View>
+              <View
+                style={
+                  stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                }
+              >
+                <Ionicons name="chevron-forward" size={24} color="white" />
+              </View>
             </TouchableOpacity>
           </View>
         )}
@@ -191,6 +253,7 @@ export const Redeem: React.FC = () => {
               name={"arrow-back"}
               size={31}
               color={"#374649"}
+              style={{ alignSelf: "flex-start" }}
             />
             <Text style={styles.text}>
               Informe os dados da chave de transferência para
@@ -275,6 +338,7 @@ export const Redeem: React.FC = () => {
               name={"arrow-back"}
               size={31}
               color={"#374649"}
+              style={{ alignSelf: "flex-start" }}
             />
             <Text style={styles.text}>Qual o valor do resgate?</Text>
             <Text style={{ fontSize: 18, fontWeight: 400 }}>
@@ -339,6 +403,7 @@ export const Redeem: React.FC = () => {
               name={"arrow-back"}
               size={31}
               color={"#374649"}
+              style={{ alignSelf: "flex-start" }}
             />
             <Text style={styles.text}>Você está transferindo para:</Text>
             <View
@@ -387,6 +452,7 @@ export const Redeem: React.FC = () => {
               onPress={() => setStep(4)}
               size={31}
               color={"#374649"}
+              style={{ alignSelf: "flex-start" }}
             />
             <View style={{ flexDirection: "row", gap: 14 }}>
               <TouchableOpacity
@@ -496,21 +562,21 @@ export const Redeem: React.FC = () => {
             </TouchableOpacity>
           </View>
         )}
-        {step === 8 && (
+       
           <View style={styles.cardWarning}>
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
             >
               <AntDesign name="exclamationcircle" size={20} color={"red"} />
-              <Text style={{ color: "red", fontWeight: 700 }}>Atenção:</Text>
+              <Text style={{ color: "red", fontWeight: 700, fontSize:18 }}>Atenção:</Text>
             </View>
-            <Text style={{ paddingRight: 10 }}>
+            <Text style={{ fontSize:16  }}>
               Você só pode realizar transferências via PIX para sua conta
               pessoal. Não é permitido a transferência para terceiros pelo
               aplicativo do Clube Pro+.
             </Text>
           </View>
-        )}
+       
       </View>
     </View>
   );
@@ -527,6 +593,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000000",
     width: "100%",
+    textAlign: "center",
   },
   containerRed: {
     backgroundColor: "red",
@@ -542,7 +609,8 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "white",
     borderRadius: 8,
-
+    justifyContent: "center",
+    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -560,17 +628,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   cardWarning: {
-    width: "80%",
-    backgroundColor: "#d9d9d9",
-    height: 150,
+    width: "100%",
+    backgroundColor: "white",
+    height: 'auto',
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    paddingTop: 20,
-    paddingLeft: 20,
+    padding: 10,
+    
     gap: 20,
     marginTop: 20,
   },
@@ -586,20 +654,21 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   loginButton: {
-    width: "95%",
+    width: "100%",
     height: 50,
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     borderRadius: 25,
     flexDirection: "row",
     borderWidth: 1,
     borderColor: "#000",
+    paddingHorizontal:20
   },
   loginText: {
     fontSize: 18,
     color: "#000",
-    fontWeight: "bold",
+    fontWeight: "500",
   },
   joinButton: {
     backgroundColor: "#85d151",

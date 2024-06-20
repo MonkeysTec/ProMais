@@ -227,7 +227,9 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             justifyContent: "center",
             alignItems: "center",
           }}
-        >
+         >
+         </View>
+      </View>
           <TouchableOpacity style={styles.contactContainer}>
             <MaterialIcons name={"headset-mic"} size={45} color={"tomato"} />
             <View>
@@ -238,11 +240,10 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
           </TouchableOpacity>
           <Image
+          
             source={require("../../assets/© TotalEnergies - 2023.png")}
             style={styles.image}
           />
-        </View>
-      </View>
       {modalSms && (
         <ModalSMSConfirm
           phone={phone}
@@ -281,12 +282,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
   },
   image: {
     width: 101,
     height: 61,
     resizeMode: "contain",
+    alignSelf:'center'
   },
   counter: {
     marginTop: 50,
@@ -361,17 +363,23 @@ const styles = StyleSheet.create({
   },
   contactContainer: {
     flexDirection: "row",
-    marginTop: 100,
     alignItems: "center",
+    justifyContent: "center",
     gap: 10,
+    borderRadius:25,
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#000",
+    marginHorizontal:40,
+    marginTop:50
   },
   contactTextBlack: {
-    fontSize: 16,
+    fontSize: 12,
     color: "#000",
     fontWeight: "800",
   },
   contactTextRed: {
-    fontSize: 16,
+    fontSize: 12,
     color: "red",
     fontWeight: "800",
   },

@@ -87,11 +87,19 @@ const SelectStorePdv: React.FC = () => {
                   navigation.navigate("Home");
                 }}
                 activeOpacity={1}
+                key={index}
               >
                 <View style={styles.menuItem}>
                   <Text style={{ fontWeight: "600", fontSize: 20 }}>
                     {store.name}
                   </Text>
+                  <View
+                    style={
+                      stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                    }
+                  >
+                    <Ionicons name="chevron-forward" size={24} color="white" />
+                  </View>
                 </View>
               </TouchableOpacity>
             ))}
@@ -117,7 +125,7 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     paddingVertical: 15,
     paddingHorizontal: 10,
     backgroundColor: "white",
