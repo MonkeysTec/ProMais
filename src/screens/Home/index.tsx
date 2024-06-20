@@ -132,18 +132,27 @@ const HomeScreen: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  
   useEffect(() => {
-    if (pdvSelectedStore !== "") {
+    const interval = setInterval(() => {
+      if (pdvSelectedStore === "") {
+        navigation.navigate("SelectPdvStore");
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [pdvSelectedStore]);
+
+  useEffect(() => {
+    
       getBalance();
       getExtractGeneral();
       getExtractRescues();
       /* DEMONSTRATION BELLOW PDF FILHO*/
       simulateUserBeingPdfFilho();
       console.log(pdvSelectedStore);
-    } else {
-      navigation.navigate("SelectPdvStore");
-    }
-  }, [pdvSelectedStore]);
+    
+  }, []);
   useEffect(() => {
     if (expoPushToken) {
       handleNewsNotification();

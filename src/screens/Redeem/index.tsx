@@ -15,6 +15,7 @@ import api from "../../services/api";
 import axios from "axios";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 export const Redeem: React.FC = () => {
   const { user, userName, login, logout, sendPushNotification } = useAuth();
@@ -144,7 +145,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
-              <Text style={styles.loginText}>CPF</Text>
+              <View style={{ flexDirection: 'row', gap: 10 }} >
+                <FontAwesome6 name="pix" size={24} color="red" />
+
+                <Text style={styles.loginText}>CPF</Text>
+
+              </View>
+              <Ionicons
+                onPress={() => navigation.navigate("Home")}
+                name={"arrow-forward"}
+                size={31}
+                color={"#374649"}
+              />
+
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -153,7 +166,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
-              <Text style={styles.loginText}>CNPJ</Text>
+             <View style={{ flexDirection: 'row', gap: 10 }} >
+                <FontAwesome6 name="pix" size={24} color="red" />
+
+                <Text style={styles.loginText}>CNPJ</Text>
+
+              </View>
+              <Ionicons
+                onPress={() => navigation.navigate("Home")}
+                name={"arrow-forward"}
+                size={31}
+                color={"#374649"}
+              />
+
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -162,7 +187,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
-              <Text style={styles.loginText}>Celular</Text>
+              <View style={{ flexDirection: 'row', gap: 10 }} >
+                <FontAwesome6 name="pix" size={24} color="red" />
+
+                <Text style={styles.loginText}>Celular</Text>
+
+              </View>
+              <Ionicons
+                onPress={() => navigation.navigate("Home")}
+                name={"arrow-forward"}
+                size={31}
+                color={"#374649"}
+              />
+
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -171,7 +208,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
-              <Text style={styles.loginText}>E-mail</Text>
+             <View style={{ flexDirection: 'row', gap: 10 }} >
+                <FontAwesome6 name="pix" size={24} color="red" />
+
+                <Text style={styles.loginText}>Email</Text>
+
+              </View>
+              <Ionicons
+                onPress={() => navigation.navigate("Home")}
+                name={"arrow-forward"}
+                size={31}
+                color={"#374649"}
+              />
+
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -180,7 +229,19 @@ export const Redeem: React.FC = () => {
               }}
               style={styles.loginButton}
             >
-              <Text style={styles.loginText}>Chave aleatória</Text>
+              <View style={{ flexDirection: 'row', gap: 10 }} >
+                <FontAwesome6 name="pix" size={24} color="red" />
+
+                <Text style={styles.loginText}>Chave Aleatória</Text>
+
+              </View>
+              <Ionicons
+                onPress={() => navigation.navigate("Home")}
+                name={"arrow-forward"}
+                size={31}
+                color={"#374649"}
+              />
+
             </TouchableOpacity>
           </View>
         )}
@@ -391,7 +452,7 @@ export const Redeem: React.FC = () => {
             <View style={{ flexDirection: "row", gap: 14 }}>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-                onPress={() => {}}
+                onPress={() => { }}
               >
                 <AntDesign name="checkcircle" size={55} color="#85D151" />
               </TouchableOpacity>
@@ -442,7 +503,7 @@ export const Redeem: React.FC = () => {
             >
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-                onPress={() => {}}
+                onPress={() => { }}
               >
                 <AntDesign name="closecircle" size={55} color="red" />
               </TouchableOpacity>
@@ -475,7 +536,7 @@ export const Redeem: React.FC = () => {
             <View style={{ flexDirection: "row", gap: 14 }}>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-                onPress={() => {}}
+                onPress={() => { }}
               >
                 <AntDesign name="exclamationcircle" size={24} color="orange" />
               </TouchableOpacity>
@@ -496,7 +557,7 @@ export const Redeem: React.FC = () => {
             </TouchableOpacity>
           </View>
         )}
-        {step === 8 && (
+        
           <View style={styles.cardWarning}>
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
@@ -510,7 +571,7 @@ export const Redeem: React.FC = () => {
               aplicativo do Clube Pro+.
             </Text>
           </View>
-        )}
+        
       </View>
     </View>
   );
@@ -560,9 +621,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   cardWarning: {
-    width: "80%",
-    backgroundColor: "#d9d9d9",
-    height: 150,
+    width: "100%",
+    backgroundColor: "white",
+    height: 120,
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -572,7 +633,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingLeft: 20,
     gap: 20,
-    marginTop: 20,
+    marginTop: 40,
   },
   input: {
     borderWidth: 1,
@@ -586,14 +647,15 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   loginButton: {
-    width: "95%",
+    width: "100%",
     height: 50,
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     borderRadius: 25,
     flexDirection: "row",
     borderWidth: 1,
+    paddingHorizontal: 20,
     borderColor: "#000",
   },
   loginText: {

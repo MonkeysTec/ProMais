@@ -130,6 +130,7 @@ const Login: React.FC = () => {
             gap: 10,
           }}
         >
+        </View>
           <TouchableOpacity style={styles.contactContainer}>
             <MaterialIcons name={"headset-mic"} size={33} color={"tomato"} />
             <View>
@@ -143,7 +144,6 @@ const Login: React.FC = () => {
             source={require("../../assets/© TotalEnergies - 2023.png")}
             style={{ resizeMode: "contain", width: "100%" }}
           />
-        </View>
       </View>
       {modalCOnfirm && (
         <View
@@ -265,8 +265,14 @@ const styles = StyleSheet.create({
   },
   contactContainer: {
     flexDirection: "row",
+    marginTop: 50,
     alignItems: "center",
+    justifyContent: "center",
     gap: 10,
+    height:50,
+    borderColor:'black',
+    borderWidth:1,
+    borderRadius:25
   },
   contactTextBlack: {
     fontSize: 14,

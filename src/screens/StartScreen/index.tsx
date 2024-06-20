@@ -153,12 +153,12 @@ const styles = StyleSheet.create({
     borderRadius:25
   },
   contactTextBlack: {
-    fontSize: 12,
+    fontSize: 14,
     color: "#000",
     fontWeight: "800",
   },
   contactTextRed: {
-    fontSize: 12,
+    fontSize: 14,
     color: "red",
     fontWeight: "800",
   },
