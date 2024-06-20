@@ -17,77 +17,52 @@ import { AntDesign } from "@expo/vector-icons";
 import api from "../../services/api";
 import { ModalSMSConfirm } from "../../components/Modal/SmsConfirm";
 import Moment from "moment";
+import SignUp from "../SignUp";
 
-const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
+const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [step, setStep] = useState(1);
   const [email1, setEmail1] = useState("");
   const [name, setName] = useState("");
   const [dataBirth, setData] = useState("");
   const [typeModal, setTypeModal] = useState<"EMAIL" | "SMS">("EMAIL");
-
   const [modalSms, setModalSms] = useState(false);
-
-  const [cpf, setCpf] = useState("");
   const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [code, setCode] = useState("");
-  const [company, setCompany] = useState("");
+  const [emailCode, setEmailCode] = useState("");
 
-  ///api/tempcode/v1/toregister/email
-  const handleCodeSms = async (code: string, company: string) => {
-    setCode(code);
-    setCompany(company);
-    setModalSms(false);
+  const handleSendEmailCode = async () => {
+    setStep(step + 1);
+    /* try{
+      const data = {
+        toEmail: email1
+      };
+        const response = await api.post("/tempcode/send/toresetpassword/v1/", data)
+        if(response){
+          console.log(response.data);
+        
+        }
+    }catch(error){
+      console.log(error)
+    } */
   };
-
-  const handleFinalRegister = async () => {
-    if (password !== password2) {
-      return Alert.alert("Senhas não são iguais,verifique");
-    }
-    const parts = name.trim().split(" ");
-    const firstName = parts.shift();
-    const lastName = parts.join(" ");
-    let dateVar = Moment(dataBirth, "DD/MM/YYYY");
-
+  const handleCheckEmailCode = async () => {
+    setStep(step + 1);
     try {
-      const { data } = await api.post(
-        "/users/v1",
-        {
-          email: email1,
-          firstName,
-          lastName,
-          password: password,
-          primaryPhone: phone,
-          isReceivePush: true,
-          isReceiveSMS: true,
-          isReceiveEmail: true,
-          companyUser: {
-            company: company,
-            dateBirth: dateVar.utc().format(),
-            document: cpf,
-          },
-        },
-        {
-          headers: {
-            temp_auth_code: code,
-          },
-        },
+      const data = {
+        toEmail: email1,
+      };
+      const response = await api.post(
+        "/tempcode/send/toresetpassword/v1/",
+        data,
       );
+      if (response) {
+        console.log(response.data);
+        setStep(step + 1);
+      }
     } catch (error) {
       console.log(error);
     }
   };
-
   const handleNext = async () => {
-    if (step === 1) {
-      setTypeModal("EMAIL");
-      setModalSms(true);
-    }
-    if (step === 2) {
-      setTypeModal("SMS");
-      setModalSms(true);
-    }
     setStep(step + 1);
   };
 
@@ -129,15 +104,18 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
               height: "auto",
             }}
           >
-            <Text style={styles.title}>Faça seu cadastro</Text>
+            <Text style={styles.title}>Esqueci minha senha</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
                 onChangeText={(e) => setEmail1(e)}
-                placeholder="Insira seu e-mail"
+                placeholder="Insira seu e-mail cadastrado"
               />
             </View>
-            <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
+            <TouchableOpacity
+              onPress={handleSendEmailCode}
+              style={styles.joinButton}
+            >
               <Text style={styles.joinText}>Próximo</Text>
               <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
             </TouchableOpacity>
@@ -145,36 +123,22 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
         )}
         {step === 2 && (
           <>
-            <Text style={styles.title}>Continue seu cadastro</Text>
+            <Text style={styles.title}>Confirmação</Text>
+            <Text>
+              Enviamos uma confirmação de segurança no e-mail {email1}
+            </Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
                 onChangeText={(e) => setName(e)}
-                placeholder="Nome completo"
+                placeholder="Insira o código aqui"
               />
             </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                onChangeText={(e) => setCpf(e)}
-                placeholder="Insira seu CPF"
-              />
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                onChangeText={(e) => setData(e)}
-                placeholder="Insira a data de nascimento"
-              />
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                onChangeText={(e) => setPhone(e)}
-                placeholder="Insira seu telefone"
-              />
-            </View>
-            <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
+
+            <TouchableOpacity
+              onPress={handleCheckEmailCode}
+              style={styles.joinButton}
+            >
               <Text style={styles.joinText}>Próximo</Text>
               <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
             </TouchableOpacity>
@@ -228,9 +192,6 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             alignItems: "center",
           }}
         >
-        </View>
-        <View>
-
           <TouchableOpacity style={styles.contactContainer}>
             <MaterialIcons name={"headset-mic"} size={45} color={"tomato"} />
             <View>
@@ -284,13 +245,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     justifyContent: "space-between",
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
   },
   image: {
     width: 101,
     height: 61,
     resizeMode: "contain",
-    alignSelf:'center'
   },
   counter: {
     marginTop: 50,
@@ -365,22 +325,17 @@ const styles = StyleSheet.create({
   },
   contactContainer: {
     flexDirection: "row",
-    
+    marginTop: 100,
     alignItems: "center",
-    justifyContent: "center",
     gap: 10,
-    height:50,
-    borderColor:'black',
-    borderWidth:1,
-    borderRadius:25
   },
   contactTextBlack: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#000",
     fontWeight: "800",
   },
   contactTextRed: {
-    fontSize: 14,
+    fontSize: 16,
     color: "red",
     fontWeight: "800",
   },
@@ -392,4 +347,4 @@ const styles = StyleSheet.create({
   outline1: { color: "#000000", left: -1, top: -1 },
 });
 
-export default SignUp;
+export default ForgotPassword;

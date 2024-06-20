@@ -1,81 +1,110 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Modal, Linking, Button, Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
-import { ModalSMSConfirm } from '../../components/Modal/SmsConfirm';
-import { useNavigation } from '@react-navigation/native';
-import Entypo from '@expo/vector-icons/Entypo';
-import { HomeNewInfo } from '../../components/Modal/HomeNewInfo';
-import { useAuth } from '../../context/LoginContext';
-import DeviceInfo from 'react-native-device-info';
-import api from '../../services/api';
-import Feather from '@expo/vector-icons/Feather';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  Modal,
+  Linking,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import Entypo from "@expo/vector-icons/Entypo";
+import { HomeNewInfo } from "../../components/Modal/HomeNewInfo";
+import { useAuth } from "../../context/LoginContext";
+import api from "../../services/api";
+import Feather from "@expo/vector-icons/Feather";
+import { stylesDefault } from "../../components/Styled";
 const menuItems = [
-  { title: 'Extrato', icon: 'filetext1', modal: 'Extract' },
-  { title: 'Codigo escaneado', icon: 'scan1', modal: 'ScannedCodes' },
-  { title: 'Indique um "bipador"', icon: 'user', path: 'Bipador' },
-  { title: 'Conheça Total Energies', icon: '', path: 'browserTotalEnergies' },
-  { title: 'LubConsult', icon: 'tool', path: 'lubconsult' },
-  { title: 'Como funciona', icon: 'questioncircleo', path: 'HowWorks' },
-  { title: 'FAQ', icon: 'infocirlceo', path: 'FAQ' },
+  { title: "Movimentações loja", icon: "filetext1", modal: "PdvNetMovements" },
+  { title: "Extrato", icon: "filetext1", modal: "Extract" },
+  { title: "Codigo escaneado", icon: "scan1", modal: "ScannedCodes" },
+  { title: 'Indique um "bipador"', icon: "user", path: "Bipador" },
+  { title: "Conheça Total Energies", icon: "", path: "browserTotalEnergies" },
+  { title: "LubConsult", icon: "tool", path: "lubconsult" },
+  { title: "Como funciona", icon: "questioncircleo", path: "HowWorks" },
+  { title: "FAQ", icon: "infocirlceo", path: "FAQ" },
 ];
-import * as Notifications from 'expo-notifications'
-import { sendPushNotification, useNotifications } from '../Notification';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 const HomeScreen: React.FC = () => {
-  const { user, userName,expoPushToken, login, logout, sendPushNotification } = useAuth();
-  const navigation = useNavigation()
+  const {
+    userName,
+    expoPushToken,
+    sendPushNotification,
+    selectPdvStore,
+    pdvSelectedStore,
+  } = useAuth();
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalType, setModalType] = useState('');
-  const [extractType, setExtractType] = useState('General' || 'Reclaim')
+  const [modalType, setModalType] = useState("");
+  const [extractType, setExtractType] = useState("General" || "Reclaim");
   const [showPasswordSaldo, setShowPasswordSaldo] = useState(false);
-  const [showPasswordExtratoQrCode, setShowPasswordExtratoQrCode] = useState(false);
+  const [showPasswordExtratoQrCode, setShowPasswordExtratoQrCode] =
+    useState(false);
   const [showPasswordExtratoPix, setShowPasswordExtratoPix] = useState(false);
   const [showPasswordCodesQrCode, setShowPasswordCodesQrCode] = useState(false);
-  const [ExtractRescuesData, setExtractRescuesData] = useState([])
-  const [ExtractGeneralData, setExtractGeneralData] = useState([])
-  const [userMonetaryBalance, setUserMonetaryBalance] = useState('');
-  const [name, setName] = useState('');
+  const [ExtractRescuesData, setExtractRescuesData] = useState([]);
+  const [ExtractGeneralData, setExtractGeneralData] = useState([]);
+  const [userMonetaryBalance, setUserMonetaryBalance] = useState("");
+  const [isPdvFilho, setIsPdvFilho] = useState(false);
+  const [PdvNetMovementData, setPdvNetMovementData] = useState([
+    {
+      cnpj: "1231231231",
+      pdvName: "Troca de óleo - ipiranga",
+      generatedValue: "100,00",
+    },
+    {
+      cnpj: "7341234434",
+      pdvName: "Troca de óleo - morumbi",
+      generatedValue: "520,00",
+    },
+    {
+      cnpj: "6342343445",
+      pdvName: "Troca de óleo - zona norte",
+      generatedValue: "325,00",
+    },
+  ]);
 
   const closeModal = () => {
     setModalVisible(false);
   };
 
   const loadInBrowser = (url: any) => {
-    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+    Linking.openURL(url).catch((err) =>
+      console.error("Couldn't load page", err),
+    );
   };
 
   const getBalance = async () => {
-    const { data } = await api.get('/points/values/v1/');
+    const { data } = await api.get("/points/values/v1/");
 
     if (data.result.availableMonetayValue) {
       setUserMonetaryBalance(data.result.availableMonetayValue.toFixed(2));
     }
-  }
+  };
 
   const getExtractGeneral = async () => {
-
-    const { data } = await api.get('/points/v1/?onlyValid=true');
+    const { data } = await api.get("/points/v1/?onlyValid=true");
 
     if (data.results) {
       setExtractGeneralData(data.results);
     }
-  }
+  };
 
   const getExtractRescues = async () => {
     try {
-      const { data } = await api.get('/rescues/v1/');
+      const { data } = await api.get("/rescues/v1/");
       if (data.results) {
         setExtractRescuesData(data.results);
       }
     } catch (error) {
-      console.log('Rescues: ', error)
+      console.log("Rescues: ", error);
     }
-
-  }
+  };
 
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -83,8 +112,14 @@ const HomeScreen: React.FC = () => {
     const month = date.getUTCMonth() + 1;
     const year = date.getUTCFullYear();
 
+    return `${day.toString().padStart(2, "0")}/${month
+      .toString()
+      .padStart(2, "0")}/${year}`;
+  };
 
-    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+  /* DEMONSTRATION BELOW PDF FILHO */
+  const simulateUserBeingPdfFilho = () => {
+    setIsPdvFilho(true);
   };
 
   useEffect(() => {
@@ -96,109 +131,173 @@ const HomeScreen: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  
   useEffect(() => {
-    getBalance();
-    getExtractGeneral();
-    getExtractRescues();
+    const interval = setInterval(() => {
+      if (pdvSelectedStore === "") {
+        navigation.navigate("SelectPdvStore");
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [pdvSelectedStore]);
+
+  useEffect(() => {
     
-  }, [])
+      getBalance();
+      getExtractGeneral();
+      getExtractRescues();
+      /* DEMONSTRATION BELLOW PDF FILHO*/
+      simulateUserBeingPdfFilho();
+      console.log(pdvSelectedStore);
+    
+  }, []);
   useEffect(() => {
-    if(expoPushToken){
+    if (expoPushToken) {
       handleNewsNotification();
     }
-  },[expoPushToken])
-
+  }, [expoPushToken]);
 
   const handleNewsNotification = async () => {
-   
-    sendPushNotification({ title: 'Bem vindo ao App!', body: 'Essa é a Home do Clube Pro +!' })
+    sendPushNotification({
+      title: "Bem vindo ao App!",
+      body: "Essa é a Home do Clube Pro +!",
+    });
+  };
 
-  }
-  const handleCallNotification = async () => {
-    sendPushNotification({ title: 'Você clicou no botao da home!', body: 'Isso é um teste' })
-
-  }
   return (
     <View style={styles.container}>
-      <View style={styles.containerRed}>
-        <Text style={{ color: 'white', fontWeight: '800' }}>Olá {userName}</Text>
-        <Ionicons name="reload" size={24} color="white" />
+      <View style={stylesDefault.RedViewHeaderContainer}>
+        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+          <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
+          <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
+        </View>
       </View>
       <View>
         <HomeNewInfo />
       </View>
-      <View style={styles.cardBalance}>
-        <View style={{ position: 'absolute', top: 10, right: 10 }} >
-          <TouchableOpacity onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}>
-            <Entypo name={showPasswordSaldo ? 'eye' : 'eye-with-line'} size={24} color="black" />
-          </TouchableOpacity>
-          <Button onPress={handleCallNotification} title='chamar notificacao' />
-
+      <View style={stylesDefault.ViewBody}>
+        <View style={styles.cardBalance}>
+          <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
+            <Text style={stylesDefault.SmallText_Black_18_600}>Saldo</Text>
+            <TouchableOpacity
+              onPress={() => setShowPasswordSaldo(!showPasswordSaldo)}
+            >
+              <Entypo
+                style={{ padding: 5 }}
+                name={showPasswordSaldo ? "eye" : "eye-with-line"}
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity>
+          </View>
+          {showPasswordSaldo && (
+            <Text style={stylesDefault.SmallText_Black_30_600}>
+              R$ {userMonetaryBalance.replace(/\./g, ",")}
+            </Text>
+          )}
+          {showPasswordSaldo &&
+            /* Correto para esconder o resgate ao pdv filho: !isPdvFilho */ isPdvFilho && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Redeem")}
+                style={styles.greenButton}
+              >
+                <FontAwesome
+                  name="dollar"
+                  size={20}
+                  color="white"
+                  style={styles.icon}
+                />
+                <Text style={styles.greenButtonText}>Resgatar agora</Text>
+              </TouchableOpacity>
+            )}
         </View>
-
-        <Text style={{ color: 'black', fontWeight: '600' }}>Saldo</Text>
-        <Text style={{ color: 'black', fontWeight: '600', fontSize: 30 }}>
-          {showPasswordSaldo ? userMonetaryBalance : '********'}</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <AntDesign name="filetext1" size={24} color="#A6A6A6" />
-          <TouchableOpacity onPress={() => {
-            setModalType('Extract');
-            setExtractType('General')
-            setModalVisible(true);
-          }} style={styles.button}>
-            <Text style={styles.buttonText}>Ver extrato</Text>
-            <View style={styles.underline} />
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity onPress={() =>
-          navigation.navigate('Redeem')
-        } style={styles.greenButton}>
-          <FontAwesome name="dollar" size={20} color="white" style={styles.icon} />
-          <Text style={styles.greenButtonText}>Resgatar agora</Text>
-        </TouchableOpacity>
       </View>
-      <Image source={require('../../assets/home-img.png')} style={[styles.outline1, styles.imageBig]} />
-      <Text style={styles.text}>Clube Pro+. O clube de fidelidade da Total Energies.</Text>
-
       <ScrollView style={styles.menu}>
         {menuItems.map((item, index) => (
           <TouchableOpacity
-            key={index} style={styles.menuItem}
+            key={index}
+            style={styles.menuItem}
             onPress={() => {
-              if (item.path && item.path !== 'lubconsult' && item.path !== 'browserTotalEnergies') {
-                navigation.navigate(item.path)
+              if (
+                item.path &&
+                item.path !== "lubconsult" &&
+                item.path !== "browserTotalEnergies"
+              ) {
+                navigation.navigate(item.path);
               }
-              if (item.path === 'lubconsult') {
-                loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult')
+              if (item.path === "lubconsult") {
+                loadInBrowser(
+                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
+                );
               }
               if (item.modal) {
-                setModalType(item.modal)
-                setModalVisible(true)
+                setModalType(item.modal);
+                setModalVisible(true);
               }
-              if (item.path === 'browserTotalEnergies') {
-                loadInBrowser('https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult')
+              if (item.path === "browserTotalEnergies") {
+                loadInBrowser(
+                  "https://totalenergies.pt/os-nossos-servicos/servicos/lubconsult",
+                );
               }
-            }}>
-            {!item.icon ?
-              <View style={{ alignItems: 'center', width: 24, height: 12 }} >
-                <Image source={require('../../assets/IconTotalEnergies.png')}
-                  style={{ width: '100%', height: '100%' }} />
-              </View> : <AntDesign name={item.icon} size={24} color="#000" />}
+            }}
+          >
+            {!item.icon ? (
+              <View style={stylesDefault.View_Row_VCenter_W24_H12}>
+                <Image
+                  source={require("../../assets/IconTotalEnergies.png")}
+                  style={stylesDefault.Image_W100_H100_Tint_Red}
+                />
+              </View>
+            ) : (
+              <AntDesign name={item.icon} size={24} color="red" />
+            )}
             <Text style={styles.menuItemText}>{item.title}</Text>
-
-            <Ionicons name="chevron-forward" size={24} color="#000" />
+            <View
+              style={
+                stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+              }
+            >
+              <Ionicons name="chevron-forward" size={24} color="white" />
+            </View>
           </TouchableOpacity>
         ))}
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigation.navigate('Products')}
+          onPress={() => navigation.navigate("Products")}
         >
-          <Feather name="box" size={24} color="black" />
+          <Feather name="box" size={24} color="red" />
           <Text style={styles.menuItemText}>Produtos participantes</Text>
+          <View
+            style={
+              stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+            }
+          >
+            <Ionicons name="chevron-forward" size={24} color="white" />
+          </View>
         </TouchableOpacity>
-        {modalVisible ?
+        {/* DEMONSTRATION STORE TO BEEP */}
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate("SelectPdvStore")}
+        >
+          <Feather name="box" size={24} color="red" />
+          <Text style={styles.menuItemText}>
+            Loja selecionada:{" "}
+            <Text style={{ fontWeight: "700" }}>{pdvSelectedStore}</Text>
+          </Text>
+          <View
+            style={
+              stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+            }
+          >
+            <Ionicons name="chevron-forward" size={24} color="white" />
+          </View>
+        </TouchableOpacity>
+        {modalVisible ? (
           <View>
-            {modalType === 'Extract' ?
+            {modalType === "Extract" ? (
               <Modal
                 animationType="slide"
                 transparent={true}
@@ -210,116 +309,242 @@ const HomeScreen: React.FC = () => {
                     <View style={styles.modalExtractView}>
                       <TouchableOpacity
                         style={{ elevation: 2 }}
-                        onPress={closeModal}>
-                        <Ionicons name="close" size={24} color="grey" />
+                        onPress={closeModal}
+                      >
+                        <Ionicons name="close" size={24} color="black" />
                       </TouchableOpacity>
-                      {extractType === 'General' ?
-                        <View style={styles.eyeViewStyles} >
-                          <TouchableOpacity onPress={() => setShowPasswordExtratoQrCode(!showPasswordExtratoQrCode)}>
-                            <Entypo name={showPasswordExtratoQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                      {extractType === "General" ? (
+                        <View style={styles.eyeViewStyles}>
+                          <TouchableOpacity
+                            onPress={() =>
+                              setShowPasswordExtratoQrCode(
+                                !showPasswordExtratoQrCode,
+                              )
+                            }
+                          >
+                            <Entypo
+                              name={
+                                showPasswordExtratoQrCode
+                                  ? "eye"
+                                  : "eye-with-line"
+                              }
+                              size={24}
+                              color="black"
+                            />
                           </TouchableOpacity>
-                        </View> : null}
-                      {extractType === 'Reclaim' ?
-                        <View style={styles.eyeViewStyles} >
-                          <TouchableOpacity onPress={() => setShowPasswordExtratoPix(!showPasswordExtratoPix)}>
-                            <Entypo name={showPasswordExtratoQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                        </View>
+                      ) : null}
+                      {extractType === "Reclaim" ? (
+                        <View style={styles.eyeViewStyles}>
+                          <TouchableOpacity
+                            onPress={() =>
+                              setShowPasswordExtratoPix(!showPasswordExtratoPix)
+                            }
+                          >
+                            <Entypo
+                              name={
+                                showPasswordExtratoQrCode
+                                  ? "eye"
+                                  : "eye-with-line"
+                              }
+                              size={24}
+                              color="black"
+                            />
                           </TouchableOpacity>
-                        </View> : null}
+                        </View>
+                      ) : null}
                     </View>
-                    <View style={{ flexDirection: 'row', borderBottomColor: 'grey', borderBottomWidth: 1, width: '100%', justifyContent: 'center', gap: 30 }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        borderBottomColor: "grey",
+                        borderBottomWidth: 1,
+                        width: "100%",
+                        justifyContent: "center",
+                        gap: 30,
+                      }}
+                    >
                       <TouchableOpacity
-                        style={extractType !== 'General' ?
-                          styles.notselectedExtractButton :
-                          styles.selectedExtractButton}
-                        onPress={() => setExtractType('General')} >
-                        <Text style={extractType !== 'General' ?
-                          styles.notselectedExtractButtonText :
-                          styles.selectedExtractButtonText}>Geral</Text>
+                        style={
+                          extractType !== "General"
+                            ? styles.notselectedExtractButton
+                            : styles.selectedExtractButton
+                        }
+                        onPress={() => setExtractType("General")}
+                      >
+                        <Text
+                          style={
+                            extractType !== "General"
+                              ? styles.notselectedExtractButtonText
+                              : styles.selectedExtractButtonText
+                          }
+                        >
+                          Geral
+                        </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        style={extractType !== 'Reclaim' ? styles.notselectedExtractButton : styles.selectedExtractButton}
-                        onPress={() => setExtractType('Reclaim')}  >
-                        <Text style={extractType !== 'Reclaim' ?
-                          styles.notselectedExtractButtonText :
-                          styles.selectedExtractButtonText}>Resgate</Text>
+                        style={
+                          extractType !== "Reclaim"
+                            ? styles.notselectedExtractButton
+                            : styles.selectedExtractButton
+                        }
+                        onPress={() => setExtractType("Reclaim")}
+                      >
+                        <Text
+                          style={
+                            extractType !== "Reclaim"
+                              ? styles.notselectedExtractButtonText
+                              : styles.selectedExtractButtonText
+                          }
+                        >
+                          Resgate
+                        </Text>
                       </TouchableOpacity>
                     </View>
-                    <View style={styles.modalViewContainer} >
-                      {extractType === 'General' ?
-                        <ScrollView style={styles.scrollViewContainer} >
+                    <View style={styles.modalViewContainer}>
+                      {extractType === "General" ? (
+                        <ScrollView style={styles.scrollViewContainer}>
                           {ExtractGeneralData.map((item, index) => (
-                            <View key={index} style={styles.modalViewColumnContainer}>
-                              <View style={{ flexDirection: 'column' }} >
+                            <View
+                              key={index}
+                              style={styles.modalViewColumnContainer}
+                            >
+                              <View style={{ flexDirection: "column" }}>
                                 <Text style={styles.modalDarkMainText}>
-                                  {formatDate(item.created_at)}</Text>
-                                <Text style={styles.modalSmallGreyText} >
-                                  QR Code: {showPasswordExtratoQrCode ? item.qrcode : "**************"}</Text>
-                              </View>
-                              <Text
-                                style={styles.modalGreenText}>
-                                R$ {showPasswordExtratoQrCode ? item.totalMonetaryValue.toFixed(2) : "*********"}</Text>
-                            </View>
-                          ))}
-                        </ScrollView> : null}
-                      {extractType === 'Reclaim' ?
-                        <ScrollView style={styles.scrollViewContainer} >
-                          {ExtractRescuesData.map((item, index) => (
-                            <View key={index} style={styles.modalViewColumnContainer}>
-                              <View style={{ flexDirection: 'column' }} >
-                                <Text style={styles.modalSmallGreyText}>{formatDate(item.created_at)}</Text>
-                                <Text style={styles.modalDarkMainText}>
-                                  Transferência</Text>
-                                <Text style={styles.modalSmallGreyText} >
-                                  Chave Pix: {showPasswordExtratoPix ? item.pixKey : "*********"}</Text>
-                                <Text style={styles.modalSmallGreyText} >
-                                  Status: {item.paymentStatusName}</Text>
+                                  {formatDate(item.created_at)}
+                                </Text>
+                                <Text style={styles.modalSmallGreyText}>
+                                  QR Code:{" "}
+                                  {showPasswordExtratoQrCode
+                                    ? item.qrcode
+                                    : "**************"}
+                                </Text>
                               </View>
                               <Text style={styles.modalGreenText}>
-                                R$ {showPasswordExtratoPix ? item.totalMonetaryValue.toFixed(2) : "*********"}</Text>
+                                R${" "}
+                                {showPasswordExtratoQrCode
+                                  ? item.totalMonetaryValue.toFixed(2)
+                                  : "*********"}
+                              </Text>
                             </View>
                           ))}
-                        </ScrollView> : null}
+                        </ScrollView>
+                      ) : null}
+                      {extractType === "Reclaim" ? (
+                        <ScrollView style={styles.scrollViewContainer}>
+                          {ExtractRescuesData.map((item, index) => (
+                            <View
+                              key={index}
+                              style={styles.modalViewColumnContainer}
+                            >
+                              <View style={{ flexDirection: "column" }}>
+                                <Text style={styles.modalSmallGreyText}>
+                                  {formatDate(item.created_at)}
+                                </Text>
+                                <Text style={styles.modalDarkMainText}>
+                                  Transferência
+                                </Text>
+                                <Text style={styles.modalSmallGreyText}>
+                                  Chave Pix:{" "}
+                                  {showPasswordExtratoPix
+                                    ? item.pixKey
+                                    : "*********"}
+                                </Text>
+                                <Text style={styles.modalSmallGreyText}>
+                                  Status: {item.paymentStatusName}
+                                </Text>
+                              </View>
+                              <Text style={styles.modalGreenText}>
+                                R${" "}
+                                {showPasswordExtratoPix
+                                  ? item.totalMonetaryValue.toFixed(2)
+                                  : "*********"}
+                              </Text>
+                            </View>
+                          ))}
+                        </ScrollView>
+                      ) : null}
                     </View>
                   </View>
                 </View>
               </Modal>
-              : null}
-            {modalType === 'ScannedCodes' ?
+            ) : null}
+            {modalType === "ScannedCodes" ? (
               <Modal
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={closeModal}>
+                onRequestClose={closeModal}
+              >
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
-                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end' }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "flex-end",
+                      }}
+                    >
                       <TouchableOpacity
                         style={{ elevation: 2 }}
-                        onPress={closeModal}>
-                        <Ionicons name="close" size={24} color="grey" />
+                        onPress={closeModal}
+                      >
+                        <Ionicons name="close" size={24} color="black" />
                       </TouchableOpacity>
-                      <View style={styles.eyeViewStyles} >
-                        <TouchableOpacity onPress={() => setShowPasswordCodesQrCode(!showPasswordCodesQrCode)}>
-                          <Entypo name={showPasswordCodesQrCode ? 'eye' : 'eye-with-line'} size={24} color="black" />
+                      <View style={styles.eyeViewStyles}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            setShowPasswordCodesQrCode(!showPasswordCodesQrCode)
+                          }
+                        >
+                          <Entypo
+                            name={
+                              showPasswordCodesQrCode ? "eye" : "eye-with-line"
+                            }
+                            size={24}
+                            color="black"
+                          />
                         </TouchableOpacity>
                       </View>
                     </View>
-                    <View style={{ flexDirection: 'row', width: '100%', marginBottom: 20 }}>
-                      <Text style={{ fontWeight: '400', fontSize: 16 }} >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: "100%",
+                        marginBottom: 20,
+                      }}
+                    >
+                      <Text style={{ fontWeight: "400", fontSize: 16 }}>
                         Códigos escaneados
                       </Text>
                     </View>
-                    <View style={styles.modalViewContainer} >
-                      <ScrollView style={styles.scrollViewContainer} >
+                    <View style={styles.modalViewContainer}>
+                      <ScrollView style={styles.scrollViewContainer}>
                         {ExtractGeneralData.map((item, index) => (
-                          <View key={index} style={styles.modalViewColumnContainer}>
-                            <View style={{ flexDirection: 'column' }} >
-                              <Text style={styles.modalSmallGreyText} >Escaneado em: {formatDate(item.created_at)}</Text>
-                              <Text style={styles.modalDarkMainText}>{item.productaName}</Text>
-                              <Text style={styles.modalSmallGreyText} >QR Code: {showPasswordCodesQrCode ? item.qrcode : '******'}</Text>
+                          <View
+                            key={index}
+                            style={styles.modalViewColumnContainer}
+                          >
+                            <View style={{ flexDirection: "column" }}>
+                              <Text style={styles.modalSmallGreyText}>
+                                Escaneado em: {formatDate(item.created_at)}
+                              </Text>
+                              <Text style={styles.modalDarkMainText}>
+                                {item.productaName}
+                              </Text>
+                              <Text style={styles.modalSmallGreyText}>
+                                QR Code:{" "}
+                                {showPasswordCodesQrCode
+                                  ? item.qrcode
+                                  : "******"}
+                              </Text>
                             </View>
                             <Text style={styles.modalGreenText}>
-                              {showPasswordCodesQrCode ? '+' + item.totalPoints.toFixed(2) : '***'} pontos</Text>
+                              {showPasswordCodesQrCode
+                                ? "+" + item.totalPoints.toFixed(2)
+                                : "***"}{" "}
+                              pts
+                            </Text>
                           </View>
                         ))}
                       </ScrollView>
@@ -327,9 +552,80 @@ const HomeScreen: React.FC = () => {
                   </View>
                 </View>
               </Modal>
-              : null}
+            ) : null}
+            {modalType === "PdvNetMovements" ? (
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={closeModal}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{ elevation: 2 }}
+                        onPress={closeModal}
+                      >
+                        <Ionicons name="close" size={24} color="black" />
+                      </TouchableOpacity>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: "100%",
+                        marginBottom: 20,
+                      }}
+                    >
+                      <Text style={{ fontWeight: "400", fontSize: 16 }}>
+                        Movimentações por PDV
+                      </Text>
+                    </View>
+                    <View style={styles.modalViewContainer}>
+                      <View
+                        style={{
+                          width: "100%",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Text>CNPJ</Text>
+                        <Text>NOME PDV</Text>
+                        <Text>VALOR GERADO</Text>
+                      </View>
+                      <ScrollView style={styles.scrollViewContainerPdvNet}>
+                        {PdvNetMovementData.map((item, index) => (
+                          <View
+                            key={index}
+                            style={styles.modalViewColumnContainerPdvNet}
+                          >
+                            <View
+                              style={{
+                                width: "100%",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Text style={{}}>{item.cnpj}</Text>
+                              <Text style={{}}>{item.pdvName}</Text>
+                              <Text style={{}}>{item.generatedValue}</Text>
+                            </View>
+                          </View>
+                        ))}
+                      </ScrollView>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            ) : null}
           </View>
-          : null}
+        ) : null}
       </ScrollView>
     </View>
   );
@@ -338,94 +634,115 @@ const HomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#F3F3F3'
-  }, text: {
+    alignItems: "center",
+    backgroundColor: "#F3F3F3",
+  },
+  text: {
     marginTop: 30,
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000000',
-    textShadowColor: '#000',
+    fontWeight: "bold",
+    color: "#000000",
+    textShadowColor: "#000",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
-    width: '80%'
+    width: "80%",
   },
   containerRed: {
-    backgroundColor: 'red',
-    height: 200,
-    width: '100%',
+    backgroundColor: "red",
+    height: 120,
+    width: "100%",
     paddingHorizontal: 30,
-    justifyContent: 'space-between',
+    marginBottom: 40,
+    justifyContent: "space-between",
     borderBottomLeftRadius: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   cardBalance: {
-    width: '80%',
-    backgroundColor: 'white',
-    height: 230,
+    width: "100%",
+    backgroundColor: "white",
+    height: "auto",
     borderRadius: 8,
-    marginTop: -70,
-    shadowColor: '#000',
+    marginTop: -30,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    paddingTop: 30,
-    paddingLeft: 20,
+    shadowRadius: 25,
+    elevation: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+
     gap: 20,
   },
   text_subTitleSize: {
-    fontSize: 14
+    fontSize: 14,
   },
   text_subTitle: {
     marginTop: 10,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   button: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingLeft: 10,
   },
   buttonText: {
-    color: '#A6A6A6',
+    color: "black",
     fontSize: 16,
   },
   underline: {
     height: 1,
-    backgroundColor: '#A6A6A6',
-    width: '100%',
+    backgroundColor: "black",
+    width: "100%",
     marginTop: 4,
   },
   greenButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#85D151',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#85D151",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 200,
-    width: 200
+    width: "auto",
   },
   icon: {
     marginRight: 10,
   },
   greenButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
   },
   menu: {
-    width: '90%',
+    width: "100%",
     marginTop: 20,
+    paddingHorizontal: 20,
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 15,
     paddingHorizontal: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 8,
     marginVertical: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 2,
+  },
+  menuItemChooseStoreBeep: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    backgroundColor: "white",
+    borderRadius: 8,
+    marginVertical: 5,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
@@ -439,13 +756,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
   },
-  outline1: { color: '#000000', left: -1, top: -1 },
+  outline1: { color: "#000000", left: -1, top: -1 },
   imageBig: {
-    width: '80%',
-    resizeMode: 'cover',
+    width: "80%",
+    resizeMode: "cover",
     marginTop: 30,
     borderWidth: 1,
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   /* Modal Styles */
@@ -455,8 +772,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 0,
-    top: 240
-
+    top: 240,
   },
   modalView: {
     margin: 20,
@@ -467,22 +783,22 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: '100%',
-    height: '40%'
+    width: "100%",
+    height: "40%",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   buttonmodal: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   buttonClose: {
     backgroundColor: "#2196F3",
@@ -490,71 +806,86 @@ const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   selectedExtractButton: {
     padding: 10,
-    borderTopColor: 'grey', borderTopWidth: 1,
-    borderLeftColor: 'grey', borderLeftWidth: 1,
-    borderRightColor: 'grey', borderRightWidth: 1,
-    borderBottomColor: 'white', borderBottomWidth: 4,
-    top: 4, borderRadius: 5
+    borderTopColor: "grey",
+    borderTopWidth: 1,
+    borderLeftColor: "grey",
+    borderLeftWidth: 1,
+    borderRightColor: "grey",
+    borderRightWidth: 1,
+    borderBottomColor: "white",
+    borderBottomWidth: 4,
+    top: 4,
+    borderRadius: 5,
   },
   selectedExtractButtonText: {
     color: "red",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   notselectedExtractButtonText: {
     color: "grey",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   notselectedExtractButton: {
     padding: 10,
-
   },
   modalSmallGreyText: {
-    color: '#a1a1a1',
-    fontSize: 12
+    color: "#a1a1a1",
+    fontSize: 12,
   },
   modalDarkMainText: {
-    color: 'black',
+    color: "black",
     fontSize: 16,
-    maxWidth: 200
+    maxWidth: 200,
   },
   modalGreenText: {
-    color: '#85D151',
+    color: "#85D151",
     fontSize: 16,
-    fontWeight: '800'
+    fontWeight: "800",
   },
   modalViewColumnContainer: {
-
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    borderBottomColor: '#dbdbdb',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    borderBottomColor: "#dbdbdb",
     borderBottomWidth: 1,
-    padding: 10
+    padding: 10,
+  },
+  modalViewColumnContainerPdvNet: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    borderBottomColor: "#dbdbdb",
+    borderBottomWidth: 1,
+    paddingVertical: 10,
   },
   eyeViewStyles: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
-    right: 40
+    right: 40,
   },
   modalViewContainer: {
-    flexDirection: 'column', gap: 10
+    flexDirection: "column",
+    gap: 10,
   },
   scrollViewContainer: {
-    maxHeight: 'auto',
-    marginBottom: 50
+    maxHeight: "auto",
+    marginBottom: 50,
+  },
+  scrollViewContainerPdvNet: {
+    maxHeight: "auto",
+    marginBottom: 50,
   },
   modalExtractView: {
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'flex-end'
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "flex-end",
   },
-
 });
 
 export default HomeScreen;
