@@ -1,23 +1,17 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import React from "react";
+import { ScrollView, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
+import * as S from './styles';
 
 const SelectTypeAccount: React.FC = () => {
   const { userName, selectTypeAccount, selectPdvStore } = useAuth();
   const navigation = useNavigation();
 
-
   return (
-    <View style={styles.container}>
+    <S.Container>
       <View style={stylesDefault.RedViewHeaderContainer}>
         <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
           <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
@@ -57,85 +51,48 @@ const SelectTypeAccount: React.FC = () => {
             >
               Escolha seu tipo de conta
             </Text>
-            <TouchableOpacity
+            <S.MenuItem
               onPress={() => {
                 selectTypeAccount("Rede");
                 navigation.navigate("SelectPdvStore");
               }}
               activeOpacity={1}
-
             >
-              <View style={styles.menuItem}>
-                <Text style={{ fontWeight: "600", fontSize: 20 }}>
-                  Rede
-                </Text>
-                <View
-                  style={
-                    stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
-                  }
-                >
-                  <Ionicons name="chevron-forward" size={24} color="white" />
-                </View>
+              <Text style={{ fontWeight: "600", fontSize: 20 }}>
+                Rede
+              </Text>
+              <View
+                style={
+                  stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                }
+              >
+                <Ionicons name="chevron-forward" size={24} color="white" />
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </S.MenuItem>
+            <S.MenuItem
               onPress={() => {
                 selectTypeAccount("Filho");
                 selectPdvStore("FilhoAccount");
                 navigation.navigate("Home");
               }}
               activeOpacity={1}
-
             >
-              <View style={styles.menuItem}>
-                <Text style={{ fontWeight: "600", fontSize: 20 }}>
-                  Filho
-                </Text>
-                <View
-                  style={
-                    stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
-                  }
-                >
-                  <Ionicons name="chevron-forward" size={24} color="white" />
-                </View>
+              <Text style={{ fontWeight: "600", fontSize: 20 }}>
+                Filho
+              </Text>
+              <View
+                style={
+                  stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
+                }
+              >
+                <Ionicons name="chevron-forward" size={24} color="white" />
               </View>
-            </TouchableOpacity>
-
+            </S.MenuItem>
           </ScrollView>
         </View>
       </View>
-    </View>
+    </S.Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#F3F3F3",
-  },
-
-  homeText: {
-    fontSize: 20,
-
-    marginTop: 20,
-  },
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    backgroundColor: "white",
-    borderRadius: 8,
-    marginVertical: 5,
-    marginHorizontal: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, heigzht: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 4,
-  },
-});
 
 export default SelectTypeAccount;

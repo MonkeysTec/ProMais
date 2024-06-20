@@ -5,11 +5,11 @@ import api from "../../services/api";
 import { useAuth } from "../../context/LoginContext";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
+import * as S from './styles';
 
 const QRCodeScreen: React.FC = () => {
   const [scanned, setScanned] = useState(false);
   const [data, setData] = useState<string>("");
-  const { user, login, logout } = useAuth();
   const [permission, requestPermission] = useCameraPermissions();
   const navigation = useNavigation();
 
@@ -39,55 +39,38 @@ const QRCodeScreen: React.FC = () => {
   };
 
   if (!permission) {
-    // Camera permissions are still loading.
+   
     return <View />;
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
+    
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          Nós precisamos de permissão para usar a camera.
-        </Text>
-        <Button onPress={requestPermission} title="Dar permissão" />
-      </View>
+      <S.Container>
+      <S.PermissionText>
+        Nós precisamos de permissão para usar a câmera.
+      </S.PermissionText>
+      <Button onPress={requestPermission} title="Dar permissão" />
+    </S.Container>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.barcodeBox}>
+    <S.Container>
+      <S.BarcodeBox>
         <CameraView
           onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={StyleSheet.absoluteFillObject}
         />
-      </View>
+      </S.BarcodeBox>
       {scanned && (
         <Button
           title={"Toque para escanear novamente"}
           onPress={() => setScanned(false)}
         />
       )}
-    </View>
+    </S.Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  barcodeBox: {
-    alignItems: "center",
-    justifyContent: "center",
-    height: 300,
-    width: 300,
-    overflow: "hidden",
-    borderRadius: 30,
-    backgroundColor: "tomato",
-  },
-});
 
 export default QRCodeScreen;

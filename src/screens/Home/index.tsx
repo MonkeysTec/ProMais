@@ -1,24 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  Modal,
-  Linking,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+import { Linking, View, Modal, ScrollView, Text, TouchableOpacity, Image } from "react-native";
+import { Ionicons, AntDesign, FontAwesome, Entypo, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import Entypo from "@expo/vector-icons/Entypo";
 import { HomeNewInfo } from "../../components/Modal/HomeNewInfo";
 import { useAuth } from "../../context/LoginContext";
 import api from "../../services/api";
-import Feather from "@expo/vector-icons/Feather";
 import { stylesDefault } from "../../components/Styled";
+import * as S from './styles';
+
 const menuItems = [
   { title: "Movimentações loja", icon: "filetext1", modal: "PdvNetMovements" },
   { title: "Extrato", icon: "filetext1", modal: "Extract" },
@@ -42,10 +31,9 @@ const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [extractType, setExtractType] = useState("General" || "Reclaim");
+  const [extractType, setExtractType] = useState("General");
   const [showPasswordSaldo, setShowPasswordSaldo] = useState(false);
-  const [showPasswordExtratoQrCode, setShowPasswordExtratoQrCode] =
-    useState(false);
+  const [showPasswordExtratoQrCode, setShowPasswordExtratoQrCode] = useState(false);
   const [showPasswordExtratoPix, setShowPasswordExtratoPix] = useState(false);
   const [showPasswordCodesQrCode, setShowPasswordCodesQrCode] = useState(false);
   const [ExtractRescuesData, setExtractRescuesData] = useState([]);
@@ -117,9 +105,6 @@ const HomeScreen: React.FC = () => {
       .padStart(2, "0")}/${year}`;
   };
 
-  /* DEMONSTRATION BELOW PDF FILHO */
-
-
   useEffect(() => {
     const interval = setInterval(() => {
       getBalance();
@@ -130,12 +115,11 @@ const HomeScreen: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  
   useEffect(() => {
     const interval = setInterval(() => {
-      if(typeAccountSelected === ""){
+      if (typeAccountSelected === "") {
         navigation.navigate("SelectTypeAccount");
-      }else{
+      } else {
         if (pdvSelectedStore === "") {
           navigation.navigate("SelectPdvStore");
         }
@@ -143,14 +127,14 @@ const HomeScreen: React.FC = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [pdvSelectedStore,typeAccountSelected]);
+  }, [pdvSelectedStore, typeAccountSelected]);
 
   useEffect(() => {
-      getBalance();
-      getExtractGeneral();
-      getExtractRescues();
-    
+    getBalance();
+    getExtractGeneral();
+    getExtractRescues();
   }, []);
+
   useEffect(() => {
     if (expoPushToken) {
       handleNewsNotification();
@@ -165,7 +149,7 @@ const HomeScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <S.Container>
       <View style={stylesDefault.RedViewHeaderContainer}>
         <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
           <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
@@ -177,7 +161,7 @@ const HomeScreen: React.FC = () => {
         <HomeNewInfo />
       </View>
       <View style={stylesDefault.ViewBody}>
-        <View style={styles.cardBalance}>
+        <S.CardBalance>
           <View style={stylesDefault.View_Row_HSpaceBetween_VCenter_W100}>
             <Text style={stylesDefault.SmallText_Black_18_600}>Saldo</Text>
             <TouchableOpacity
@@ -198,26 +182,24 @@ const HomeScreen: React.FC = () => {
           )}
           {showPasswordSaldo &&
            typeAccountSelected === "Rede" && (
-              <TouchableOpacity
+              <S.GreenButton
                 onPress={() => navigation.navigate("Redeem")}
-                style={styles.greenButton}
               >
                 <FontAwesome
                   name="dollar"
                   size={20}
                   color="white"
-                  style={styles.icon}
+                  style={S.icon}
                 />
-                <Text style={styles.greenButtonText}>Resgatar agora</Text>
-              </TouchableOpacity>
+                <S.GreenButtonText>  Resgatar agora</S.GreenButtonText>
+              </S.GreenButton>
             )}
-        </View>
+        </S.CardBalance>
       </View>
-      <ScrollView style={styles.menu}>
+      <S.Menu>
         {menuItems.map((item, index) => (
-          <TouchableOpacity
+          <S.MenuItem
             key={index}
-            style={styles.menuItem}
             onPress={() => {
               if (
                 item.path &&
@@ -252,7 +234,7 @@ const HomeScreen: React.FC = () => {
             ) : (
               <AntDesign name={item.icon} size={24} color="red" />
             )}
-            <Text style={styles.menuItemText}>{item.title}</Text>
+            <S.MenuItemText>{item.title}</S.MenuItemText>
             <View
               style={
                 stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
@@ -260,14 +242,13 @@ const HomeScreen: React.FC = () => {
             >
               <Ionicons name="chevron-forward" size={24} color="white" />
             </View>
-          </TouchableOpacity>
+          </S.MenuItem>
         ))}
-        <TouchableOpacity
-          style={styles.menuItem}
+        <S.MenuItem
           onPress={() => navigation.navigate("Products")}
         >
           <Feather name="box" size={24} color="red" />
-          <Text style={styles.menuItemText}>Produtos participantes</Text>
+          <S.MenuItemText>Produtos participantes</S.MenuItemText>
           <View
             style={
               stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
@@ -275,17 +256,16 @@ const HomeScreen: React.FC = () => {
           >
             <Ionicons name="chevron-forward" size={24} color="white" />
           </View>
-        </TouchableOpacity>
+        </S.MenuItem>
         {typeAccountSelected === "Rede" &&
-        <TouchableOpacity
-          style={styles.menuItem}
+        <S.MenuItem
           onPress={() => navigation.navigate("SelectPdvStore")}
         >
           <Feather name="box" size={24} color="red" />
-          <Text style={styles.menuItemText}>
+          <S.MenuItemText>
             Loja selecionada:{" "}
             <Text style={{ fontWeight: "700" }}>{pdvSelectedStore}</Text>
-          </Text>
+          </S.MenuItemText>
           <View
             style={
               stylesDefault.View_HCenter_W30_H30_BorderRadius50_BackgroundColor_85d151
@@ -293,7 +273,7 @@ const HomeScreen: React.FC = () => {
           >
             <Ionicons name="chevron-forward" size={24} color="white" />
           </View>
-        </TouchableOpacity>
+        </S.MenuItem>
         }
         {modalVisible ? (
           <View>
@@ -304,9 +284,9 @@ const HomeScreen: React.FC = () => {
                 visible={modalVisible}
                 onRequestClose={closeModal}
               >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <View style={styles.modalExtractView}>
+                <S.ModalCenteredView>
+                  <S.ModalView>
+                    <S.ModalExtractView>
                       <TouchableOpacity
                         style={{ elevation: 2 }}
                         onPress={closeModal}
@@ -314,7 +294,7 @@ const HomeScreen: React.FC = () => {
                         <Ionicons name="close" size={24} color="black" />
                       </TouchableOpacity>
                       {extractType === "General" ? (
-                        <View style={styles.eyeViewStyles}>
+                        <S.EyeViewStyles>
                           <TouchableOpacity
                             onPress={() =>
                               setShowPasswordExtratoQrCode(
@@ -332,10 +312,10 @@ const HomeScreen: React.FC = () => {
                               color="black"
                             />
                           </TouchableOpacity>
-                        </View>
+                        </S.EyeViewStyles>
                       ) : null}
                       {extractType === "Reclaim" ? (
-                        <View style={styles.eyeViewStyles}>
+                        <S.EyeViewStyles>
                           <TouchableOpacity
                             onPress={() =>
                               setShowPasswordExtratoPix(!showPasswordExtratoPix)
@@ -351,9 +331,9 @@ const HomeScreen: React.FC = () => {
                               color="black"
                             />
                           </TouchableOpacity>
-                        </View>
+                        </S.EyeViewStyles>
                       ) : null}
-                    </View>
+                    </S.ModalExtractView>
                     <View
                       style={{
                         flexDirection: "row",
@@ -367,16 +347,16 @@ const HomeScreen: React.FC = () => {
                       <TouchableOpacity
                         style={
                           extractType !== "General"
-                            ? styles.notselectedExtractButton
-                            : styles.selectedExtractButton
+                            ? S.NotSelectedExtractButton
+                            : S.SelectedExtractButton
                         }
                         onPress={() => setExtractType("General")}
                       >
                         <Text
                           style={
                             extractType !== "General"
-                              ? styles.notselectedExtractButtonText
-                              : styles.selectedExtractButtonText
+                              ? S.NotSelectedExtractButtonText
+                              : S.SelectedExtractButtonText
                           }
                         >
                           Geral
@@ -385,88 +365,86 @@ const HomeScreen: React.FC = () => {
                       <TouchableOpacity
                         style={
                           extractType !== "Reclaim"
-                            ? styles.notselectedExtractButton
-                            : styles.selectedExtractButton
+                            ? S.NotSelectedExtractButton
+                            : S.SelectedExtractButton
                         }
                         onPress={() => setExtractType("Reclaim")}
                       >
                         <Text
                           style={
                             extractType !== "Reclaim"
-                              ? styles.notselectedExtractButtonText
-                              : styles.selectedExtractButtonText
+                              ? S.NotSelectedExtractButtonText
+                              : S.SelectedExtractButtonText
                           }
                         >
                           Resgate
                         </Text>
                       </TouchableOpacity>
                     </View>
-                    <View style={styles.modalViewContainer}>
+                    <S.ModalViewContainer>
                       {extractType === "General" ? (
-                        <ScrollView style={styles.scrollViewContainer}>
+                        <S.ScrollViewContainer>
                           {ExtractGeneralData.map((item, index) => (
-                            <View
+                            <S.ModalViewColumnContainer
                               key={index}
-                              style={styles.modalViewColumnContainer}
                             >
                               <View style={{ flexDirection: "column" }}>
-                                <Text style={styles.modalDarkMainText}>
+                                <S.ModalDarkMainText>
                                   {formatDate(item.created_at)}
-                                </Text>
-                                <Text style={styles.modalSmallGreyText}>
+                                </S.ModalDarkMainText>
+                                <S.ModalSmallGreyText>
                                   QR Code:{" "}
                                   {showPasswordExtratoQrCode
                                     ? item.qrcode
                                     : "**************"}
-                                </Text>
+                                </S.ModalSmallGreyText>
                               </View>
-                              <Text style={styles.modalGreenText}>
+                              <S.ModalGreenText>
                                 R${" "}
                                 {showPasswordExtratoQrCode
                                   ? item.totalMonetaryValue.toFixed(2)
                                   : "*********"}
-                              </Text>
-                            </View>
+                              </S.ModalGreenText>
+                            </S.ModalViewColumnContainer>
                           ))}
-                        </ScrollView>
+                        </S.ScrollViewContainer>
                       ) : null}
                       {extractType === "Reclaim" ? (
-                        <ScrollView style={styles.scrollViewContainer}>
+                        <S.ScrollViewContainer>
                           {ExtractRescuesData.map((item, index) => (
-                            <View
+                            <S.ModalViewColumnContainer
                               key={index}
-                              style={styles.modalViewColumnContainer}
                             >
                               <View style={{ flexDirection: "column" }}>
-                                <Text style={styles.modalSmallGreyText}>
+                                <S.ModalSmallGreyText>
                                   {formatDate(item.created_at)}
-                                </Text>
-                                <Text style={styles.modalDarkMainText}>
+                                </S.ModalSmallGreyText>
+                                <S.ModalDarkMainText>
                                   Transferência
-                                </Text>
-                                <Text style={styles.modalSmallGreyText}>
+                                </S.ModalDarkMainText>
+                                <S.ModalSmallGreyText>
                                   Chave Pix:{" "}
                                   {showPasswordExtratoPix
                                     ? item.pixKey
                                     : "*********"}
-                                </Text>
-                                <Text style={styles.modalSmallGreyText}>
+                                </S.ModalSmallGreyText>
+                                <S.ModalSmallGreyText>
                                   Status: {item.paymentStatusName}
-                                </Text>
+                                </S.ModalSmallGreyText>
                               </View>
-                              <Text style={styles.modalGreenText}>
+                              <S.ModalGreenText>
                                 R${" "}
                                 {showPasswordExtratoPix
                                   ? item.totalMonetaryValue.toFixed(2)
                                   : "*********"}
-                              </Text>
-                            </View>
+                              </S.ModalGreenText>
+                            </S.ModalViewColumnContainer>
                           ))}
-                        </ScrollView>
+                        </S.ScrollViewContainer>
                       ) : null}
-                    </View>
-                  </View>
-                </View>
+                    </S.ModalViewContainer>
+                  </S.ModalView>
+                </S.ModalCenteredView>
               </Modal>
             ) : null}
             {modalType === "ScannedCodes" ? (
@@ -476,8 +454,8 @@ const HomeScreen: React.FC = () => {
                 visible={modalVisible}
                 onRequestClose={closeModal}
               >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
+                <S.ModalCenteredView>
+                  <S.ModalView>
                     <View
                       style={{
                         flexDirection: "row",
@@ -491,7 +469,7 @@ const HomeScreen: React.FC = () => {
                       >
                         <Ionicons name="close" size={24} color="black" />
                       </TouchableOpacity>
-                      <View style={styles.eyeViewStyles}>
+                      <S.EyeViewStyles>
                         <TouchableOpacity
                           onPress={() =>
                             setShowPasswordCodesQrCode(!showPasswordCodesQrCode)
@@ -505,7 +483,7 @@ const HomeScreen: React.FC = () => {
                             color="black"
                           />
                         </TouchableOpacity>
-                      </View>
+                      </S.EyeViewStyles>
                     </View>
                     <View
                       style={{
@@ -518,39 +496,38 @@ const HomeScreen: React.FC = () => {
                         Códigos escaneados
                       </Text>
                     </View>
-                    <View style={styles.modalViewContainer}>
-                      <ScrollView style={styles.scrollViewContainer}>
+                    <S.ModalViewContainer>
+                      <S.ScrollViewContainer>
                         {ExtractGeneralData.map((item, index) => (
-                          <View
+                          <S.ModalViewColumnContainer
                             key={index}
-                            style={styles.modalViewColumnContainer}
                           >
                             <View style={{ flexDirection: "column" }}>
-                              <Text style={styles.modalSmallGreyText}>
+                              <S.ModalSmallGreyText>
                                 Escaneado em: {formatDate(item.created_at)}
-                              </Text>
-                              <Text style={styles.modalDarkMainText}>
+                              </S.ModalSmallGreyText>
+                              <S.ModalDarkMainText>
                                 {item.productaName}
-                              </Text>
-                              <Text style={styles.modalSmallGreyText}>
+                              </S.ModalDarkMainText>
+                              <S.ModalSmallGreyText>
                                 QR Code:{" "}
                                 {showPasswordCodesQrCode
                                   ? item.qrcode
                                   : "******"}
-                              </Text>
+                              </S.ModalSmallGreyText>
                             </View>
-                            <Text style={styles.modalGreenText}>
+                            <S.ModalGreenText>
                               {showPasswordCodesQrCode
                                 ? "+" + item.totalPoints.toFixed(2)
                                 : "***"}{" "}
                               pts
-                            </Text>
-                          </View>
+                            </S.ModalGreenText>
+                          </S.ModalViewColumnContainer>
                         ))}
-                      </ScrollView>
-                    </View>
-                  </View>
-                </View>
+                      </S.ScrollViewContainer>
+                    </S.ModalViewContainer>
+                  </S.ModalView>
+                </S.ModalCenteredView>
               </Modal>
             ) : null}
             {modalType === "PdvNetMovements" ? (
@@ -560,8 +537,8 @@ const HomeScreen: React.FC = () => {
                 visible={modalVisible}
                 onRequestClose={closeModal}
               >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
+                <S.ModalCenteredView>
+                  <S.ModalView>
                     <View
                       style={{
                         flexDirection: "row",
@@ -587,7 +564,7 @@ const HomeScreen: React.FC = () => {
                         Movimentações por PDV
                       </Text>
                     </View>
-                    <View style={styles.modalViewContainer}>
+                    <S.ModalViewContainer>
                       <View
                         style={{
                           width: "100%",
@@ -599,11 +576,10 @@ const HomeScreen: React.FC = () => {
                         <Text>NOME PDV</Text>
                         <Text>VALOR GERADO</Text>
                       </View>
-                      <ScrollView style={styles.scrollViewContainerPdvNet}>
+                      <S.ScrollViewContainer>
                         {PdvNetMovementData.map((item, index) => (
-                          <View
+                          <S.ModalViewColumnContainer
                             key={index}
-                            style={styles.modalViewColumnContainerPdvNet}
                           >
                             <View
                               style={{
@@ -616,276 +592,19 @@ const HomeScreen: React.FC = () => {
                               <Text style={{}}>{item.pdvName}</Text>
                               <Text style={{}}>{item.generatedValue}</Text>
                             </View>
-                          </View>
+                          </S.ModalViewColumnContainer>
                         ))}
-                      </ScrollView>
-                    </View>
-                  </View>
-                </View>
+                      </S.ScrollViewContainer>
+                    </S.ModalViewContainer>
+                  </S.ModalView>
+                </S.ModalCenteredView>
               </Modal>
             ) : null}
           </View>
         ) : null}
-      </ScrollView>
-    </View>
+      </S.Menu>
+    </S.Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#F3F3F3",
-  },
-  text: {
-    marginTop: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000000",
-    textShadowColor: "#000",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
-    width: "80%",
-  },
-  containerRed: {
-    backgroundColor: "red",
-    height: 120,
-    width: "100%",
-    paddingHorizontal: 30,
-    marginBottom: 40,
-    justifyContent: "space-between",
-    borderBottomLeftRadius: 40,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  cardBalance: {
-    width: "100%",
-    backgroundColor: "white",
-    height: "auto",
-    borderRadius: 8,
-    marginTop: -30,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 25,
-    elevation: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-
-    gap: 20,
-  },
-  text_subTitleSize: {
-    fontSize: 14,
-  },
-  text_subTitle: {
-    marginTop: 10,
-    fontWeight: "bold",
-  },
-  button: {
-    alignItems: "center",
-    paddingLeft: 10,
-  },
-  buttonText: {
-    color: "black",
-    fontSize: 16,
-  },
-  underline: {
-    height: 1,
-    backgroundColor: "black",
-    width: "100%",
-    marginTop: 4,
-  },
-  greenButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#85D151",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 200,
-    width: "auto",
-  },
-  icon: {
-    marginRight: 10,
-  },
-  greenButtonText: {
-    color: "white",
-    fontSize: 16,
-  },
-  menu: {
-    width: "100%",
-    marginTop: 20,
-    paddingHorizontal: 20,
-  },
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    backgroundColor: "white",
-    borderRadius: 8,
-    marginVertical: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 2,
-  },
-  menuItemChooseStoreBeep: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    backgroundColor: "white",
-    borderRadius: 8,
-    marginVertical: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 2,
-  },
-  menuItemIcon: {
-    marginRight: 10,
-  },
-  menuItemText: {
-    flex: 1,
-    marginLeft: 10,
-    fontSize: 16,
-  },
-  outline1: { color: "#000000", left: -1, top: -1 },
-  imageBig: {
-    width: "80%",
-    resizeMode: "cover",
-    marginTop: 30,
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-
-  /* Modal Styles */
-
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 0,
-    top: 240,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    width: "100%",
-    height: "40%",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-  },
-  buttonmodal: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  selectedExtractButton: {
-    padding: 10,
-    borderTopColor: "grey",
-    borderTopWidth: 1,
-    borderLeftColor: "grey",
-    borderLeftWidth: 1,
-    borderRightColor: "grey",
-    borderRightWidth: 1,
-    borderBottomColor: "white",
-    borderBottomWidth: 4,
-    top: 4,
-    borderRadius: 5,
-  },
-  selectedExtractButtonText: {
-    color: "red",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  notselectedExtractButtonText: {
-    color: "grey",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  notselectedExtractButton: {
-    padding: 10,
-  },
-  modalSmallGreyText: {
-    color: "#a1a1a1",
-    fontSize: 12,
-  },
-  modalDarkMainText: {
-    color: "black",
-    fontSize: 16,
-    maxWidth: 200,
-  },
-  modalGreenText: {
-    color: "#85D151",
-    fontSize: 16,
-    fontWeight: "800",
-  },
-  modalViewColumnContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    borderBottomColor: "#dbdbdb",
-    borderBottomWidth: 1,
-    padding: 10,
-  },
-  modalViewColumnContainerPdvNet: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    borderBottomColor: "#dbdbdb",
-    borderBottomWidth: 1,
-    paddingVertical: 10,
-  },
-  eyeViewStyles: {
-    position: "absolute",
-    top: 0,
-    right: 40,
-  },
-  modalViewContainer: {
-    flexDirection: "column",
-    gap: 10,
-  },
-  scrollViewContainer: {
-    maxHeight: "auto",
-    marginBottom: 50,
-  },
-  scrollViewContainerPdvNet: {
-    maxHeight: "auto",
-    marginBottom: 50,
-  },
-  modalExtractView: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "flex-end",
-  },
-});
 
 export default HomeScreen;
