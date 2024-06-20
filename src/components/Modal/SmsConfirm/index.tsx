@@ -14,6 +14,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import api from "../../../services/api";
 import { useAuth } from "../../../context/LoginContext";
+import { stylesDefault } from "../../Styled";
 
 interface ModalSms {
   email: string;
@@ -85,7 +86,7 @@ export const ModalSMSConfirm = ({
 
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        
       }
     }
   };
@@ -125,7 +126,7 @@ export const ModalSMSConfirm = ({
         );
         setModalVisible(false);
       } catch (error) {
-        console.log(error);
+        
       }
     } else {
       try {
@@ -144,241 +145,102 @@ export const ModalSMSConfirm = ({
         login(user.data);
         setModalVisible(false);
       } catch (error) {
-        console.log(error);
+        
       }
     }
   };
 
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              justifyContent: "flex-end",
-            }}
-          ></View>
-          <View
-            style={{
-              width: "100%",
-              marginBottom: 20,
-              justifyContent: "space-between",
-              height: "100%",
-            }}
-          >
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ fontWeight: "700", fontSize: 26, color: "red" }}>
-                Confirmação
-              </Text>
-              <TouchableOpacity onPress={onClose}>
-                <Ionicons
-                  onPress={onClose}
-                  name="close"
-                  size={35}
-                  color="black"
-                />
-              </TouchableOpacity>
-            </View>
-            <Text
-              style={{
-                fontWeight: "400",
-                fontSize: 17,
-                color: "black",
-                maxWidth: "90%",
-              }}
-            >
-              Digite o código de segurança{" "}
-              {type === "SMS"
-                ? "enviado via SMS para o número de telefone informado"
-                : "enviado para o email informado"}
-            </Text>
-            <View style={{ width: "100%", height: "auto", marginTop: 15 }}>
-              {warningType === "ManyTries" ? (
-                <View
-                  style={{
-                    backgroundColor: "red",
-                    padding: 10,
-                    flexDirection: "row",
-                    gap: 10,
-                  }}
-                >
-                  <FontAwesome6 name="x" size={16} color="white" />
-                  <Text style={{ color: "white" }}>
-                    Você tentou 5 vezes. Aguarde 30 minutos para tentar
-                    novamente
-                  </Text>
-                </View>
-              ) : null}
-              {warningType === "WrongCode" ? (
-                <View
-                  style={{
-                    backgroundColor: "red",
-                    padding: 10,
-                    flexDirection: "row",
-                    gap: 10,
-                  }}
-                >
-                  <FontAwesome6 name="x" size={16} color="white" />
-                  <Text style={{ color: "white" }}>Código incorreto</Text>
-                </View>
-              ) : null}
-              {warningType === "Block" ? (
-                <View
-                  style={{
-                    backgroundColor: "red",
-                    padding: 10,
-                    flexDirection: "row",
-                    gap: 10,
-                  }}
-                >
-                  <FontAwesome6 name="x" size={16} color="white" />
-                  <Text style={{ color: "white" }}>
-                    Você foi bloqueado por excesso de tentativas. Entre em
-                    contato com o Suporte do Programa.
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-
-            <View
-              style={{
-                borderColor: "black",
-                borderWidth: 2,
-                width: "100%",
-                height: 60,
-                borderRadius: 50,
-                flexDirection: "row",
-                gap: 10,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <TextInput
-                style={{
-                  opacity: 0,
-                  width: "100%",
-                  position: "absolute",
-                  height: 80,
-                  padding: 0,
-                  margin: 0,
-                  backgroundColor: "black",
-                  zIndex: 3,
-                }}
-                placeholder="CODE"
-                maxLength={4}
-                onChangeText={(text) => {
-                  const newSmsCode = [...smscode];
-                  for (let i = 0; i < text.length; i++) {
-                    newSmsCode[i] = text[i];
-                  }
-                  setSmsCode(newSmsCode);
-                }}
-              />
-              <View
-                style={{
-                  borderBottomColor: "black",
-                  borderBottomWidth: 4,
-                  width: 34,
-                  alignItems: "center",
-                  display: warningType ? "none" : "flex",
-                }}
-              >
-                <Text style={{ fontSize: 24, bottom: 0, fontWeight: "700" }}>
-                  {smscode[0]}
-                </Text>
-              </View>
-              <View
-                style={{
-                  borderBottomColor: "black",
-                  borderBottomWidth: 4,
-                  width: 34,
-                  alignItems: "center",
-                  display: warningType ? "none" : "flex",
-                }}
-              >
-                <Text style={{ fontSize: 24, bottom: 0, fontWeight: "700" }}>
-                  {smscode[1]}
-                </Text>
-              </View>
-              <View
-                style={{
-                  borderBottomColor: "black",
-                  borderBottomWidth: 4,
-                  width: 34,
-                  alignItems: "center",
-                  display: warningType ? "none" : "flex",
-                }}
-              >
-                <Text style={{ fontSize: 24, bottom: 0, fontWeight: "700" }}>
-                  {smscode[2]}
-                </Text>
-              </View>
-              <View
-                style={{
-                  borderBottomColor: "black",
-                  borderBottomWidth: 4,
-                  width: 34,
-                  alignItems: "center",
-                  display: warningType ? "none" : "flex",
-                }}
-              >
-                <Text style={{ fontSize: 24, bottom: 0, fontWeight: "700" }}>
-                  {smscode[3]}
-                </Text>
-              </View>
-              <View
-                style={{
-                  display: warningType ? "flex" : "none",
-                }}
-              >
-                <MaterialCommunityIcons name="lock" size={24} color="grey" />
-              </View>
-            </View>
-            <View
-              style={{
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <TouchableOpacity
-                style={{ elevation: 2 }}
-                onPress={() => (loading ? {} : handleCodeInvite())}
-              >
-                <Text
-                  style={{
-                    borderBottomColor: "grey",
-                    borderBottomWidth: 2,
-                    width: "auto",
-                    marginTop: 20,
-                    fontSize: 16,
-                    color: "grey",
-                    display: canSendSmsAgain ? "flex" : "none",
-                  }}
-                >
-                  {loading ? <ActivityIndicator /> : "Enviar novamente"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              onPress={handleConfirmSms}
-              style={styles.joinButton}
-            >
-              <Text style={styles.joinText}>Próximo</Text>
-              <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
-            </TouchableOpacity>
-          </View>
+    <View style={stylesDefault.centeredView}>
+      <View style={stylesDefault.modalView}>
+        <View style={stylesDefault.modalHeader}>
+          <Text style={stylesDefault.modalHeaderText}>Confirmação</Text>
+          <TouchableOpacity onPress={onClose}>
+            <Ionicons name="close" size={35} color="black" />
+          </TouchableOpacity>
         </View>
+        <Text style={stylesDefault.modalText}>
+          Digite o código de segurança{" "}
+          {type === "SMS"
+            ? "enviado via SMS para o número de telefone informado"
+            : "enviado para o email informado"}
+        </Text>
+        <View style={stylesDefault.warningContainer}>
+          {warningType === "ManyTries" && (
+            <View style={stylesDefault.warningBox}>
+              <FontAwesome6 name="x" size={16} color="white" />
+              <Text style={stylesDefault.warningText}>
+                Você tentou 5 vezes. Aguarde 30 minutos para tentar novamente
+              </Text>
+            </View>
+          )}
+          {warningType === "WrongCode" && (
+            <View style={stylesDefault.warningBox}>
+              <FontAwesome6 name="x" size={16} color="white" />
+              <Text style={stylesDefault.warningText}>Código incorreto</Text>
+            </View>
+          )}
+          {warningType === "Block" && (
+            <View style={stylesDefault.warningBox}>
+              <FontAwesome6 name="x" size={16} color="white" />
+              <Text style={stylesDefault.warningText}>
+                Você foi bloqueado por excesso de tentativas. Entre em contato
+                com o Suporte do Programa.
+              </Text>
+            </View>
+          )}
+        </View>
+        <View style={stylesDefault.codeInputContainer}>
+          <TextInput
+            style={stylesDefault.codeInput}
+            placeholder="CODE"
+            maxLength={4}
+            onChangeText={(text) => {
+              const newSmsCode = [...smscode];
+              for (let i = 0; i < text.length; i++) {
+                newSmsCode[i] = text[i];
+              }
+              setSmsCode(newSmsCode);
+            }}
+          />
+          {smscode.map((digit, index) => (
+            <View
+              key={index}
+              style={[
+                stylesDefault.codeDigit,
+                { display: warningType ? "none" : "flex" },
+              ]}
+            >
+              <Text style={stylesDefault.codeDigitText}>{digit}</Text>
+            </View>
+          ))}
+          {warningType && (
+            <View style={stylesDefault.lockIcon}>
+              <MaterialCommunityIcons name="lock" size={24} color="grey" />
+            </View>
+          )}
+        </View>
+        <View style={stylesDefault.sendAgainContainer}>
+          <TouchableOpacity
+            style={stylesDefault.sendAgainButton}
+            onPress={() => (loading ? {} : handleCodeInvite())}
+          >
+            <Text style={stylesDefault.sendAgainText}>
+              {loading ? <ActivityIndicator /> : "Enviar novamente"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          onPress={handleConfirmSms}
+          style={stylesDefault.confirmButton}
+        >
+          <Text style={stylesDefault.confirmButtonText}>Próximo</Text>
+          <Ionicons name="arrow-forward" size={18} color="#fff" />
+        </TouchableOpacity>
       </View>
-    </Modal>
+    </View>
+  </Modal>
   );
 };
 

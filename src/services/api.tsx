@@ -3,7 +3,6 @@ const header = {
   "Content-Type": "application/json",
   "Accept-Language": "pt-BR",
 
-  // Authorization: token,
 };
 const api = axios.create({
   baseURL: "https://api-dev.clubepromais.com.br/api",

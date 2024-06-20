@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  Image,
   Dimensions,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import FAQScreen from "../FAQ";
 import { WebView } from "react-native-webview";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
@@ -2448,29 +2441,20 @@ class=MsoHyperlink><span lang=PT><span style='text-decoration:none'>&nbsp;</span
 };
 
 const TermsScreen: React.FC = () => {
-  const { user, userName, login, logout } = useAuth();
-  const [showDetails, setShowDetails] = useState(false);
-  const [selectedFAQ, setSelectedFAQ] = useState(null);
+  const {  userName } = useAuth();
+
   return (
-    <View style={styles.container}>
+    <View style={stylesDefault.container}>
       <View style={stylesDefault.RedViewHeaderContainer}>
         <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
           <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
           <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
         </View>
       </View>
-      <View
-        style={{
-          backgroundColor: "white",
-          padding: 10,
-          bottom: 30,
-          borderRadius: 20,
-          marginHorizontal: 20,
-        }}
-      >
+      <View style={stylesDefault.webviewContainer}>
         <ScrollView>
           <WebView
-            style={styles.webview_}
+            style={stylesDefault.webview}
             source={dataTerms}
             startInLoadingState={true}
             javaScriptEnabled={true}
@@ -2484,134 +2468,5 @@ const TermsScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  answerContainer: {
-    padding: 15,
-    backgroundColor: "#f5f5f5",
-    height: "auto", // Increase the height here
-  },
-  answer: {
-    fontSize: 16,
-    color: "#333",
-  },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#F3F3F3",
-  },
-  text: {
-    marginTop: 30,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000000",
-    textShadowColor: "#000",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
-    width: "80%",
-  },
-  containerRed: {
-    backgroundColor: "red",
-    height: 150,
-    width: "100%",
-    paddingHorizontal: 30,
-    justifyContent: "space-between",
-    borderBottomLeftRadius: 40,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  cardBalance: {
-    width: "80%",
-    backgroundColor: "white",
-    height: 230,
-    borderRadius: 8,
-    marginTop: -70,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    paddingTop: 30,
-    paddingLeft: 20,
-    gap: 20,
-  },
-  text_subTitleSize: {
-    fontSize: 14,
-  },
-  text_subTitle: {
-    marginTop: 10,
-    fontWeight: "bold",
-  },
-  button: {
-    alignItems: "center",
-    paddingLeft: 10,
-  },
-  buttonText: {
-    color: "#A6A6A6",
-    fontSize: 16,
-  },
-  underline: {
-    height: 1,
-    backgroundColor: "#A6A6A6",
-    width: "100%",
-    marginTop: 4,
-  },
-  greenButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#85D151",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 200,
-    width: 200,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  greenButtonText: {
-    color: "white",
-    fontSize: 16,
-  },
-  menu: {
-    width: "90%",
-    marginTop: 20,
-  },
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    backgroundColor: "white",
-    borderRadius: 8,
-    marginVertical: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 2,
-  },
-  menuItemIcon: {
-    marginRight: 10,
-  },
-  menuItemText: {
-    flex: 1,
-    marginLeft: 10,
-    fontSize: 16,
-  },
-  outline1: { color: "#000000", left: -1, top: -1 },
-  imageBig: {
-    width: "80%",
-    resizeMode: "cover",
-    marginTop: 30,
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-  webview_: {
-    marginLeft: -30,
-    marginTop: -30,
-    width: width * 1.0,
-    height: height - height * 0.1,
-  },
-});
 
 export default TermsScreen;

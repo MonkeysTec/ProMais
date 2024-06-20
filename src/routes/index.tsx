@@ -4,10 +4,10 @@ import { useAuth } from "../context/LoginContext";
 import NotAuthRoutes from "./NotAuthRoute";
 import AuthRoutes from "./AuthRoute";
 
-const Stack = createStackNavigator();
+
 
 const Routes = () => {
-  const { user, login, logout } = useAuth();
+  const { user } = useAuth();
 
   return <>{user ? <AuthRoutes /> : <NotAuthRoutes />}</>;
 };

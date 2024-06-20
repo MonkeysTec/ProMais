@@ -11,7 +11,6 @@ import {
 import { RainbowLine } from "../../components/RainbowLine";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 import api from "../../services/api";
 import { useNavigation } from "@react-navigation/native";
 
@@ -38,7 +37,7 @@ const ChangePassword = () => {
             const newDataPassword = {
               newPassword,
             };
-            console.log("Sua senha antiga confere, trocando para a nova...");
+         
 
             const { data } = await api.post(
               "/users/system/password/change/online/v1",
@@ -46,7 +45,7 @@ const ChangePassword = () => {
             );
 
             if (data) {
-              console.log("Senha trocada com sucesso!");
+             
             } else {
               console.log("Essa não é sua senha antiga");
             }

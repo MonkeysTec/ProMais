@@ -1,18 +1,31 @@
 import React from "react";
 import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
   SafeAreaView,
   Image,
-  TouchableOpacity,
+  View,
 } from "react-native";
 import { RainbowLine } from "../../components/RainbowLine";
 import { Dots } from "../../components/Dots";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import {
+  Container,
+  InsideContainer,
+  ImageSmall,
+  Title,
+  ImageBig,
+  TextStyled,
+  JoinButton,
+  JoinText,
+  LoginButton,
+  LoginText,
+  ContactContainer,
+  ContactTextBlack,
+  ContactTextRed,
+  TotalEnergiesImage,
+  Outline1,
+} from './styles';
 
 const StartScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -25,46 +38,50 @@ const StartScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Container>
       <SafeAreaView />
       <RainbowLine />
-      <View style={styles.insideContainer}>
-        <Image
+      <InsideContainer>
+        <ImageSmall
           source={require("../../assets/splashImg.png")}
-          style={styles.image}
         />
-        <Text style={styles.title}>Vem ser +, vem ser Pro+</Text>
-        <Image
+        <Title>Vem ser +, vem ser Pro+</Title>
+        <ImageBig
           source={require("../../assets/home-img.png")}
-          style={[styles.outline1, styles.imageBig]}
+          style={Outline1}
         />
-        <Text style={styles.text}>
+        <TextStyled>
           Clube Pro+. O clube de fidelidade da Total Energies.
-        </Text>
+        </TextStyled>
         <Dots />
-        <TouchableOpacity onPress={handleSignUp} style={styles.joinButton}>
-          <Text style={styles.joinText}>Quero me cadastrar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-          <Text style={styles.loginText}>Entrar</Text>
+        <JoinButton onPress={handleSignUp}>
+          <JoinText>Quero me cadastrar</JoinText>
+        </JoinButton>
+        <LoginButton onPress={handleLogin}>
+          <LoginText>Entrar</LoginText>
           <Ionicons name={"arrow-forward"} size={18} color={"#000"} />
+<<<<<<< HEAD
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("ContactUs")} style={styles.contactContainer}>
+=======
+        </LoginButton>
+        <ContactContainer>
+>>>>>>> febad1486d3fa65d98a5a276e7e7700576a8e286
           <MaterialIcons name={"headset-mic"} size={32} color={"tomato"} />
           <View>
-            <Text style={styles.contactTextBlack}>Não consegue acessar?</Text>
-            <Text style={styles.contactTextRed}>Entre em contato conosco</Text>
+            <ContactTextBlack>Não consegue acessar?</ContactTextBlack>
+            <ContactTextRed>Entre em contato conosco</ContactTextRed>
           </View>
-        </TouchableOpacity>
-        <Image
+        </ContactContainer>
+        <TotalEnergiesImage
           source={require("../../assets/© TotalEnergies - 2023.png")}
-          style={styles.image}
         />
-      </View>
-    </View>
+      </InsideContainer>
+    </Container>
   );
 };
 
+<<<<<<< HEAD
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -171,3 +188,6 @@ const styles = StyleSheet.create({
 });
 
 export default StartScreen;
+=======
+export default StartScreen;
+>>>>>>> febad1486d3fa65d98a5a276e7e7700576a8e286

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   SafeAreaView,
   Image,
@@ -13,6 +12,7 @@ import { RainbowLine } from "../../components/RainbowLine";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import stylesDefault from "../../components/Styled";
 
 const Forgot: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [step, setStep] = useState(1);
@@ -28,11 +28,11 @@ const Forgot: React.FC<{ navigation: any }> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={stylesDefault.container}>
       <SafeAreaView />
       <RainbowLine />
-      <View style={styles.insideContainer}>
-        <TouchableOpacity onPress={handleBack} style={styles.backContainer}>
+      <View style={stylesDefault.insideContainer}>
+        <TouchableOpacity onPress={handleBack} style={stylesDefault.backContainer}>
           {step === 3 ? (
             <AntDesign name={"checkcircle"} size={50} color={"#85d151"} />
           ) : (
@@ -41,30 +41,30 @@ const Forgot: React.FC<{ navigation: any }> = ({ navigation }) => {
         </TouchableOpacity>
         {step === 1 && (
           <>
-            <Text style={styles.title}>Esqueci minha senha</Text>
-            <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder="Insira seu e-mail" />
+            <Text style={stylesDefault.title}>Esqueci minha senha</Text>
+            <View style={stylesDefault.inputContainer}>
+              <TextInput style={stylesDefault.input} placeholder="Insira seu e-mail" />
             </View>
-            <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
-              <Text style={styles.joinText}>Próximo</Text>
+            <TouchableOpacity onPress={handleNext} style={stylesDefault.joinButton}>
+              <Text style={stylesDefault.joinText}>Próximo</Text>
               <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
             </TouchableOpacity>
           </>
         )}
         {step === 2 && (
           <>
-            <Text style={styles.title}>Cadastre sua nova senha</Text>
-            <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder="Nova senha" />
+            <Text style={stylesDefault.title}>Cadastre sua nova senha</Text>
+            <View style={stylesDefault.inputContainer}>
+              <TextInput style={stylesDefault.input} placeholder="Nova senha" />
             </View>
-            <View style={styles.inputContainer}>
+            <View style={stylesDefault.inputContainer}>
               <TextInput
-                style={styles.input}
+                style={stylesDefault.input}
                 placeholder="Repita a nova senha"
               />
             </View>
-            <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
-              <Text style={styles.joinText}>Enviar</Text>
+            <TouchableOpacity onPress={handleNext} style={stylesDefault.joinButton}>
+              <Text style={stylesDefault.joinText}>Enviar</Text>
               <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
             </TouchableOpacity>
           </>
@@ -72,28 +72,28 @@ const Forgot: React.FC<{ navigation: any }> = ({ navigation }) => {
         {step === 3 && (
           <>
             <View>
-              <Text style={styles.finishTitle}>Pronto!</Text>
-              <Text style={styles.contactTextBlack}>
+              <Text style={stylesDefault.finishTitle}>Pronto!</Text>
+              <Text style={stylesDefault.contactTextBlack}>
                 Sua senha foi trocada com sucesso!
               </Text>
-              <Text style={styles.contactTextBlack}>Acesse agora mesmo...</Text>
-              <TouchableOpacity onPress={handleNext} style={styles.joinButton}>
-                <Text style={styles.joinText}>Entrar</Text>
+              <Text style={stylesDefault.contactTextBlack}>Acesse agora mesmo...</Text>
+              <TouchableOpacity onPress={handleNext} style={stylesDefault.joinButton}>
+                <Text style={stylesDefault.joinText}>Entrar</Text>
                 <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
               </TouchableOpacity>
             </View>
           </>
         )}
-        <TouchableOpacity style={styles.contactContainer}>
+        <TouchableOpacity style={stylesDefault.contactContainer}>
           <MaterialIcons name={"headset-mic"} size={45} color={"tomato"} />
           <View>
-            <Text style={styles.contactTextBlack}>Não consegue acessar?</Text>
-            <Text style={styles.contactTextRed}>Entre em contato conosco</Text>
+            <Text style={stylesDefault.contactTextBlack}>Não consegue acessar?</Text>
+            <Text style={stylesDefault.contactTextRed}>Entre em contato conosco</Text>
           </View>
         </TouchableOpacity>
         <Image
           source={require("../../assets/© TotalEnergies - 2023.png")}
-          style={styles.image}
+          style={stylesDefault.image}
         />
       </View>
     </View>

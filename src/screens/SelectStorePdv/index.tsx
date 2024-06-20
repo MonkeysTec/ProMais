@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
-  Linking,
   ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import Feather from "@expo/vector-icons/Feather";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
-import api from "../../services/api";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
 
@@ -39,49 +32,20 @@ const SelectStorePdv: React.FC = () => {
   ]);
 
   return (
-    <View style={styles.container}>
+    <View style={stylesDefault.container}>
       <View style={stylesDefault.RedViewHeaderContainer}>
         <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
           <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
           <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
         </View>
       </View>
-      <View
-        style={{
-          marginTop: -50,
-          flexDirection: "column",
-          padding: 20,
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "column",
-            backgroundColor: "white",
-            width: "100%",
-            height: "auto",
-            borderRadius: 10,
-            padding: 20,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ScrollView style={{ width: "100%", height: "auto" }}>
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: 24,
-                color: "red",
-                fontWeight: "600",
-                marginBottom: 30,
-              }}
-            >
-              Escolha seu PDV
-            </Text>
-
+      <View style={stylesDefault.viewContainer}>
+        <View style={stylesDefault.viewInnerContainer}>
+          <ScrollView style={stylesDefault.scrollViewFull}>
+            <Text style={stylesDefault.headerText}>Escolha seu PDV</Text>
             {storesToBeep.map((store, index) => (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
                   selectPdvStore(store.name);
                   navigation.navigate("Home");
@@ -89,8 +53,8 @@ const SelectStorePdv: React.FC = () => {
                 activeOpacity={1}
                 key={index}
               >
-                <View style={styles.menuItem}>
-                  <Text style={{ fontWeight: "600", fontSize: 20 }}>
+                <View style={stylesDefault.menuItem}>
+                  <Text style={stylesDefault.menuItemTextBold}>
                     {store.name}
                   </Text>
                   <View
@@ -110,6 +74,7 @@ const SelectStorePdv: React.FC = () => {
   );
 };
 
+<<<<<<< HEAD
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -140,4 +105,6 @@ const styles = StyleSheet.create({
   },
 });
 
+=======
+>>>>>>> febad1486d3fa65d98a5a276e7e7700576a8e286
 export default SelectStorePdv;

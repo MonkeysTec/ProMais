@@ -1,29 +1,40 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
   SafeAreaView,
-  Image,
-  TouchableOpacity,
-  TextInput,
   Alert,
+  View,
+  TouchableOpacity,
 } from "react-native";
 import { RainbowLine } from "../../components/RainbowLine";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import api from "../../services/api";
-import { useAuth } from "../../context/LoginContext";
-import axios from "axios";
 import { ModalSMSConfirm } from "../../components/Modal/SmsConfirm";
 import Entypo from "@expo/vector-icons/Entypo";
+import {
+  Container,
+  InsideContainer,
+  ImageSmall,
+  InputContainer,
+  Title,
+  Input,
+  CodeInputContainer,
+  JoinButton,
+  JoinText,
+  LoginButton,
+  LoginText,
+  ContactContainer,
+  ContactTextBlack,
+  ContactTextRed,
+  BottomContainer,
+  CenteredView,
+  ImageTotalEnergies,
+} from './styles';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [modalCOnfirm, setModalConfim] = useState(false);
-
+  const [modalConfirm, setModalConfirm] = useState(false);
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
@@ -35,20 +46,12 @@ const Login: React.FC = () => {
       });
 
       if (data.status === 200) {
-        setModalConfim(true);
+        setModalConfirm(true);
       } else {
-        // Exibir mensagem de erro
-        Alert.alert(
-          "Erro de Login",
-          "Credenciais inválidas. Por favor, tente novamente.",
-        );
+        Alert.alert("Erro de Login", "Credenciais inválidas. Por favor, tente novamente.");
       }
     } catch (error) {
-      // Exibir mensagem de erro
-      Alert.alert(
-        "Erro de Login",
-        "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.",
-      );
+      Alert.alert("Erro de Login", "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.");
       console.error(error);
     }
   };
@@ -56,71 +59,43 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <Container>
       <SafeAreaView />
       <RainbowLine />
-      <View style={styles.insideContainer}>
-        <Image
-          source={require("../../assets/splashImg.png")}
-          style={styles.image}
-        />
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.title}>Acesso</Text>
-          <TextInput
-            style={styles.input}
+      <InsideContainer>
+        <ImageSmall source={require("../../assets/splashImg.png")} />
+        <InputContainer>
+          <Title>Acesso</Title>
+          <Input
             placeholder="Insira o e-mail cadastrado"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
           />
-          <View
-            style={{
-              borderWidth: 1,
-              borderColor: "black",
-              height: 50,
-              borderRadius: 50,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              paddingHorizontal: 20,
-            }}
-          >
-            <TextInput
-              style={{}}
+          <CodeInputContainer>
+            <Input
+              style={{ borderWidth: 0 }}
               placeholder="Insira sua senha"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
             />
-            <View>
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Entypo
-                  name={showPassword ? "eye" : "eye-with-line"}
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+            <TouchableOpacity style={{ position: 'relative', right: '50%' }} onPress={() => setShowPassword(!showPassword)}>
+              <Entypo name={showPassword ? "eye" : "eye-with-line"} size={24} color="black" />
+            </TouchableOpacity>
+          </CodeInputContainer>
+        </InputContainer>
 
-        <View>
-          <TouchableOpacity onPress={handleLogin} style={styles.joinButton}>
-            <Text style={styles.joinText}>Entrar</Text>
-            <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("ForgotPassword");
-            }}
-            style={styles.loginButton}
-          >
-            <Text style={styles.loginText}>Esqueci minha senha</Text>
-          </TouchableOpacity>
-        </View>
+        <JoinButton onPress={handleLogin}>
+          <JoinText>Entrar</JoinText>
+          <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
+        </JoinButton>
+        <LoginButton onPress={() => navigation.navigate("ForgotPassword")}>
+          <LoginText>Esqueci minha senha</LoginText>
+        </LoginButton>
 
+<<<<<<< HEAD
         <View
           style={{
             flexDirection: "column",
@@ -132,13 +107,16 @@ const Login: React.FC = () => {
         >
         </View>
           <TouchableOpacity onPress={() => navigation.navigate("ContactUs")} style={styles.contactContainer}>
+=======
+        <BottomContainer>
+          <ContactContainer>
+>>>>>>> febad1486d3fa65d98a5a276e7e7700576a8e286
             <MaterialIcons name={"headset-mic"} size={33} color={"tomato"} />
             <View>
-              <Text style={styles.contactTextBlack}>Não consegue acessar?</Text>
-              <Text style={styles.contactTextRed}>
-                Entre em contato conosco
-              </Text>
+              <ContactTextBlack>Não consegue acessar?</ContactTextBlack>
+              <ContactTextRed>Entre em contato conosco</ContactTextRed>
             </View>
+<<<<<<< HEAD
           </TouchableOpacity>
           <Image
             source={require("../../assets/© TotalEnergies - 2023.png")}
@@ -153,21 +131,28 @@ const Login: React.FC = () => {
             position: "relative",
           }}
         >
+=======
+          </ContactContainer>
+          <ImageTotalEnergies source={require("../../assets/© TotalEnergies - 2023.png")} />
+        </BottomContainer>
+      </InsideContainer>
+      {modalConfirm && (
+        <CenteredView>
+>>>>>>> febad1486d3fa65d98a5a276e7e7700576a8e286
           <ModalSMSConfirm
-            onClose={() => {
-              setModalConfim(false);
-            }}
+            onClose={() => setModalConfirm(false)}
             email={email}
             phone=""
             type="LOGIN"
             password={password}
           />
-        </View>
+        </CenteredView>
       )}
-    </View>
+    </Container>
   );
 };
 
+<<<<<<< HEAD
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -292,3 +277,6 @@ const styles = StyleSheet.create({
 });
 
 export default Login;
+=======
+export default Login;
+>>>>>>> febad1486d3fa65d98a5a276e7e7700576a8e286
