@@ -13,6 +13,9 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
+  const handleContact = () => {
+    navigation.navigate('ContactUs');
+  };
   const handleLogin = async () => {
     try {
       const { data } = await api.post("/users/system/login/v1", {
@@ -112,7 +115,7 @@ const Login: React.FC = () => {
             gap: 10,
           }}
         />
-        <S.ContactContainer>
+        <S.ContactContainer onPress={() => navigation.navigate("ContactUs")}>
           <MaterialIcons name={"headset-mic"} size={33} color={"tomato"} />
           <View>
             <S.ContactTextBlack>Não consegue acessar?</S.ContactTextBlack>
@@ -123,7 +126,7 @@ const Login: React.FC = () => {
         </S.ContactContainer>
         <S.TotalEnergies
           source={require("../../assets/© TotalEnergies - 2023.png")}
-          style={{ resizeMode: "contain", width: "100%" }}
+          
         />
       </S.InsideContainer>
       {modalConfirm && (

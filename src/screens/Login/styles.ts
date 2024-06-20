@@ -138,9 +138,10 @@ export const ContactTextRed = styled.Text`
 `;
 
 export const TotalEnergies = styled.Image`
-  width: 210px;
+  width: 120px;
   height: 30px;
   resize-mode: contain;
+  align-self: center;
 `;
 
 export const Outline1 = styled.Text`

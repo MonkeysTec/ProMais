@@ -5,7 +5,7 @@ import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import api from "../../services/api";
 import { ModalSMSConfirm } from "../../components/Modal/SmsConfirm";
 import Moment from "moment";
-import * as S from './styles';
+import * as S from "./styles";
 
 const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [step, setStep] = useState(1);
@@ -25,6 +25,9 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
     setCode(code);
     setCompany(company);
     setModalSms(false);
+  };
+  const handleContact = () => {
+    navigation.navigate("ContactUs");
   };
 
   const handleFinalRegister = async () => {
@@ -58,7 +61,7 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
           headers: {
             temp_auth_code: code,
           },
-        },
+        }
       );
     } catch (error) {
       console.log(error);
@@ -90,7 +93,14 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
       <SafeAreaView />
       <RainbowLine />
       <S.InsideContainer>
-        <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <View
+          style={{
+            width: "100%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <S.BackContainer onPress={handleBack}>
             {step === 4 ? (
               <AntDesign name={"checkcircle"} size={50} color={"#85d151"} />
@@ -176,9 +186,7 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
               <S.ContactTextBlack>
                 Sua conta foi criada com sucesso!
               </S.ContactTextBlack>
-              <S.ContactTextBlack>
-                Acesse agora mesmo...
-              </S.ContactTextBlack>
+              <S.ContactTextBlack>Acesse agora mesmo...</S.ContactTextBlack>
               <S.JoinButton onPress={handleNext}>
                 <S.JoinText>Entrar</S.JoinText>
                 <Ionicons name={"arrow-forward"} size={18} color={"#fff"} />
@@ -186,18 +194,23 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
           </>
         )}
-        <View style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate("ContactUs")} >
-          <S.ContactContainer>
-            <MaterialIcons name={"headset-mic"} size={45} color={"tomato"} />
-            <View>
-              <S.ContactTextBlack>Não consegue acessar?</S.ContactTextBlack>
-              <S.ContactTextRed>Entre em contato conosco</S.ContactTextRed>
-            </View>
-          </S.ContactContainer>
-          <S.StyledImage source={require("../../assets/© TotalEnergies - 2023.png")} />
-        </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        ></View>
+        <S.ContactContainer onPress={() => navigation.navigate("ContactUs")}>
+          <MaterialIcons name={"headset-mic"} size={45} color={"tomato"} />
+          <View>
+            <S.ContactTextBlack>Não consegue acessar?</S.ContactTextBlack>
+            <S.ContactTextRed>Entre em contato conosco</S.ContactTextRed>
+          </View>
+        </S.ContactContainer>
+        <S.StyledImage
+          source={require("../../assets/© TotalEnergies - 2023.png")}
+        />
       </S.InsideContainer>
       {modalSms && (
         <ModalSMSConfirm
