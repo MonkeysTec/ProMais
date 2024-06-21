@@ -182,6 +182,7 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
             alignItems: "center",
           }}
         >
+        </View>
           <S.ContactContainer>
             <MaterialIcons name={"headset-mic"} size={45} color={"tomato"} />
             <View>
@@ -190,7 +191,6 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
           </S.ContactContainer>
           <S.ImageStyled source={require("../../assets/© TotalEnergies - 2023.png")} />
-        </View>
       </S.InsideContainer>
       {modalSms && (
         <ModalSMSConfirm

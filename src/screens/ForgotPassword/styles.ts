@@ -79,6 +79,10 @@ export const ContactContainer = styled.TouchableOpacity`
   margin-top: 100px;
   align-items: center;
   gap: 10px;
+  border-width: 1px;
+  border-color: #000;
+  border-radius: 25px;
+  justify-content: center;
 `;
 
 export const ContactTextBlack = styled.Text`
@@ -94,7 +98,8 @@ export const ContactTextRed = styled.Text`
 `;
 
 export const ImageStyled = styled.Image`
-  width: 101px;
+  width: 120px;
   height: 61px;
   resize-mode: contain;
+  align-self: center;
 `;

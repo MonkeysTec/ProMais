@@ -328,7 +328,7 @@ const HomeScreen: React.FC = () => {
                           >
                             <Entypo
                               name={
-                                showPasswordExtratoQrCode
+                                showPasswordExtratoPix
                                   ? "eye"
                                   : "eye-with-line"
                               }

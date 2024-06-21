@@ -316,7 +316,7 @@ export const Redeem: React.FC = () => {
         {step === 6 && (
           <S.CardBalance>
             <S.FlexRow>
-              <AntDesign name="closecircle" size={55} color="red" />
+              <AntDesign name="closecircle" size={24} color="red" />
               <S.HeaderText>Houve um erro no resgate</S.HeaderText>
             </S.FlexRow>
             <S.SubTitleTextBold>Verifique as regras a seguir</S.SubTitleTextBold>
