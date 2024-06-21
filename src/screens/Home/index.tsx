@@ -44,17 +44,17 @@ const HomeScreen: React.FC = () => {
  /* New Demonstration PdvNet */
   const [PdvNetMovementData, setPdvNetMovementData] = useState([
     {
-      cnpj: "1231231231",
+      date: "21-06-2024",
       pdvName: "Troca de óleo - ipiranga",
       generatedValue: "100,00",
     },
     {
-      cnpj: "7341234434",
+      date: "20-06-2024",
       pdvName: "Troca de óleo - morumbi",
       generatedValue: "520,00",
     },
     {
-      cnpj: "6342343445",
+      date: "19-06-2024",
       pdvName: "Troca de óleo - zona norte",
       generatedValue: "325,00",
     },
@@ -574,7 +574,7 @@ const HomeScreen: React.FC = () => {
                           justifyContent: "space-between",
                         }}
                       >
-                        <Text>CNPJ</Text>
+                        <Text>DATA</Text>
                         <Text>NOME PDV</Text>
                         <Text>VALOR GERADO</Text>
                       </View>
@@ -590,7 +590,7 @@ const HomeScreen: React.FC = () => {
                                 justifyContent: "space-between",
                               }}
                             >
-                              <Text style={{}}>{item.cnpj}</Text>
+                              <Text style={{}}>{item.date}</Text>
                               <Text style={{}}>{item.pdvName}</Text>
                               <Text style={{}}>{item.generatedValue}</Text>
                             </View>
