@@ -15,6 +15,7 @@ export const RedContainer = styled.View`
   border-bottom-left-radius: 40px;
   flex-direction: row;
   align-items: center;
+  padding-top: 15px;
 `;
 
 export const TextStyled = styled.Text`

@@ -57,13 +57,13 @@ export const OptionButton = styled.TouchableOpacity`
 
 export const OptionIconContainer = styled.View`
   background-color: #85d151;
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   align-items: center;
   justify-content: center;
   border-radius: 50px;
 `;
 
 export const OptionText = styled.Text`
-  font-size: 20px;
+  font-size: 16px;
 `;

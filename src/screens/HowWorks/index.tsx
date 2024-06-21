@@ -12,8 +12,8 @@ const HowWorks: React.FC = () => {
   return (
     <S.Container>
       <S.RedViewHeaderContainer>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-          <S.SectionTitle>Olá</S.SectionTitle>
+        <View style={{ flexDirection: "row", alignItems: "flex-end", paddingTop:15 }}>
+          <S.SectionTitle>Olá </S.SectionTitle>
           <S.SectionTitle>{userName}</S.SectionTitle>
         </View>
       </S.RedViewHeaderContainer>

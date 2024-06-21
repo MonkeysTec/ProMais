@@ -99,7 +99,7 @@ const Bipador: React.FC = () => {
   return (
     <S.Container>
       <S.RedViewHeaderContainer>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+        <View style={{ flexDirection: "row", alignItems: "flex-end", paddingTop:15 }}>
           <S.RedViewFirstText>Olá</S.RedViewFirstText>
           <S.RedViewSecondText>{userName}</S.RedViewSecondText>
         </View>

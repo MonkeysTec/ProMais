@@ -47,6 +47,7 @@ export const RedViewHeaderContainer = styled.View`
   border-bottom-left-radius: 40px;
   flex-direction: row;
   align-items: center;
+  padding-top: 15px;
 `;
 
 export const RedViewFirstText = styled.Text`

@@ -72,7 +72,7 @@ const ContactUsScreen: React.FC = () => {
       ) : (
         <S.Container>
           <View style={stylesDefault.RedViewHeaderContainer}>
-            <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+            <View style={{ flexDirection: "row", alignItems: "flex-end", paddingTop:15 }}>
               <S.JoinText>Olá </S.JoinText>
               <S.JoinText>{userName}</S.JoinText>
             </View>

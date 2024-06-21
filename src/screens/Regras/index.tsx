@@ -511,7 +511,7 @@ const RulesScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={stylesDefault.RedViewHeaderContainer}>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+        <View style={{ flexDirection: "row", alignItems: "flex-end", paddingTop:15 }}>
           <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
           <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
         </View>

@@ -31,13 +31,13 @@ export const RedViewSecondText = styled.Text`
 `;
 
 export const ContentContainer = styled.View`
-  margin-top: -50px;
+  margin-top: -30px;
   flex-direction: column;
   padding: 20px;
   width: 90%;
   height: auto;
   background-color: white;
-  border-radius: 20px;
+  border-radius: 10px;
   align-items: center;
 `;
 

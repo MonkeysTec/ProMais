@@ -31,8 +31,9 @@ export const ViewBody = styled.View`
 
 export const SectionTitle = styled.Text`
   font-weight: 600;
-  font-size: 20px;
+  font-size: 18px;
   align-self: flex-start;
+  color:white;
 `;
 
 export const ImageStyled = styled.Image`

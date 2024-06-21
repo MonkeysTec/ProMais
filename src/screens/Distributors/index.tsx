@@ -57,7 +57,7 @@ const DistributorsScreen: React.FC = () => {
   return (
     <S.Container>
       <S.ContainerRed>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+        <View style={{ flexDirection: "row", alignItems: "flex-end", paddingTop:15 }}>
           <S.RedViewFirstText>Olá</S.RedViewFirstText>
           <S.RedViewSecondText>{userName}</S.RedViewSecondText>
         </View>

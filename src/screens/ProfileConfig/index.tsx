@@ -30,13 +30,13 @@ const ProfileConfigScreen: React.FC = () => {
       <S.OptionsContainer>
         <S.OptionButton onPress={() => navigation.navigate("ChangePassword")}>
           <S.OptionIconContainer>
-            <MaterialIcons name="lock" size={30} color="white" />
+            <MaterialIcons name="lock" size={20} color="white" />
           </S.OptionIconContainer>
           <S.OptionText>Redefinir senha</S.OptionText>
         </S.OptionButton>
         <S.OptionButton onPress={logout}>
           <S.OptionIconContainer>
-            <MaterialIcons name="person-off" size={30} color="white" />
+            <MaterialIcons name="person-off" size={20} color="white" />
           </S.OptionIconContainer>
           <S.OptionText>Desativar minha conta</S.OptionText>
         </S.OptionButton>

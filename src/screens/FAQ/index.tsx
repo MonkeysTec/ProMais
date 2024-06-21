@@ -187,7 +187,7 @@ const FAQScreen: React.FC = () => {
   return (
     <S.Container>
       <S.ContainerRed>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+        <View style={{ flexDirection: "row", alignItems: "flex-end", paddingTop:15 }}>
           <Text style={{ color: "white", fontWeight: "800", fontSize: 18 }}>
             Olá
           </Text>

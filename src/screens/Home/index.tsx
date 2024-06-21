@@ -7,9 +7,11 @@ import { useAuth } from "../../context/LoginContext";
 import api from "../../services/api";
 import { stylesDefault } from "../../components/Styled";
 import * as S from './styles';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const menuItems = [
-  { title: "Movimentações loja", icon: "filetext1", modal: "PdvNetMovements" },
+  { title: "Movimentações loja", icon: "finance", modal: "PdvNetMovements" },
   { title: "Extrato", icon: "filetext1", modal: "Extract" },
   { title: "Codigo escaneado", icon: "scan1", modal: "ScannedCodes" },
   { title: 'Indique um "bipador"', icon: "user", path: "Bipador" },
@@ -152,7 +154,7 @@ const HomeScreen: React.FC = () => {
   return (
     <S.Container>
       <View style={stylesDefault.RedViewHeaderContainer}>
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+        <View style={{ flexDirection: "row", alignItems: "flex-end", paddingTop:15 }}>
           <Text style={stylesDefault.RedViewFirstText}>Olá</Text>
           <Text style={stylesDefault.RedViewSecondText}>{userName}</Text>
           <Text style={stylesDefault.RedViewSecondText}>({typeAccountSelected})</Text>
@@ -232,7 +234,9 @@ const HomeScreen: React.FC = () => {
                   style={stylesDefault.Image_W100_H100_Tint_Red}
                 />
               </View>
-            ) : (
+            ) : (item.icon === "finance" ? 
+              <MaterialCommunityIcons name="finance" size={24} color="red" />
+                  :
               <AntDesign name={item.icon} size={24} color="red" />
             )}
             <S.MenuItemText>{item.title}</S.MenuItemText>
@@ -262,7 +266,7 @@ const HomeScreen: React.FC = () => {
           <S.MenuItem
             onPress={() => navigation.navigate("SelectPdvStore")}
           >
-            <Feather name="box" size={24} color="red" />
+            <MaterialIcons name="phone-android" size={24} color="red" />
             <S.MenuItemText>
               Loja selecionada:{" "}
               <Text style={{ fontWeight: "700" }}>{pdvSelectedStore}</Text>
