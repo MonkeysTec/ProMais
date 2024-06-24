@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "promais",
-    "slug": "promais",
+    "name": "Pro Mais",
+    "slug": "pro-mais",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/splashImg.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/assets/splashImg.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/splashImg.png",
         "backgroundColor": "#ffffff",
         "softwareKeyboardLayoutMode": "pan"
       }
