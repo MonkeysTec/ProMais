@@ -12,6 +12,7 @@ export const ContentContainer = styled.View`
   gap: 20px;
   background-color: white;
   border-radius: 20px;
+  height: 85%;
 `;
 
 export const Header = styled.View`

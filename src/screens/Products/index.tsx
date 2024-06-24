@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, Text, View } from "react-native";
+import { FlatList, Image, Text, View } from "react-native";
 import { useAuth } from "../../context/LoginContext";
 import { stylesDefault } from "../../components/Styled";
 import api from "../../services/api";
@@ -36,6 +36,26 @@ const ProductsScreen: React.FC = () => {
     getProducts();
   }, []);
 
+  const renderItem = ({ item }: { item: Product }) => (
+    <S.ProductTouchable key={item._id}>
+      <View style={{ flexDirection: "row" }}>
+        <S.ProductImageContainer>
+          {item.photoURL && (
+            <Image
+              source={{ uri: item.photoURL }}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
+        </S.ProductImageContainer>
+        <S.ProductDetails>
+          <S.ProductCategory>{item.gamma}</S.ProductCategory>
+          <S.ProductName>{item.name}</S.ProductName>
+          <S.ProductPoints>{item.points} Pontos</S.ProductPoints>
+        </S.ProductDetails>
+      </View>
+    </S.ProductTouchable>
+  );
+
   return (
     <S.Container>
       <View style={stylesDefault.RedViewHeaderContainer}>
@@ -46,27 +66,12 @@ const ProductsScreen: React.FC = () => {
       </View>
       <S.ContentContainer>
         <S.Title>Produtos participantes</S.Title>
-        <S.ProductContainer>
-          {productsNew.map((prod, index) => (
-            <S.ProductTouchable key={index}>
-              <View style={{ flexDirection: "row" }}>
-                <S.ProductImageContainer>
-                  {prod.photoURL && (
-                    <Image
-                      source={{ uri: prod.photoURL }}
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                  )}
-                </S.ProductImageContainer>
-                <S.ProductDetails>
-                  <S.ProductCategory>{prod.gamma}</S.ProductCategory>
-                  <S.ProductName>{prod.name}</S.ProductName>
-                  <S.ProductPoints>{prod.points} Pontos</S.ProductPoints>
-                </S.ProductDetails>
-              </View>
-            </S.ProductTouchable>
-          ))}
-        </S.ProductContainer>
+        <FlatList
+          data={productsNew}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+        />
       </S.ContentContainer>
     </S.Container>
   );
