@@ -27,7 +27,7 @@ function handleRegistrationError(errorMessage: string) {
 }
 
 async function registerForPushNotificationsAsync() {
-  if (Platform.OS === "android") {
+  if (Platform.OS === "android" || Platform.OS==='ios') {
     Notifications.setNotificationChannelAsync("default", {
       name: "default",
       importance: Notifications.AndroidImportance.MAX,
